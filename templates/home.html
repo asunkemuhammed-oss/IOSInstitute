@@ -51,20 +51,61 @@
       }
 
       .brand {
-        font-size: 1.8rem;
-        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .brand-mark {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--primary) 0%, #2a4059 100%);
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .brand-mark img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .brand-text {
+        line-height: 1.05;
+      }
+
+      .brand-name {
+        font-size: 1.7rem;
+        font-weight: 800;
         letter-spacing: -0.06em;
         color: var(--primary);
+      }
+
+      .brand-sub {
+        font-size: 0.68rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
       }
 
       .nav-links {
         display: flex;
         align-items: center;
-        gap: 26px;
+        gap: 14px;
         flex-wrap: wrap;
       }
 
-      .nav-links a {
+      .nav-item {
+        position: relative;
+      }
+
+      .nav-item > a,
+      .dropdown-menu a {
         color: var(--primary);
         font-size: 0.95rem;
         font-weight: 600;
@@ -74,15 +115,40 @@
         gap: 6px;
       }
 
-      .nav-links a.has-caret::after {
+      .nav-item > a.has-caret::after {
         content: "▾";
         font-size: 0.72rem;
         color: var(--primary);
         opacity: 0.8;
       }
 
-      .nav-links a:hover {
+      .nav-item > a:hover,
+      .dropdown-menu a:hover {
         opacity: 1;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        min-width: 200px;
+        background: rgba(255,255,255,0.9);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: 0 16px 30px rgba(17, 24, 39, 0.08);
+        padding: 8px 0;
+        display: none;
+        z-index: 30;
+      }
+
+      .nav-item.has-menu:hover .dropdown-menu,
+      .nav-item.has-menu:focus-within .dropdown-menu {
+        display: block;
+      }
+
+      .dropdown-menu a {
+        display: block;
+        padding: 10px 14px;
       }
 
       .ghost-btn {
@@ -266,9 +332,9 @@
         display: block;
         width: 100%;
         height: 330px;
-        object-fit: contain;
+        object-fit: cover;
         background: #f3efe9;
-        padding: 12px;
+        padding: 0;
       }
 
       .team-body {
@@ -449,16 +515,42 @@
   <body>
     <header class="topbar">
       <div class="container nav">
-        <div class="brand">IOSInstitute</div>
+        <div class="brand">
+          <div class="brand-mark">
+            <img src="/static/images/ios-logo.svg" alt="IOS Institute logo">
+          </div>
+          <div class="brand-text">
+            <div class="brand-name">IOS</div>
+            <div class="brand-sub">Institute of Scholars</div>
+          </div>
+        </div>
+
         <nav class="nav-links">
-          <a href="#home">Home</a>
-          <a class="has-caret" href="#about">About us</a>
-          <a href="#tech-skills">Tech Skills</a>
-          <a class="has-caret" href="#research-institute">Research institute</a>
-          <a href="#testimonials">Testimonials</a>
-          <a href="#blog">Blog/resources</a>
-          <a href="#contact">Contact</a>
+          <div class="nav-item"><a href="#home">Home</a></div>
+
+          <div class="nav-item has-menu">
+            <a class="has-caret" href="#about">About us</a>
+            <div class="dropdown-menu">
+              <a href="#about">Overview</a>
+              <a href="#team">Our team</a>
+              <a href="#contact">Contact</a>
+            </div>
+          </div>
+
+          <div class="nav-item has-menu">
+            <a class="has-caret" href="#tech-skills">Programs</a>
+            <div class="dropdown-menu">
+              <a href="#tech-skills">Tech Skills</a>
+              <a href="#research-institute">Research institute</a>
+              <a href="#blog">Resources</a>
+            </div>
+          </div>
+
+          <div class="nav-item"><a href="#testimonials">Testimonials</a></div>
+          <div class="nav-item"><a href="#blog">Blog/resources</a></div>
+          <div class="nav-item"><a href="#contact">Contact</a></div>
         </nav>
+
         <a class="ghost-btn" href="/register">Register</a>
       </div>
     </header>
@@ -522,7 +614,7 @@
             </div>
           </div>
 
-          <div class="team-grid">
+          <div class="team-grid" id="team">
             <div class="team-card featured">
               <img src="/static/images/team/mr-olajuwon.jpg" alt="Mr. Olajuwon">
               <div class="team-body">
@@ -533,7 +625,7 @@
             </div>
 
             <div class="team-card">
-              <img src="/static/images/team/alonge-muhammed.svg" alt="Alonge Muhammed">
+              <img src="/static/images/team/alonge-muhammed.jpg" alt="Alonge Muhammed">
               <div class="team-body">
                 <h3>Mr. Alonge</h3>
                 <p class="team-role">Technology &amp; Research Coordinator</p>
