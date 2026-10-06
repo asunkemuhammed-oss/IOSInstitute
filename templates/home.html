@@ -463,6 +463,51 @@
         max-width: 720px;
       }
 
+      .about-intro {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 24px;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .about-copy {
+        padding: 6px 0;
+      }
+
+      .about-copy h2 {
+        margin: 0 0 14px;
+        font-size: clamp(2.2rem, 4vw, 3.4rem);
+        letter-spacing: -0.06em;
+        color: var(--primary);
+      }
+
+      .about-copy p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.06rem;
+        line-height: 1.8;
+      }
+
+      .about-panel {
+        background: rgba(255,255,255,0.38);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 22px 20px;
+      }
+
+      .about-panel h3 {
+        margin: 0 0 12px;
+        font-size: 1.2rem;
+        letter-spacing: -0.04em;
+        color: var(--primary);
+      }
+
+      .about-panel p {
+        margin: 0;
+        color: var(--muted);
+      }
+
       .about-grid {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -771,9 +816,16 @@
 
       <section id="about">
         <div class="container">
-          <div class="section-head">
-            <h2>About us</h2>
-            <p>We are a learning and research-driven institution helping individuals and organizations grow through practical education, collaboration, and meaningful opportunity.</p>
+          <div class="about-intro">
+            <div class="about-copy">
+              <h2>About us</h2>
+              <p>We are a learning and research-driven institution helping individuals and organizations grow through practical education, collaboration, and meaningful opportunity.</p>
+            </div>
+
+            <div class="about-panel">
+              <h3>Why people choose IOS</h3>
+              <p>Our approach connects learning, research, and real-world support to help students, professionals, and institutions move from potential to progress.</p>
+            </div>
           </div>
 
           <div class="about-grid">
