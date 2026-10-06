@@ -66,9 +66,9 @@
       }
 
       .brand-mark {
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -80,8 +80,9 @@
       .brand-mark img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
         display: block;
+        padding: 2px;
       }
 
       .brand-name {
@@ -561,11 +562,11 @@
       .team-card img {
         display: block;
         width: 100%;
-        height: 330px;
-        object-fit: contain;
-        object-position: center top;
+        height: 340px;
+        object-fit: cover;
+        object-position: center 18%;
         background: #f7f1ea;
-        padding: 16px 18px 0;
+        padding: 0;
       }
 
       .team-body {
@@ -650,6 +651,19 @@
         letter-spacing: 0.08em;
         text-transform: uppercase;
         font-weight: 700;
+      }
+
+      .feature-icon {
+        width: 58px;
+        height: 58px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(13, 45, 76, 0.08), rgba(29, 91, 232, 0.11));
+        border: 1px solid rgba(17, 24, 39, 0.08);
+        font-size: 1.7rem;
+        margin-bottom: 14px;
       }
 
       .feature-card h3 {
@@ -784,7 +798,7 @@
         <div class="container topbar-inner">
           <div class="brand">
             <div class="brand-mark">
-              <img src="/static/images/LOGOIOS.jpg" alt="IOS logo">
+              <img src="/static/images/team/LOGOIOS.jpg" alt="IOS logo">
             </div>
             <div class="brand-name">IOS</div>
           </div>
@@ -979,24 +993,28 @@
 
             <div class="skills-grid">
               <div class="feature-card">
+                <div class="feature-icon">🏆</div>
                 <span class="tag">15</span>
                 <h3>Years Of Glory</h3>
                 <p>Long-term experience delivering quality learning outcomes and academic support.</p>
               </div>
 
               <div class="feature-card">
+                <div class="feature-icon">👩‍🏫</div>
                 <span class="tag">500+</span>
                 <h3>Expert Mentors</h3>
                 <p>Industry-ready experts, professionals, and educators guiding each learner.</p>
               </div>
 
               <div class="feature-card">
+                <div class="feature-icon">💼</div>
                 <span class="tag">Job</span>
                 <h3>Placement Support</h3>
                 <p>Practical pathways to internships, job readiness, and career opportunities.</p>
               </div>
 
               <div class="feature-card">
+                <div class="feature-icon">🔬</div>
                 <span class="tag">Research</span>
                 <h3>Research &amp; Innovation</h3>
                 <p>Technology and evidence-driven learning built around modern development.</p>
@@ -1014,16 +1032,19 @@
 
           <div class="skills-grid">
             <div class="feature-card">
+              <div class="feature-icon">💻</div>
               <span class="tag">Course 01</span>
               <h3>Tech skill up</h3>
               <p>Build digital confidence through structured learning paths across modern tools and methods.</p>
             </div>
             <div class="feature-card">
+              <div class="feature-icon">📈</div>
               <span class="tag">Course 02</span>
               <h3>Professional growth</h3>
               <p>Strengthen career readiness with targeted learning designed to improve performance and opportunity.</p>
             </div>
             <div class="feature-card">
+              <div class="feature-icon">🧩</div>
               <span class="tag">Course 03</span>
               <h3>Project-based learning</h3>
               <p>Translate theory into practical application with guided projects and real-world problem solving.</p>
