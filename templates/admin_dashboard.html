@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IOSInstitute | Admin Dashboard</title>
+    <style>
+      :root {
+        --bg: #efefe9;
+        --panel: rgba(255,255,255,0.42);
+        --line: rgba(17,24,39,0.12);
+        --primary: #1d2e41;
+        --text: #1a2430;
+        --muted: #53606f;
+        --accent: #d67a57;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: var(--text); }
+      .container { width: min(1200px, calc(100% - 32px)); margin: 0 auto; }
+      .topbar { padding: 18px 0; border-bottom: 1px solid var(--line); }
+      .header-inner { display: flex; justify-content: space-between; align-items: center; gap: 18px; }
+      .brand { display: flex; align-items: center; gap: 12px; }
+      .brand-mark { width: 34px; height: 34px; border-radius: 9px; background: var(--primary); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; }
+      .brand-name { font-size: 1.4rem; letter-spacing: -0.05em; color: var(--primary); font-weight:700; }
+      .nav { display: flex; gap: 18px; flex-wrap: wrap; }
+      .nav a { color: var(--primary); font-weight: 600; }
+      .page { padding: 40px 0 80px; }
+      .panel { background: rgba(255,255,255,0.4); border: 1px solid var(--line); border-radius: 22px; padding: 28px; }
+      h1 { margin: 0 0 8px; font-size: clamp(2.2rem, 3vw, 3rem); letter-spacing: -0.06em; color: var(--primary); }
+      .flash { margin: 14px 0 20px; padding: 12px 14px; border-radius: 12px; background: rgba(214,122,87,0.08); border: 1px solid rgba(214,122,87,0.2); color: #8d452d; }
+      table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+      th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line); }
+      th { color: var(--primary); }
+      td { color: var(--text); }
+      select { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; }
+      .status-form { display: flex; gap: 12px; align-items: center; }
+      .status-form button { border: none; background: var(--primary); color: white; padding: 10px 14px; border-radius: 10px; cursor: pointer; }
+      .empty { color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container header-inner">
+        <div class="brand">
+          <div class="brand-mark">IOS</div>
+          <div class="brand-name">IOS Admin</div>
+        </div>
+        <nav class="nav">
+          <a href="/logout">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <div class="container panel">
+        <h1>Admin dashboard</h1>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="flash">{{ messages[0] }}</div>
+          {% endif %}
+        {% endwith %}
+
+        {% if requests %}
+          <table>
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Research Type</th>
+                <th>Topic</th>
+                <th>Institution</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for request in requests %}
+              <tr>
+                <td>{{ request["student_name"] }}</td>
+                <td>{{ request["research_type"] }}</td>
+                <td>{{ request["topic"] }}</td>
+                <td>{{ request["institution"] or 'N/A' }}</td>
+                <td>{{ request["department"] or 'N/A' }}</td>
+                <td>{{ request["status"] }}</td>
+                <td>
+                  <form class="status-form" method="post">
+                    <input type="hidden" name="request_id" value="{{ request['id'] }}">
+                    <select name="status">
+                      <option value="submitted" {% if request['status'] == 'submitted' %}selected{% endif %}>submitted</option>
+                      <option value="in review" {% if request['status'] == 'in review' %}selected{% endif %}>in review</option>
+                      <option value="approved" {% if request['status'] == 'approved' %}selected{% endif %}>approved</option>
+                      <option value="completed" {% if request['status'] == 'completed' %}selected{% endif %}>completed</option>
+                    </select>
+                    <button type="submit">Update</button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p class="empty">No research requests have been submitted yet.</p>
+        {% endif %}
+      </div>
+    </main>
+  </body>
+</html>

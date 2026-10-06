@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registration successful</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #eef8f2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+      .card {
+        background: white;
+        padding: 2rem;
+        width: min(500px, 90vw);
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      }
+      h1 {
+        color: #146c43;
+      }
+      .success {
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Account created successfully</h1>
+      <p class="success">Welcome, {{ full_name }}!</p>
+      <p>You registered as a <strong>{{ role }}</strong>.</p>
+      <p>A confirmation email has been sent to <strong>{{ email }}</strong>.</p>
+    </div>
+  </body>
+</html>

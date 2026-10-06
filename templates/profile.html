@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IOSInstitute | Profile</title>
+    <style>
+      :root {
+        --bg: #efefe9;
+        --panel: rgba(255,255,255,0.42);
+        --line: rgba(17,24,39,0.12);
+        --primary: #1d2e41;
+        --text: #1a2430;
+        --muted: #53606f;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+      .container { width: min(1100px, calc(100% - 32px)); margin: 0 auto; }
+      .topbar { padding: 18px 0; border-bottom: 1px solid var(--line); }
+      .header-inner { display: flex; justify-content: space-between; align-items: center; gap: 18px; }
+      .brand { display: flex; align-items: center; gap: 12px; }
+      .brand-mark {
+        width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center;
+        background: var(--primary); color: white; font-weight: 700; font-size: 0.92rem;
+      }
+      .brand-name { font-weight: 700; color: var(--primary); font-size: 1.4rem; letter-spacing: -0.05em; }
+      .nav { display: flex; gap: 18px; flex-wrap: wrap; }
+      .nav a { color: var(--primary); font-weight: 600; }
+      .page { padding: 40px 0 80px; }
+      .panel {
+        background: rgba(255,255,255,0.4); border: 1px solid var(--line); border-radius: 22px; padding: 28px;
+      }
+      h1 { margin: 0 0 8px; font-size: clamp(2.2rem, 3vw, 3rem); letter-spacing: -0.06em; color: var(--primary); }
+      .meta { color: var(--muted); margin-bottom: 20px; }
+      .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 24px; }
+      .box { background: rgba(255,255,255,0.35); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
+      .box h3 { margin: 0 0 10px; color: var(--primary); }
+      .box p { margin: 0; color: var(--muted); }
+      table { width: 100%; border-collapse: collapse; margin-top: 18px; }
+      th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line); color: var(--text); }
+      th { color: var(--primary); }
+      .buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+      .btn { display: inline-block; padding: 12px 16px; border-radius: 999px; font-weight: 700; }
+      .btn.primary { background: var(--primary); color: white; }
+      .btn.secondary { background: rgba(255,255,255,0.5); border: 1px solid var(--line); color: var(--primary); }
+      @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } .header-inner { flex-direction: column; align-items: flex-start; } }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container header-inner">
+        <div class="brand">
+          <div class="brand-mark">IOS</div>
+          <div class="brand-name">IOS</div>
+        </div>
+        <nav class="nav">
+          <a href="/dashboard">Dashboard</a>
+          <a href="/profile">Profile</a>
+          <a href="/logout">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <div class="container panel">
+        <h1>Student profile</h1>
+        <div class="meta">Welcome, {{ user["name"] }} · {{ user["role"]|title }}</div>
+
+        <div class="grid">
+          <div class="box">
+            <h3>Personal details</h3>
+            <p><strong>Name:</strong> {{ user["name"] }}</p>
+            <p><strong>Email:</strong> {{ user["email"] }}</p>
+            <p><strong>Role:</strong> {{ user["role"]|title }}</p>
+          </div>
+          <div class="box">
+            <h3>Academic details</h3>
+            <p><strong>Institution:</strong> {{ user["institution"] or 'Not provided' }}</p>
+            <p><strong>Department:</strong> {{ user["department"] or 'Not provided' }}</p>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <a class="btn primary" href="/dashboard">Go to dashboard</a>
+          <a class="btn secondary" href="/logout">Logout</a>
+        </div>
+
+        {% if requests %}
+        <div style="margin-top: 30px;">
+          <h3 style="margin: 0 0 12px; color: var(--primary);">Recent research requests</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Topic</th>
+                <th>Type</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for request in requests %}
+              <tr>
+                <td>{{ request["topic"] }}</td>
+                <td>{{ request["research_type"] }}</td>
+                <td>{{ request["status"] }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+      </div>
+    </main>
+  </body>
+</html>

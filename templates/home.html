@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IOSInstitute | Home</title>
+    <style>
+      :root {
+        --bg: #eceae6;
+        --panel: #f7f4f1;
+        --paper: rgba(255,255,255,0.55);
+        --text: #111827;
+        --muted: #5d6470;
+        --primary: #1a2a3a;
+        --accent: #d6794d;
+        --line: rgba(17, 24, 39, 0.12);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.6;
+      }
+      a { text-decoration: none; color: inherit; }
+      img { max-width: 100%; }
+
+      .container {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(236,234,230,0.8);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(17, 24, 39, 0.06);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 82px;
+        gap: 20px;
+      }
+
+      .brand {
+        font-size: 1.8rem;
+        font-weight: 700;
+        letter-spacing: -0.06em;
+        color: var(--primary);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        color: var(--primary);
+        font-size: 0.95rem;
+        font-weight: 600;
+        opacity: 0.9;
+      }
+
+      .nav-links a:hover {
+        opacity: 1;
+      }
+
+      .ghost-btn {
+        border: 1px solid rgba(17,24,39,0.2);
+        background: rgba(255,255,255,0.4);
+        color: var(--primary);
+        padding: 11px 18px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+      }
+
+      .hero-wrap {
+        padding: 42px 0 20px;
+      }
+
+      .hero-panel {
+        background: rgba(255,255,255,0.34);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        padding: 28px 28px 18px;
+        box-shadow: 0 16px 36px rgba(16, 24, 40, 0.04);
+      }
+
+      .hero-lines {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: rgba(17,24,39,0.7);
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 700;
+        padding: 0 12px 20px;
+      }
+
+      .hero-content {
+        display: grid;
+        grid-template-columns: 1.4fr 0.6fr;
+        gap: 24px;
+        align-items: end;
+      }
+
+      .hero-copy {
+        padding: 24px 18px 8px;
+      }
+
+      .hero-copy .lead {
+        display: inline-block;
+        color: var(--accent);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 18px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(3rem, 5vw, 6rem);
+        line-height: 0.94;
+        letter-spacing: -0.08em;
+        color: var(--primary);
+        font-weight: 700;
+      }
+
+      .hero-copy p {
+        margin: 18px 0 0;
+        max-width: 640px;
+        font-size: 1.06rem;
+        color: var(--muted);
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 16px;
+        margin-top: 28px;
+        flex-wrap: wrap;
+      }
+
+      .primary-btn {
+        background: var(--primary);
+        color: #fff;
+        padding: 14px 20px;
+        border-radius: 999px;
+        font-weight: 700;
+      }
+
+      .secondary-btn {
+        border: 1px solid rgba(17,24,39,0.2);
+        background: rgba(255,255,255,0.35);
+        color: var(--primary);
+        padding: 14px 20px;
+        border-radius: 999px;
+        font-weight: 700;
+      }
+
+      .mini-card {
+        background: rgba(255,255,255,0.38);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 20px 18px;
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .mini-card .small-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--primary);
+        opacity: 0.8;
+      }
+
+      .mini-card .big-label {
+        font-size: clamp(1.6rem, 2vw, 2.4rem);
+        color: var(--primary);
+        font-weight: 700;
+        letter-spacing: -0.05em;
+        line-height: 1.05;
+      }
+
+      .mini-card .line {
+        height: 1px;
+        background: rgba(17,24,39,0.12);
+        margin: 14px 0;
+      }
+
+      .mini-card .meta {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      section {
+        padding: 72px 0;
+      }
+
+      .section-head {
+        margin-bottom: 28px;
+      }
+
+      .section-head h2 {
+        margin: 0 0 10px;
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        letter-spacing: -0.06em;
+        color: var(--primary);
+      }
+
+      .section-head p {
+        margin: 0;
+        color: var(--muted);
+        max-width: 720px;
+      }
+
+      .about-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .team-grid {
+        margin: 24px auto 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 22px;
+        max-width: 620px;
+      }
+
+      .team-card {
+        background: rgba(255,255,255,0.38);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 12px 28px rgba(17, 24, 39, 0.04);
+      }
+
+      .team-card.featured {
+        max-width: 100%;
+        border: 1px solid rgba(214, 121, 77, 0.28);
+        box-shadow: 0 14px 34px rgba(214, 121, 77, 0.12);
+      }
+
+      .team-card img {
+        display: block;
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        background: #efe6dc;
+      }
+
+      .team-body {
+        padding: 20px 18px 22px;
+      }
+
+      .team-body h3 {
+        margin: 0 0 8px;
+        font-size: 1.75rem;
+        letter-spacing: -0.05em;
+        color: var(--primary);
+      }
+
+      .team-role {
+        margin: 0 0 12px;
+        color: var(--accent);
+        font-weight: 700;
+        font-size: 0.96rem;
+      }
+
+      .team-bio {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .info-card {
+        background: rgba(255,255,255,0.38);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 22px 18px;
+        min-height: 180px;
+      }
+
+      .info-card h3 {
+        margin: 0 0 12px;
+        font-size: 1.45rem;
+        letter-spacing: -0.04em;
+        color: var(--primary);
+      }
+
+      .info-card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .skills-grid,
+      .testimonials-grid,
+      .resources-grid,
+      .research-grid {
+        display: grid;
+        gap: 20px;
+      }
+
+      .skills-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .research-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .testimonials-grid,
+      .resources-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .feature-card {
+        background: rgba(255,255,255,0.38);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 22px 18px;
+      }
+
+      .feature-card .tag {
+        display: inline-block;
+        margin-bottom: 12px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        background: rgba(214,121,77,0.1);
+        color: var(--accent);
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      .feature-card h3 {
+        margin: 0 0 10px;
+        font-size: 1.5rem;
+        color: var(--primary);
+        letter-spacing: -0.04em;
+      }
+
+      .feature-card p,
+      .quote {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .quote {
+        font-size: 1.04rem;
+      }
+
+      .person {
+        display: block;
+        margin-top: 18px;
+        font-weight: 700;
+        color: var(--primary);
+      }
+
+      .contact-box {
+        background: var(--primary);
+        color: #fff;
+        border-radius: 24px;
+        padding: 38px 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .contact-box h2 {
+        margin: 0 0 8px;
+        font-size: clamp(2rem, 3vw, 3rem);
+        letter-spacing: -0.06em;
+      }
+
+      .contact-box p {
+        margin: 0;
+        opacity: 0.9;
+      }
+
+      .contact-box a {
+        color: #fff;
+        font-weight: 700;
+        font-size: 1.05rem;
+      }
+
+      footer {
+        padding: 26px 0 42px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      @media (max-width: 900px) {
+        .hero-content,
+        .about-grid,
+        .skills-grid,
+        .research-grid,
+        .testimonials-grid,
+        .resources-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .nav {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 18px 0;
+        }
+        .nav-links {
+          gap: 12px 18px;
+        }
+        .hero-content,
+        .about-grid,
+        .skills-grid,
+        .research-grid,
+        .testimonials-grid,
+        .resources-grid,
+        .contact-box {
+          grid-template-columns: 1fr;
+          display: grid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container nav">
+        <div class="brand">IOSInstitute</div>
+        <nav class="nav-links">
+          <a href="#home">Home</a>
+          <a href="#about">About us</a>
+          <a href="#tech-skills">Tech Skills</a>
+          <a href="#research-institute">Research institute</a>
+          <a href="#testimonials">Testimonials</a>
+          <a href="#blog">Blog/resources</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <a class="ghost-btn" href="/register">Register</a>
+      </div>
+    </header>
+
+    <main>
+      <section id="home" class="hero-wrap">
+        <div class="container hero-panel">
+          <div class="hero-lines">
+            <span>Made for growth</span>
+            <span>Remote • Ibadan</span>
+          </div>
+
+          <div class="hero-content">
+            <div class="hero-copy">
+              <span class="lead">Future-ready learning</span>
+              <h1>Build a stronger future.</h1>
+              <p>
+                We help students, professionals, clients, and researchers unlock practical skills,
+                strengthen capability, and turn ideas into real progress through training, research,
+                and support.
+              </p>
+
+              <div class="hero-actions">
+                <a class="primary-btn" href="/register">Get started</a>
+                <a class="secondary-btn" href="#about">Learn more</a>
+              </div>
+            </div>
+
+            <div class="mini-card">
+              <div class="small-label">Our focus</div>
+              <div class="big-label">Skills. Research. Impact.</div>
+              <div class="line"></div>
+              <div class="meta">Helping people and institutions move from potential to measurable progress.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="container">
+          <div class="section-head">
+            <h2>About us</h2>
+            <p>We are a learning and research-driven institution helping individuals and organizations grow through practical education, collaboration, and meaningful opportunity.</p>
+          </div>
+
+          <div class="about-grid">
+            <div class="info-card">
+              <h3>Our service</h3>
+              <p>We deliver practical training, advisory support, and research enablement for students, professionals, and institutions.</p>
+            </div>
+            <div class="info-card">
+              <h3>Our division</h3>
+              <p>Our work is organized around capacity building, technological learning, and research collaboration.</p>
+            </div>
+            <div class="info-card">
+              <h3>Impact</h3>
+              <p>We help people build confidence, grow in their careers, and create measurable value in their communities and workplaces.</p>
+            </div>
+            <div class="info-card">
+              <h3>Our team</h3>
+              <p>Our team is made up of educators, researchers, and specialists committed to real-world growth and sustainability.</p>
+            </div>
+          </div>
+
+          <div class="team-grid">
+            <div class="team-card featured">
+              <img src="/static/images/team/MR%20OLAJUWON.jpg" alt="Mr. Olajuwon">
+              <div class="team-body">
+                <h3>Mr. Olajuwon</h3>
+                <p class="team-role">Chief Executive Officer (CEO) &amp; Managing Director</p>
+                <p class="team-bio">Providing strategic leadership and overseeing the overall operations, growth, and development of IOS.</p>
+              </div>
+            </div>
+
+            <div class="team-card">
+              <img src="/static/images/team/alonge-muhammed.svg" alt="Alonge Muhammed">
+              <div class="team-body">
+                <h3>Mr. Alonge</h3>
+                <p class="team-role">Technology &amp; Research Coordinator</p>
+                <p class="team-bio">Overseeing website development while providing technical solutions, research assistance, and academic support across IOS initiatives.</p>
+              </div>
+            </div>
+
+            <div class="team-card">
+              <img src="/static/images/team/ENIOLA%20NEHEMOTALLAH.jpg" alt="Eniola Nehemotallah Ojuolape">
+              <div class="team-body">
+                <h3>Eniola Nehemotallah Ojuolape</h3>
+                <p class="team-role">Head of Tech Skill Up &amp; Digital Marketing</p>
+                <p class="team-bio">Overseeing IOS Tech Skill Up operations, coordinating training activities, and leading digital marketing education and social media engagement.</p>
+              </div>
+            </div>
+
+            <div class="team-card">
+              <img src="/static/images/team/ADEPOJU%20AKEEM.jpg" alt="Adepoju Akeem">
+              <div class="team-body">
+                <h3>Adepoju Akeem</h3>
+                <p class="team-role">Head of IOS Research Institute &amp; Strategic Development</p>
+                <p class="team-bio">Leading research activities while providing strategic, financial, and organizational insights to support the growth and development of IOS.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tech-skills">
+        <div class="container">
+          <div class="section-head">
+            <h2>Tech Skills</h2>
+            <p>Our courses are designed to help learners gain relevant, job-ready digital and technical skills in a practical, supportive environment.</p>
+          </div>
+
+          <div class="skills-grid">
+            <div class="feature-card">
+              <span class="tag">Course 01</span>
+              <h3>Tech skill up</h3>
+              <p>Build digital confidence through structured learning paths across modern tools and methods.</p>
+            </div>
+            <div class="feature-card">
+              <span class="tag">Course 02</span>
+              <h3>Professional growth</h3>
+              <p>Strengthen career readiness with targeted learning designed to improve performance and opportunity.</p>
+            </div>
+            <div class="feature-card">
+              <span class="tag">Course 03</span>
+              <h3>Project-based learning</h3>
+              <p>Translate theory into practical application with guided projects and real-world problem solving.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="research-institute">
+        <div class="container">
+          <div class="section-head">
+            <h2>Research institute</h2>
+            <p>Research is an essential part of how we create insight, solve problems, and support evidence-based decision making.</p>
+          </div>
+
+          <div class="research-grid">
+            <div class="feature-card">
+              <span class="tag">Publications</span>
+              <h3>Research output</h3>
+              <p>Explore publications, reports, journals, and thought pieces from our growing research ecosystem.</p>
+            </div>
+            <div class="feature-card">
+              <span class="tag">Partnerships</span>
+              <h3>Collaborations</h3>
+              <p>We work with institutions, organizations, and learners to expand research relevance and practical value.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="testimonials">
+        <div class="container">
+          <div class="section-head">
+            <h2>Testimonials</h2>
+          </div>
+
+          <div class="testimonials-grid">
+            <div class="feature-card">
+              <p class="quote">“The training gave me clarity, confidence, and the practical ability to improve my work almost immediately.”</p>
+              <span class="person">— Sarah M.</span>
+            </div>
+            <div class="feature-card">
+              <p class="quote">“Our team gained hands-on skills that translated into stronger execution and better outcomes.”</p>
+              <span class="person">— Tunde A.</span>
+            </div>
+            <div class="feature-card">
+              <p class="quote">“The research support we received gave us new insight and helped us explore opportunities we had not considered.”</p>
+              <span class="person">— Aisha R.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="blog">
+        <div class="container">
+          <div class="section-head">
+            <h2>Blog/resources</h2>
+          </div>
+
+          <div class="resources-grid">
+            <div class="feature-card">
+              <h3>Learning guides</h3>
+              <p>Helpful articles and practical resources for learners and professionals looking to grow.</p>
+            </div>
+            <div class="feature-card">
+              <h3>Research notes</h3>
+              <p>Insights, updates, and summaries designed to keep teams informed and inspired.</p>
+            </div>
+            <div class="feature-card">
+              <h3>Industry updates</h3>
+              <p>Useful trends, tools, and perspectives for technology, education, and research communities.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="container">
+          <div class="contact-box">
+            <div>
+              <h2>Contact us</h2>
+              <p>Location: Remote</p>
+              <p>University of Ibadan</p>
+              <p>The Polytechnic, Ibadan</p>
+            </div>
+            <a href="mailto:ioseduconsult@gmail.com">ioseduconsult@gmail.com</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">© 2026 IOSInstitute. All rights reserved.</div>
+    </footer>
+  </body>
+</html>
