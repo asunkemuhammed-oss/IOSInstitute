@@ -25,7 +25,7 @@
       html { scroll-behavior: smooth; }
       body {
         margin: 0;
-        background: linear-gradient(180deg, #0b2d5c 0%, #194b8f 100%);
+        background: #f5efe7;
         color: var(--text);
         font-family: Arial, Helvetica, sans-serif;
         line-height: 1.6;
@@ -36,8 +36,8 @@
       .page-shell {
         width: min(1280px, calc(100% - 24px));
         margin: 18px auto;
-        background: #edf1f6;
-        box-shadow: 0 28px 45px rgba(17, 24, 39, 0.2);
+        background: #fffaf5;
+        box-shadow: 0 28px 45px rgba(17, 24, 39, 0.16);
         overflow: hidden;
       }
 
@@ -66,19 +66,22 @@
       }
 
       .brand-mark {
-        width: 34px;
-        height: 34px;
+        width: 38px;
+        height: 38px;
         border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
         background: rgba(255,255,255,0.12);
         box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18);
+        overflow: hidden;
       }
 
       .brand-mark img {
-        width: 20px;
-        height: 20px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
       }
 
       .brand-name {
@@ -167,7 +170,7 @@
       }
 
       .hero-wrap {
-        background: linear-gradient(180deg, #edf1ff 0%, #ebf5ff 100%);
+        background: linear-gradient(180deg, #f9f4ee 0%, #f1ebdf 100%);
         padding: 0;
       }
 
@@ -559,9 +562,10 @@
         display: block;
         width: 100%;
         height: 330px;
-        object-fit: cover;
-        background: #f3efe9;
-        padding: 0;
+        object-fit: contain;
+        object-position: center top;
+        background: #f7f1ea;
+        padding: 16px 18px 0;
       }
 
       .team-body {
@@ -780,7 +784,7 @@
         <div class="container topbar-inner">
           <div class="brand">
             <div class="brand-mark">
-              <img src="/static/images/ios-logo.svg" alt="IOS logo">
+              <img src="/static/images/LOGOIOS.jpg" alt="IOS logo">
             </div>
             <div class="brand-name">IOS</div>
           </div>
@@ -874,11 +878,11 @@
           </div>
 
           <div class="container hero-stat-strip">
-            <div class="title">Best platform to learn everything</div>
+            <div class="title">Best platform for skills, research, and growth</div>
 
             <div class="hero-stat-box">
               <div class="stat-icon">◎</div>
-              <strong>Language</strong>
+              <strong>Technology</strong>
             </div>
 
             <div class="hero-stat-box">
@@ -888,42 +892,7 @@
 
             <div class="hero-stat-box">
               <div class="stat-icon">▤</div>
-              <strong>Literature</strong>
-            </div>
-          </div>
-        </section>
-
-        <section class="why-section">
-          <div class="container">
-            <div class="section-head" style="text-align:center; margin-bottom:28px;">
-              <h2>Why We Are The Best?</h2>
-              <p>We are the best because we are a complete platform for your learning journey.</p>
-            </div>
-
-            <div class="skills-grid">
-              <div class="feature-card">
-                <span class="tag">15</span>
-                <h3>Years Of Glory</h3>
-                <p>Long-term experience delivering quality learning outcomes and academic support.</p>
-              </div>
-
-              <div class="feature-card">
-                <span class="tag">500+</span>
-                <h3>Expert Mentors</h3>
-                <p>Industry-ready experts, professionals, and educators guiding each learner.</p>
-              </div>
-
-              <div class="feature-card">
-                <span class="tag">Job</span>
-                <h3>Placement Support</h3>
-                <p>Practical pathways to internships, job readiness, and career opportunities.</p>
-              </div>
-
-              <div class="feature-card">
-                <span class="tag">Research</span>
-                <h3>Research &amp; Innovation</h3>
-                <p>Technology and evidence-driven learning built around modern development.</p>
-              </div>
+              <strong>Research</strong>
             </div>
           </div>
         </section>
@@ -1000,6 +969,41 @@
           </div>
         </div>
       </section>
+
+        <section class="why-section">
+          <div class="container">
+            <div class="section-head" style="text-align:center; margin-bottom:28px;">
+              <h2>Why We Are The Best?</h2>
+              <p>We are the best because we are a complete platform for your learning journey.</p>
+            </div>
+
+            <div class="skills-grid">
+              <div class="feature-card">
+                <span class="tag">15</span>
+                <h3>Years Of Glory</h3>
+                <p>Long-term experience delivering quality learning outcomes and academic support.</p>
+              </div>
+
+              <div class="feature-card">
+                <span class="tag">500+</span>
+                <h3>Expert Mentors</h3>
+                <p>Industry-ready experts, professionals, and educators guiding each learner.</p>
+              </div>
+
+              <div class="feature-card">
+                <span class="tag">Job</span>
+                <h3>Placement Support</h3>
+                <p>Practical pathways to internships, job readiness, and career opportunities.</p>
+              </div>
+
+              <div class="feature-card">
+                <span class="tag">Research</span>
+                <h3>Research &amp; Innovation</h3>
+                <p>Technology and evidence-driven learning built around modern development.</p>
+              </div>
+            </div>
+          </div>
+        </section>
 
       <section id="tech-skills">
         <div class="container">
