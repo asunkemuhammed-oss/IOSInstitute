@@ -1,6 +1,47 @@
-<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="160" height="160" rx="36" fill="#1A2A3A"/>
-  <rect x="19" y="18" width="122" height="124" rx="28" stroke="#D6794D" stroke-width="4" opacity="0.9"/>
-  <path d="M56 44H104V56H90V116H104V128H56V116H70V56H56V44Z" fill="white"/>
-  <path d="M76 60C64.9543 60 56 68.9543 56 80C56 91.0457 64.9543 100 76 100C87.0457 100 96 91.0457 96 80C96 68.9543 87.0457 60 76 60ZM76 72C81.5228 72 86 76.4772 86 82C86 87.5228 81.5228 92 76 92C70.4772 92 66 87.5228 66 82C66 76.4772 70.4772 72 76 72Z" fill="#D6794D"/>
+<svg width="700" height="260" viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="IOS Institute logo">
+  <defs>
+    <linearGradient id="gold" x1="0" x2="1">
+      <stop offset="0%" stop-color="#f0c75a"/>
+      <stop offset="100%" stop-color="#d4a63d"/>
+    </linearGradient>
+    <linearGradient id="navy" x1="0" x2="1">
+      <stop offset="0%" stop-color="#12344e"/>
+      <stop offset="100%" stop-color="#0d2337"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(0 4)">
+    <path d="M71 195c0-80 64-145 143-145 81 0 147 65 147 145v8H71v-8z" fill="url(#navy)" opacity="0.98"/>
+    <path d="M214 20h90l-30 46h-30l-30-46z" fill="url(#gold)"/>
+    <path d="M309 41l-126 34c30 26 76 42 126 42 48 0 95-15 125-42L309 41z" fill="url(#navy)" opacity="0.96"/>
+    <path d="M80 198c27-66 86-110 157-110 78 0 143 51 166 122l-30 8c-21-56-71-93-136-93-58 0-106 31-138 82l-19 13z" fill="url(#navy)"/>
+    <path d="M120 130l90 0-20 58h-70z" fill="#f7f5ef" opacity="0.95"/>
+    <path d="M160 120l31 0 20 14-21 14-30 0z" fill="url(#gold)" opacity="0.95"/>
+    <path d="M264 173h68v26h-68z" fill="url(#gold)"/>
+    <path d="M233 152l16 0 28 18-18 18-25 0z" fill="url(#gold)" opacity="0.9"/>
+    <path d="M307 112l48 0 18 18-18 18-48 0z" fill="#f7f5ef" opacity="0.83"/>
+    <path d="M437 116l110 0 0 14-110 0z" fill="url(#gold)" opacity="0.8"/>
+    <path d="M385 78l65 0 0 18-65 0z" fill="url(#gold)" opacity="0.8"/>
+    <path d="M410 215c0-34 28-62 62-62s62 28 62 62v9h-124v-9z" fill="url(#gold)" opacity="0.96"/>
+    <path d="M488 98l75 0 0 14-75 0z" fill="url(#gold)" opacity="0.9"/>
+    <circle cx="550" cy="79" r="9" fill="url(#gold)"/>
+    <path d="M560 170c0 12-10 22-22 22h-48c-12 0-22-10-22-22v-24c0-12 10-22 22-22h48c12 0 22 10 22 22v24z" fill="url(#navy)"/>
+    <path d="M495 166c12-18 31-28 53-28 8 0 16 2 23 5v15c-10-4-20-6-31-6-17 0-31 6-45 20l0-6z" fill="#d8b764" opacity="0.9"/>
+    <path d="M498 177h91v12h-91z" fill="#f7f5ef" opacity="0.88"/>
+    <path d="M121 92l35 0 0 12-35 0z" fill="#0d2337" opacity="0.9"/>
+    <path d="M91 141l31 0 0 12-31 0z" fill="#0d2337" opacity="0.9"/>
+    <path d="M76 155l43 0 0 12-43 0z" fill="#0d2337" opacity="0.9"/>
+    <circle cx="420" cy="96" r="10" fill="url(#gold)"/>
+    <path d="M340 197c34-24 63-18 92 0-9 35-33 59-80 59-39 0-67-19-80-54 17-5 39-7 68-5z" fill="url(#navy)" opacity="0.95"/>
+    <path d="M256 202c8-1 16-1 24 0 14 2 23 9 29 23l-53 0c4-9 9-17 0-23z" fill="url(#gold)"/>
+    <path d="M291 140l74 68-11 11-77-73 14-6z" fill="url(#gold)" opacity="0.92"/>
+    <path d="M120 184l-58 21 0-18 53-17 5 14z" fill="url(#gold)" opacity="0.9"/>
+    <path d="M136 205l-55 16 0-15 51-17 4 16z" fill="url(#navy)" opacity="0.8"/>
+  </g>
+
+  <g transform="translate(0 10)">
+    <text x="350" y="165" text-anchor="middle" font-size="126" font-weight="700" font-family="Georgia, 'Times New Roman', serif" fill="#0f2e45" letter-spacing="-8">iOS</text>
+    <line x1="140" y1="192" x2="560" y2="192" stroke="#0f2e45" stroke-width="4" opacity="0.9"/>
+    <line x1="220" y1="205" x2="480" y2="205" stroke="#d4a63d" stroke-width="3" opacity="0.9"/>
+  </g>
 </svg>

@@ -57,12 +57,8 @@
       }
 
       .brand-mark {
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-        overflow: hidden;
-        background: linear-gradient(135deg, var(--primary) 0%, #2a4059 100%);
-        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+        width: 150px;
+        height: 56px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -72,7 +68,7 @@
         display: block;
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
       }
 
       .brand-text {
@@ -163,78 +159,187 @@
         font-weight: 700;
       }
 
-      .hero-wrap {
-        padding: 42px 0 20px;
-      }
-
-      .hero-panel {
-        background: rgba(255,255,255,0.34);
-        border: 1px solid var(--line);
-        border-radius: 28px;
-        padding: 28px 28px 18px;
-        box-shadow: 0 16px 36px rgba(16, 24, 40, 0.04);
-      }
-
-      .hero-lines {
+      .nav-cta {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        color: rgba(17,24,39,0.7);
-        font-size: 0.8rem;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .hero-wrap {
+        padding: 26px 0 20px;
+        background: #050b11;
+      }
+
+      .browser-shell {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        background: #efefef;
+        border-radius: 18px 18px 0 0;
+        border: 1px solid rgba(255,255,255,0.08);
+        overflow: hidden;
+        box-shadow: 0 14px 30px rgba(0,0,0,0.22);
+      }
+
+      .browser-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        background: #f3f3f3;
+        border-bottom: 1px solid rgba(17,24,39,0.08);
+        padding: 10px 18px;
+      }
+
+      .browser-dots {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .browser-dots span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(17,24,39,0.25);
+        display: inline-block;
+      }
+
+      .browser-dots span:first-child { background: #f8b52a; }
+      .browser-dots span:nth-child(2) { background: #d0d4d8; }
+      .browser-dots span:nth-child(3) { background: #b9b9b9; }
+
+      .browser-domain {
+        flex: 1;
+        text-align: center;
+        color: rgba(17,24,39,0.75);
+        font-size: 0.72rem;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        font-weight: 700;
-        padding: 0 12px 20px;
       }
 
-      .hero-content {
-        display: grid;
-        grid-template-columns: 1.4fr 0.6fr;
-        gap: 24px;
-        align-items: end;
+      .browser-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: rgba(17,24,39,0.65);
+        font-size: 0.82rem;
       }
 
-      .hero-copy {
-        padding: 24px 18px 8px;
+      .browser-content {
+        background: rgba(255,255,255,0.78);
+        padding: 16px 18px 10px;
       }
 
-      .hero-copy .lead {
-        display: inline-block;
-        color: var(--accent);
-        font-size: 0.78rem;
-        font-weight: 700;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        margin-bottom: 18px;
+      .browser-top-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 8px 10px 12px;
       }
 
-      h1 {
-        margin: 0;
-        font-size: clamp(3rem, 5vw, 6rem);
-        line-height: 0.94;
-        letter-spacing: -0.08em;
+      .brand-mini {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .mini-mark {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background: var(--primary);
+        color: white;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+      }
+
+      .mini-word {
         color: var(--primary);
+        font-size: 0.88rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .browser-links {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+        color: rgba(17,24,39,0.7);
+        font-size: 0.75rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .cta-inline {
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 999px;
+        padding: 10px 16px;
+        font-size: 0.74rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .hero-scene {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        align-items: center;
+        gap: 24px;
+        padding: 8px 6px 32px;
+      }
+
+      .copy-block {
+        position: relative;
+        padding-left: 8px;
+      }
+
+      .copy-block .eyebrow {
+        display: inline-block;
+        margin-bottom: 12px;
+        color: rgba(17,24,39,0.75);
+        font-size: 0.7rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
         font-weight: 700;
       }
 
-      .hero-copy p {
-        margin: 18px 0 0;
-        max-width: 640px;
-        font-size: 1.06rem;
+      .copy-block h1 {
+        margin: 0;
+        font-size: clamp(2.2rem, 3.2vw, 4.3rem);
+        line-height: 1.02;
+        letter-spacing: -0.06em;
+        color: var(--primary);
+        max-width: 520px;
+      }
+
+      .copy-block p {
+        margin: 14px 0 18px;
+        font-size: 1rem;
+        max-width: 520px;
         color: var(--muted);
       }
 
       .hero-actions {
         display: flex;
-        gap: 16px;
-        margin-top: 28px;
+        gap: 14px;
+        margin-top: 18px;
         flex-wrap: wrap;
       }
 
       .primary-btn {
         background: var(--primary);
         color: #fff;
-        padding: 14px 20px;
+        padding: 12px 20px;
         border-radius: 999px;
         font-weight: 700;
       }
@@ -243,9 +348,65 @@
         border: 1px solid rgba(17,24,39,0.2);
         background: rgba(255,255,255,0.35);
         color: var(--primary);
-        padding: 14px 20px;
+        padding: 12px 20px;
         border-radius: 999px;
         font-weight: 700;
+      }
+
+      .video-panel {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 270px;
+      }
+
+      .video-visual {
+        position: relative;
+        width: 100%;
+        max-width: 420px;
+        height: 260px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, rgba(18,52,78,0.15) 0%, rgba(15,26,35,0.12) 28%, rgba(242,240,235,0.95) 100%);
+        border: 1px solid rgba(17,24,39,0.08);
+        overflow: hidden;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5);
+      }
+
+      .video-visual::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, rgba(18,52,78,0.25), rgba(18,52,78,0.08), rgba(255,255,255,0.18));
+      }
+
+      .video-visual::after {
+        content: "";
+        position: absolute;
+        width: 180px;
+        height: 140px;
+        right: 18px;
+        bottom: 14px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, rgba(0,0,0,0.18), rgba(255,255,255,0.3));
+        box-shadow: 0 0 0 1px rgba(17,24,39,0.08);
+      }
+
+      .play-btn {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 88px;
+        height: 88px;
+        border: none;
+        border-radius: 50%;
+        background: rgba(17,24,39,0.68);
+        color: white;
+        font-size: 2rem;
+        padding-left: 8px;
+        box-shadow: 0 12px 24px rgba(17,24,39,0.18);
+        z-index: 2;
       }
 
       .mini-card {
@@ -551,38 +712,58 @@
           <div class="nav-item"><a href="#contact">Contact</a></div>
         </nav>
 
-        <a class="ghost-btn" href="/register">Register</a>
+        <div class="nav-cta">
+          <a class="ghost-btn" href="/login">Sign in</a>
+          <a class="ghost-btn" href="/register">Register</a>
+        </div>
       </div>
     </header>
 
     <main>
       <section id="home" class="hero-wrap">
-        <div class="container hero-panel">
-          <div class="hero-lines">
-            <span>Made for growth</span>
-            <span>Remote • Ibadan</span>
+        <div class="browser-shell">
+          <div class="browser-bar">
+            <div class="browser-dots"><span></span><span></span><span></span></div>
+            <div class="browser-domain">iosinstitute.com</div>
+            <div class="browser-actions">◌ ⎋</div>
           </div>
 
-          <div class="hero-content">
-            <div class="hero-copy">
-              <span class="lead">Future-ready learning</span>
-              <h1>Build a stronger future.</h1>
-              <p>
-                We help students, professionals, clients, and researchers unlock practical skills,
-                strengthen capability, and turn ideas into real progress through training, research,
-                and support.
-              </p>
+          <div class="browser-content">
+            <div class="browser-top-nav">
+              <div class="brand-mini">
+                <span class="mini-mark">IOS</span>
+                <span class="mini-word">Institute of Scholars</span>
+              </div>
 
-              <div class="hero-actions">
-                <a class="primary-btn" href="/register">Get started</a>
-                <a class="secondary-btn" href="#about">Learn more</a>
+              <div class="browser-links">
+                <span>About</span>
+                <span>Programs</span>
+                <span>Research</span>
+                <span>Blog</span>
+                <button class="cta-inline">Get Started</button>
               </div>
             </div>
 
-            <div class="mini-card">
-              <div class="small-label">Our focus</div>
-              <div class="big-label">Skills. Research. Impact.</div>
-              <div class="meta">Helping people and institutions move from potential to measurable progress.</div>
+            <div class="hero-scene">
+              <div class="copy-block">
+                <div class="eyebrow">Research • Innovation • Knowledge • Impact</div>
+                <h1>Empowering schools, builders, and institutions.</h1>
+                <p>
+                  IOS helps students, professionals, researchers, and organizations grow through practical learning,
+                  strong collaboration, and measurable opportunity.
+                </p>
+
+                <div class="hero-actions">
+                  <a class="primary-btn" href="/register">Get started</a>
+                  <a class="secondary-btn" href="/login">Sign in</a>
+                </div>
+              </div>
+
+              <div class="video-panel">
+                <div class="video-visual">
+                  <button class="play-btn" aria-label="Play video">▶</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
