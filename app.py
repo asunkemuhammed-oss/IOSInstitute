@@ -247,6 +247,61 @@ def tech_skills_dashboard():
     )
 
 
+@app.route("/research-payment", methods=["GET", "POST"])
+def research_payment():
+    user = current_user()
+    if not user:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        session["research_payment_status"] = "paid"
+        session["research_payment_option"] = "one-time"
+        session["research_payment_amount"] = "₦25,000"
+        flash("Research payment recorded successfully. You can now proceed to your dashboard.")
+        return redirect(url_for("dashboard"))
+
+    return render_template(
+        "payment.html",
+        portal="research",
+        title="IOS Research Institute",
+        description="A one-time registration and project support fee secures your research placement and onboarding.",
+        fee="₦25,000",
+        payment_options=["One-time payment (₦25,000)"],
+        demo_note="Demo checkout: this is a sample payment flow for onboarding and project support.",
+    )
+
+
+@app.route("/tech-payment", methods=["GET", "POST"])
+def tech_payment():
+    user = current_user()
+    if not user:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        payment_option = request.form.get("payment_option", "single")
+        if payment_option == "split":
+            session["tech_payment_status"] = "paid"
+            session["tech_payment_option"] = "split"
+            session["tech_payment_amount"] = "₦50,000 total (₦25,000 + ₦25,000)"
+            flash("Tech Skills payment plan saved successfully. Your split payment is now active.")
+        else:
+            session["tech_payment_status"] = "paid"
+            session["tech_payment_option"] = "single"
+            session["tech_payment_amount"] = "₦50,000"
+            flash("Tech Skills payment recorded successfully. You can now proceed to your dashboard.")
+        return redirect(url_for("tech_skills_dashboard"))
+
+    return render_template(
+        "payment.html",
+        portal="tech",
+        title="IOS Tech SkillUp",
+        description="The skill program has a ₦50,000 total fee. You may pay it once or split it into two installments as a demo payment plan.",
+        fee="₦50,000",
+        payment_options=["Pay once (₦50,000)", "Pay twice (₦25,000 + ₦25,000)"],
+        demo_note="Demo checkout: this is a sample onboarding payment flow for the Tech Skills portal.",
+    )
+
+
 @app.route("/educational-consultancy")
 def educational_consultancy():
     services = [

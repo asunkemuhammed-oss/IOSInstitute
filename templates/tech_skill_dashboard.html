@@ -175,6 +175,13 @@
           {% endif %}
         {% endwith %}
 
+        <div class="card" style="margin-top: 20px;">
+          <h2>Payment plan</h2>
+          <p style="margin: 0 0 12px; color: var(--muted);">Course fee: <strong>₦50,000 total</strong>. You can pay once or split in two installments of <strong>₦25,000 + ₦25,000</strong>.</p>
+          <p style="margin: 0 0 14px; color: var(--muted);">Demo payment status: {% if session.get('tech_payment_status') == 'paid' %}Paid{% else %}Not paid yet{% endif %}</p>
+          <a class="primary-btn" href="/tech-payment">Pay for skill training</a>
+        </div>
+
         <div class="layout">
           <div class="card">
             <h2>Choose your skill</h2>

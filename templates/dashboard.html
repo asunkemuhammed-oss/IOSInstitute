@@ -152,6 +152,76 @@
         color: var(--muted);
         line-height: 1.6;
       }
+      .student-portal-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 0.8fr;
+        gap: 18px;
+        margin-top: 18px;
+      }
+      .student-box {
+        background: rgba(255,255,255,0.36);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 20px 18px;
+      }
+      .student-box h3 {
+        margin: 0 0 14px;
+        color: var(--primary);
+        font-size: 1.2rem;
+      }
+      .material-list, .announcement-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .material-list li, .announcement-list li {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 12px;
+        border-radius: 12px;
+        background: rgba(17,24,39,0.02);
+        color: var(--primary);
+        font-weight: 600;
+      }
+      .material-tag, .status-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 8px;
+        border-radius: 999px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .material-tag {
+        background: rgba(29, 91, 232, 0.08);
+        color: var(--primary);
+      }
+      .status-badge {
+        background: rgba(244, 191, 69, 0.12);
+        color: var(--primary);
+      }
+      .timetable {
+        display: grid;
+        gap: 10px;
+      }
+      .timetable-row {
+        display: grid;
+        grid-template-columns: 90px 1fr auto;
+        gap: 12px;
+        align-items: center;
+        padding: 11px 12px;
+        border-radius: 12px;
+        background: rgba(17,24,39,0.02);
+      }
+      .timetable-row strong {
+        color: var(--primary);
+      }
       .library-panel {
         margin-top: 16px;
         background: rgba(255,255,255,0.3);
@@ -371,6 +441,15 @@
           {% endif %}
         {% endwith %}
 
+        <div class="library-panel" style="margin-bottom: 24px;">
+          <h2 style="margin: 0 0 10px; color: var(--primary);">Payment status</h2>
+          <p style="margin: 0 0 10px; color: var(--muted);">Research institute registration fee: <strong>₦25,000 one-time payment</strong>.</p>
+          <p style="margin: 0; color: var(--muted);">Demo payment status: {% if session.get('research_payment_status') == 'paid' %}Paid{% else %}Not paid yet{% endif %}</p>
+          <div style="margin-top: 14px;">
+            <a class="submit-btn" href="/research-payment" style="display: inline-block; text-decoration: none;">Pay research fee</a>
+          </div>
+        </div>
+
         <div class="module-grid">
           <div class="module-card">
             <h3>Research Library</h3>
@@ -395,6 +474,53 @@
           <div class="module-card">
             <h3>Profile</h3>
             <p>Update your academic information, interests, and contact details.</p>
+          </div>
+        </div>
+
+        <div class="student-portal-grid">
+          <div class="student-box">
+            <h3>Study Materials</h3>
+            <ul class="material-list">
+              <li><span>Research methods notes</span><span class="material-tag">PDF</span></li>
+              <li><span>Data analysis workbook</span><span class="material-tag">Workbook</span></li>
+              <li><span>Proposal writing template</span><span class="material-tag">Template</span></li>
+              <li><span>Academic integrity guide</span><span class="material-tag">Guide</span></li>
+            </ul>
+          </div>
+
+          <div class="student-box">
+            <h3>Weekly Timetable</h3>
+            <div class="timetable">
+              <div class="timetable-row">
+                <span>Mon</span>
+                <strong>Research Methods</strong>
+                <span class="status-badge">9:00</span>
+              </div>
+              <div class="timetable-row">
+                <span>Tue</span>
+                <strong>Data Lab</strong>
+                <span class="status-badge">11:00</span>
+              </div>
+              <div class="timetable-row">
+                <span>Wed</span>
+                <strong>Writing Clinic</strong>
+                <span class="status-badge">10:30</span>
+              </div>
+              <div class="timetable-row">
+                <span>Thu</span>
+                <strong>Supervisor Check-in</strong>
+                <span class="status-badge">2:00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="student-box">
+            <h3>Announcements</h3>
+            <ul class="announcement-list">
+              <li><span>New workshop on AI tools</span><span class="status-badge">New</span></li>
+              <li><span>Final project deadline</span><span class="status-badge">Due</span></li>
+              <li><span>Research library update</span><span class="status-badge">Update</span></li>
+            </ul>
           </div>
         </div>
 

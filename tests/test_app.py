@@ -135,6 +135,9 @@ def test_student_dashboard_has_research_library_and_modules(client):
     assert b"Year" in response.data
     assert b"Economics" in response.data
     assert b"Effect of Public Health Expenditure on Economic Growth in Nigeria" in response.data
+    assert b"Study Materials" in response.data
+    assert b"Weekly Timetable" in response.data
+    assert b"Announcements" in response.data
 
 
 def test_student_dashboard_shows_research_request_form(client):
