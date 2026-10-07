@@ -190,6 +190,10 @@
         <h1>Researcher Dashboard</h1>
         <p class="welcome">Welcome, {{ user["name"] }}. Manage your assigned research projects and support requests in one place.</p>
 
+        <div class="flash" style="margin-bottom: 20px;">
+          Assessment status: <strong>{{ (assessment_status or 'not_started')|replace('_', ' ')|title }}</strong>
+        </div>
+
         <div class="stats-grid">
           <div class="stat-card">
             <span class="stat-label">Assigned</span>
