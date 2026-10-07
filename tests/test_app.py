@@ -77,6 +77,34 @@ def test_educational_consultancy_page_has_services_and_booking_button(client):
     assert b"Book a Consultation" in response.data
 
 
+def test_tech_skills_dashboard_has_course_selection_and_delivery_modes(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+            ("Student User", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student"),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=True,
+    )
+
+    response = client.get("/tech-skills-dashboard")
+    assert response.status_code == 200
+    assert b"Choose your skill" in response.data
+    assert b"Online" in response.data
+    assert b"Physical" in response.data
+    assert b"Hybrid" in response.data
+    assert b"Data Analysis" in response.data
+
+
 def test_student_dashboard_has_research_library_and_modules(client):
     email = f"student{uuid.uuid4().hex[:8]}@example.com"
 

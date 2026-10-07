@@ -128,19 +128,8 @@ def current_user():
     return get_db().execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
 
 
-@app.route("/")
-def index():
-    return render_template("home.html")
-
-
-@app.route("/research-institute")
-def research_institute():
-    return render_template("research_institute.html")
-
-
-@app.route("/tech-skillup")
-def tech_skillup():
-    programs = [
+def skill_programs():
+    return [
         {
             "name": "Data Analysis",
             "description": "Learn how to turn raw data into business decisions using Excel, Power BI, SQL, and Python.",
@@ -208,7 +197,54 @@ def tech_skillup():
             "certificate": "Certificate and portfolio showcase",
         },
     ]
-    return render_template("tech_skillup.html", programs=programs)
+
+
+@app.route("/")
+def index():
+    return render_template("home.html")
+
+
+@app.route("/research-institute")
+def research_institute():
+    return render_template("research_institute.html")
+
+
+@app.route("/tech-skillup")
+def tech_skillup():
+    return render_template("tech_skillup.html", programs=skill_programs())
+
+
+@app.route("/tech-skills-dashboard", methods=["GET", "POST"])
+def tech_skills_dashboard():
+    user = current_user()
+    if not user:
+        return redirect(url_for("login"))
+
+    programs = skill_programs()
+    selected_skill = session.get("selected_skill")
+    selected_mode = session.get("selected_mode")
+    selected_schedule = session.get("selected_schedule")
+
+    if request.method == "POST":
+        selected_skill = request.form.get("preferred_skill", "")
+        selected_mode = request.form.get("learning_mode", "")
+        selected_schedule = request.form.get("schedule", "")
+
+        session["selected_skill"] = selected_skill
+        session["selected_mode"] = selected_mode
+        session["selected_schedule"] = selected_schedule
+
+        if selected_skill and selected_mode:
+            flash(f"Your {selected_skill} preference has been saved for the {selected_mode} delivery format.")
+
+    return render_template(
+        "tech_skill_dashboard.html",
+        user=user,
+        programs=programs,
+        selected_skill=selected_skill,
+        selected_mode=selected_mode,
+        selected_schedule=selected_schedule,
+    )
 
 
 @app.route("/educational-consultancy")
