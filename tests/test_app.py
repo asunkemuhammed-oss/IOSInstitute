@@ -1,3 +1,4 @@
+import io
 import os
 import uuid
 
@@ -187,6 +188,40 @@ def test_register_page_has_student_client_and_researcher_options(client):
     assert b"project or research assistance" in response.data
     assert b"Researcher" in response.data
     assert b"Tech learner / applicant" not in response.data
+
+
+def test_researcher_registration_stores_cv_and_portfolio_files(client):
+    email = f"researcherupload{uuid.uuid4().hex[:8]}@example.com"
+
+    response = client.post(
+        "/register",
+        data={
+            "full_name": "Researcher Upload",
+            "email": email,
+            "password": "SecurePass123",
+            "role": "researcher",
+            "cv_file": (io.BytesIO(b"cv file contents"), "cv.pdf"),
+            "portfolio_file": (io.BytesIO(b"portfolio file contents"), "portfolio.pdf"),
+        },
+        follow_redirects=False,
+        content_type="multipart/form-data",
+    )
+
+    assert response.status_code == 302
+    assert response.headers["Location"].endswith("/researcher-assessment")
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        user = db.execute(
+            "SELECT cv_file, portfolio_file FROM users WHERE email = ?",
+            (email,),
+        ).fetchone()
+
+    assert user is not None
+    assert user[0] is not None
+    assert user[1] is not None
 
 
 def test_tech_skill_registration_collects_course_gender_and_learning_mode(client):

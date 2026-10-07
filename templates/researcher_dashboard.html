@@ -228,43 +228,6 @@
               {% endfor %}
             </div>
           </div>
-
-          <div class="card">
-            <h2>Profile & Documents</h2>
-            <div class="upload-box">
-              <div class="upload-card">
-                <div class="upload-label">
-                  <span>Upload CV</span>
-                  <span class="upload-icon">📄</span>
-                </div>
-                <form method="post" action="/researcher-upload-documents" enctype="multipart/form-data">
-                  <input type="file" name="cv_file" accept=".pdf,.doc,.docx">
-                  <div class="action-row">
-                    <button class="primary-btn" type="submit">Save CV</button>
-                    {% if cv_url %}
-                      <a class="mini-btn" href="{{ cv_url }}" target="_blank" rel="noreferrer">View CV</a>
-                    {% endif %}
-                  </div>
-                </form>
-              </div>
-
-              <div class="upload-card">
-                <div class="upload-label">
-                  <span>Upload Research Portfolio</span>
-                  <span class="upload-icon">📚</span>
-                </div>
-                <form method="post" action="/researcher-upload-documents" enctype="multipart/form-data">
-                  <input type="file" name="portfolio_file" accept=".pdf,.doc,.docx">
-                  <div class="action-row">
-                    <button class="primary-btn" type="submit">Save Portfolio</button>
-                    {% if portfolio_url %}
-                      <a class="mini-btn" href="{{ portfolio_url }}" target="_blank" rel="noreferrer">View Portfolio</a>
-                    {% endif %}
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </main>

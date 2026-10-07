@@ -62,7 +62,7 @@
         {% endif %}
       {% endwith %}
 
-      <form method="post">
+      <form method="post" enctype="multipart/form-data">
         <label for="full_name">Full name</label>
         <input id="full_name" name="full_name" type="text" required>
 
@@ -79,8 +79,28 @@
           <option value="researcher">Researcher</option>
         </select>
 
+        <div id="researcher-documents" style="display: none; margin-top: 1rem;">
+          <label for="cv_file">CV</label>
+          <input id="cv_file" name="cv_file" type="file" accept=".pdf,.doc,.docx">
+
+          <label for="portfolio_file">Portfolio</label>
+          <input id="portfolio_file" name="portfolio_file" type="file" accept=".pdf,.doc,.docx">
+        </div>
+
         <button type="submit">Register</button>
       </form>
+
+      <script>
+        const roleSelect = document.getElementById('role');
+        const researcherDocuments = document.getElementById('researcher-documents');
+
+        function toggleResearcherDocuments() {
+          const show = roleSelect.value === 'researcher';
+          researcherDocuments.style.display = show ? 'block' : 'none';
+        }
+
+        roleSelect.addEventListener('change', toggleResearcherDocuments);
+      </script>
 
       <p style="margin-top: 1rem; text-align: center; color: #425466; font-size: 0.92rem;">
         Admin registration is restricted to internal staff. Use the admin login credentials to access the admin dashboard.

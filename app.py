@@ -128,6 +128,24 @@ def init_db():
     db.commit()
 
 
+def save_uploaded_researcher_document(user_id, file, document_type):
+    if not file or not getattr(file, "filename", None):
+        return
+
+    upload_dir = os.path.join(app.static_folder, "uploads", "researchers")
+    os.makedirs(upload_dir, exist_ok=True)
+
+    safe_name = secure_filename(file.filename)
+    unique_name = f"{user_id}_{document_type}_{safe_name}"
+    file_path = os.path.join(upload_dir, unique_name)
+    file.save(file_path)
+    get_db().execute(
+        f"UPDATE users SET {document_type} = ? WHERE id = ?",
+        (unique_name, user_id),
+    )
+    get_db().commit()
+
+
 def send_confirmation_email(email, full_name, role):
     subject = "Account created successfully"
     body = (
@@ -739,6 +757,12 @@ def register():
             user = db.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
             session["user_id"] = user["id"]
             session["role"] = role
+
+            cv_file = request.files.get("cv_file")
+            portfolio_file = request.files.get("portfolio_file")
+            save_uploaded_researcher_document(user["id"], cv_file, "cv_file")
+            save_uploaded_researcher_document(user["id"], portfolio_file, "portfolio_file")
+
             send_confirmation_email(email, full_name, role_label(role))
             flash("Your researcher account has been created. Please complete the research assessment before your dashboard access is approved.")
             return redirect(url_for("researcher_assessment"))
