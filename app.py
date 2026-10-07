@@ -5,6 +5,7 @@ from smtplib import SMTP
 
 from flask import Flask, flash, g, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__)
@@ -56,6 +57,14 @@ def ensure_user_profile_columns():
         "learning_mode": "ALTER TABLE users ADD COLUMN learning_mode TEXT",
         "payment_mode": "ALTER TABLE users ADD COLUMN payment_mode TEXT",
         "portfolio_status": "ALTER TABLE users ADD COLUMN portfolio_status TEXT DEFAULT 'not_started'",
+        "researcher_assessment_title": "ALTER TABLE users ADD COLUMN researcher_assessment_title TEXT",
+        "researcher_assessment_area": "ALTER TABLE users ADD COLUMN researcher_assessment_area TEXT",
+        "researcher_assessment_text": "ALTER TABLE users ADD COLUMN researcher_assessment_text TEXT",
+        "researcher_assessment_status": "ALTER TABLE users ADD COLUMN researcher_assessment_status TEXT DEFAULT 'not_started'",
+        "researcher_assessment_word_count": "ALTER TABLE users ADD COLUMN researcher_assessment_word_count INTEGER DEFAULT 0",
+        "cv_file": "ALTER TABLE users ADD COLUMN cv_file TEXT",
+        "portfolio_file": "ALTER TABLE users ADD COLUMN portfolio_file TEXT",
+        "profile_photo": "ALTER TABLE users ADD COLUMN profile_photo TEXT",
     }.items():
         if field_name not in columns:
             db.execute(field_sql)
@@ -80,6 +89,14 @@ def init_db():
             learning_mode TEXT,
             payment_mode TEXT,
             portfolio_status TEXT DEFAULT 'not_started',
+            researcher_assessment_title TEXT,
+            researcher_assessment_area TEXT,
+            researcher_assessment_text TEXT,
+            researcher_assessment_status TEXT DEFAULT 'not_started',
+            researcher_assessment_word_count INTEGER DEFAULT 0,
+            cv_file TEXT,
+            portfolio_file TEXT,
+            profile_photo TEXT,
             created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         )
         """
@@ -149,6 +166,15 @@ def current_user():
     if not user_id:
         return None
     return get_db().execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
+
+
+def row_value(row, key, default=None):
+    if row is None:
+        return default
+    try:
+        return row[key]
+    except (KeyError, TypeError, IndexError):
+        return default
 
 
 def skill_programs():
@@ -406,12 +432,17 @@ def login():
         if user["role"] == "admin":
             return redirect(url_for("admin_dashboard"))
         if user["role"] == "researcher":
+            status = row_value(user, "researcher_assessment_status", "not_started") or "not_started"
+            if status in {"not_started", ""}:
+                return redirect(url_for("researcher_assessment"))
             return redirect(url_for("researcher_dashboard"))
         if user["role"] in {"student", "client"}:
+            course = row_value(user, "course")
+            learning_mode = row_value(user, "learning_mode")
+            if course and learning_mode:
+                return redirect(url_for("tech_skills_dashboard"))
             return redirect(url_for("dashboard"))
         return redirect(url_for("register"))
-
-    return render_template("login.html", prefill_email=default_email, admin_mode=admin_mode)
 
 
 @app.route("/forgot-password", methods=["GET", "POST"])
@@ -497,19 +528,91 @@ def dashboard():
     return render_template("dashboard.html", user=user, requests=requests)
 
 
+@app.route("/researcher-assessment", methods=["GET", "POST"])
+def researcher_assessment():
+    user = current_user()
+    if not user or user["role"] != "researcher":
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        research_area = request.form.get("research_area", "").strip()
+        essay_title = request.form.get("essay_title", "").strip()
+        essay_text = request.form.get("essay_text", "").strip()
+        word_count = len(essay_text.split()) if essay_text else 0
+
+        if not research_area or not essay_title or not essay_text:
+            flash("Please complete the research assessment form before submitting.")
+            return render_template("researcher_assessment.html", user=user, form=request.form)
+
+        if word_count < 1500:
+            flash("Your article must be at least 1500 words for researcher assessment review.")
+            return render_template("researcher_assessment.html", user=user, form=request.form)
+
+        get_db().execute(
+            "UPDATE users SET researcher_assessment_area = ?, researcher_assessment_title = ?, researcher_assessment_text = ?, researcher_assessment_status = ?, researcher_assessment_word_count = ? WHERE id = ?",
+            (research_area, essay_title, essay_text, "submitted", word_count, user["id"]),
+        )
+        get_db().commit()
+        flash("Your research assessment has been submitted and is now under admin review.")
+        return redirect(url_for("researcher_dashboard"))
+
+    return render_template("researcher_assessment.html", user=user, form={})
+
+
 @app.route("/researcher-dashboard")
 def researcher_dashboard():
     user = current_user()
     if not user or user["role"] != "researcher":
         return redirect(url_for("login"))
 
+    assessment_status = row_value(user, "researcher_assessment_status", "not_started") or "not_started"
     assigned_queue = [
         {"id": 1, "topic": "Impact of renewable energy financing on industrial growth", "status": "In review", "student": "Ada Okafor"},
         {"id": 2, "topic": "Public health expenditure and economic growth in Nigeria", "status": "Ready for review", "student": "Tunde Lawal"},
         {"id": 3, "topic": "Digital inclusion and education outcomes in urban schools", "status": "Awaiting data", "student": "Kemi Adebayo"},
     ]
 
-    return render_template("researcher_dashboard.html", user=user, queue=assigned_queue)
+    cv_file = row_value(user, "cv_file")
+    portfolio_file = row_value(user, "portfolio_file")
+    cv_url = "/static/uploads/researchers/" + (cv_file or "") if cv_file else None
+    portfolio_url = "/static/uploads/researchers/" + (portfolio_file or "") if portfolio_file else None
+
+    return render_template(
+        "researcher_dashboard.html",
+        user=user,
+        queue=assigned_queue,
+        assessment_status=assessment_status,
+        cv_url=cv_url,
+        portfolio_url=portfolio_url,
+    )
+
+
+@app.route("/researcher-upload-documents", methods=["POST"])
+def researcher_upload_documents():
+    user = current_user()
+    if not user or user["role"] != "researcher":
+        return redirect(url_for("login"))
+
+    upload_dir = os.path.join(app.static_folder, "uploads", "researchers")
+    os.makedirs(upload_dir, exist_ok=True)
+
+    for document_type in ["cv_file", "portfolio_file"]:
+        file = request.files.get(document_type)
+        if not file or file.filename == "":
+            continue
+
+        safe_name = secure_filename(file.filename)
+        unique_name = f"{user['id']}_{document_type}_{safe_name}"
+        file_path = os.path.join(upload_dir, unique_name)
+        file.save(file_path)
+        get_db().execute(
+            f"UPDATE users SET {document_type} = ? WHERE id = ?",
+            (unique_name, user["id"]),
+        )
+        get_db().commit()
+        flash(f"{document_type.replace('_', ' ').title()} uploaded successfully.")
+
+    return redirect(url_for("researcher_dashboard"))
 
 
 @app.route("/admin-dashboard", methods=["GET", "POST"])
@@ -629,10 +732,18 @@ def register():
             return render_template("register.html")
 
         db.execute(
-            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
-            (full_name, email, generate_password_hash(password, method="pbkdf2:sha256"), role),
+            "INSERT INTO users (name, email, password, role, researcher_assessment_status) VALUES (?, ?, ?, ?, ?)",
+            (full_name, email, generate_password_hash(password, method="pbkdf2:sha256"), role, "not_started" if role == "researcher" else None),
         )
         db.commit()
+
+        if role == "researcher":
+            user = db.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
+            session["user_id"] = user["id"]
+            session["role"] = role
+            send_confirmation_email(email, full_name, role_label(role))
+            flash("Your researcher account has been created. Please complete the research assessment before your dashboard access is approved.")
+            return redirect(url_for("researcher_assessment"))
 
         send_confirmation_email(email, full_name, role_label(role))
 

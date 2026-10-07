@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Researcher Assessment</title>
+    <style>
+      :root {
+        --primary: #123f37;
+        --secondary: #1d725f;
+        --accent: #d9a53d;
+        --bg: #edf7f4;
+        --panel: rgba(255,255,255,0.8);
+        --text: #17313d;
+        --muted: #58707b;
+        --line: rgba(18,63,55,0.12);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(180deg, #edf7f4 0%, #f8f5ef 100%);
+        color: var(--text);
+      }
+      .container {
+        width: min(920px, calc(100% - 30px));
+        margin: 36px auto;
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 18px 36px rgba(18,63,55,0.08);
+      }
+      .header {
+        background: linear-gradient(90deg, rgba(18,63,55,0.96), rgba(29,114,95,0.94));
+        color: white;
+        padding: 28px 30px;
+      }
+      .header h1 { margin: 0 0 8px; font-size: clamp(2rem, 3vw, 2.8rem); letter-spacing: -0.05em; }
+      .header p { margin: 0; color: rgba(255,255,255,0.8); line-height: 1.7; }
+      .body { padding: 28px 30px 32px; }
+      .flash {
+        margin-bottom: 18px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: rgba(217, 165, 61, 0.12);
+        color: #6a4c16;
+        border: 1px solid rgba(217, 165, 61, 0.3);
+      }
+      form { display: grid; gap: 18px; }
+      .field { display: flex; flex-direction: column; gap: 8px; }
+      label { font-weight: 700; color: var(--primary); }
+      input, textarea, select, button {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        font-size: 1rem;
+        color: var(--text);
+      }
+      textarea { min-height: 260px; resize: vertical; }
+      .note {
+        border-radius: 12px;
+        padding: 12px 14px;
+        background: rgba(18,63,55,0.04);
+        border: 1px solid var(--line);
+        color: var(--muted);
+        line-height: 1.7;
+      }
+      button {
+        border: none;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        font-weight: 800;
+        cursor: pointer;
+      }
+      @media (max-width: 640px) {
+        .header, .body { padding-left: 18px; padding-right: 18px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <div class="header">
+          <h1>Researcher Assessment</h1>
+          <p>Complete your assessment before access to the researcher dashboard is approved.</p>
+        </div>
+
+        <div class="body">
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <div class="flash">{{ messages[0] }}</div>
+            {% endif %}
+          {% endwith %}
+
+          <div class="note">
+            Submit a research article of at least 1500 words in a topic area relevant to your research focus. The admin will review it before approval.
+          </div>
+
+          <form method="post">
+            <div class="field">
+              <label for="research_area">Research area</label>
+              <input id="research_area" name="research_area" type="text" value="{{ form.get('research_area', '') if form else '' }}" placeholder="e.g. Public Health" required>
+            </div>
+
+            <div class="field">
+              <label for="essay_title">Article title</label>
+              <input id="essay_title" name="essay_title" type="text" value="{{ form.get('essay_title', '') if form else '' }}" placeholder="Research title" required>
+            </div>
+
+            <div class="field">
+              <label for="essay_text">Research article</label>
+              <textarea id="essay_text" name="essay_text" placeholder="Write your detailed research article here..." required>{{ form.get('essay_text', '') if form else '' }}</textarea>
+            </div>
+
+            <button type="submit">Submit for review</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

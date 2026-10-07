@@ -266,6 +266,29 @@ def test_tech_payment_redirects_to_dashboard_with_success_message(client):
     assert b"Data Science" in response.data
 
 
+def test_tech_student_login_redirects_to_tech_skills_dashboard(client):
+    email = f"techstudent{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, course, learning_mode) VALUES (?, ?, ?, ?, ?, ?)",
+            ("Tech Student", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student", "Data Analysis", "Hybrid"),
+        )
+        db.commit()
+
+    response = client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=False,
+    )
+
+    assert response.status_code == 302
+    assert response.headers["Location"].endswith("/tech-skills-dashboard")
+
+
 def test_researcher_dashboard_is_available_for_researcher_role(client):
     email = f"researcher{uuid.uuid4().hex[:8]}@example.com"
 
@@ -290,6 +313,39 @@ def test_researcher_dashboard_is_available_for_researcher_role(client):
     assert b"Researcher Dashboard" in response.data
     assert b"Project Queue" in response.data
     assert b"Research Library" in response.data
+
+
+def test_researcher_assessment_requires_1500_word_submission(client):
+    email = f"researcherassess{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+            ("Research Assessor", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "researcher"),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=True,
+    )
+
+    response = client.post(
+        "/researcher-assessment",
+        data={
+            "research_area": "Public Health",
+            "essay_title": "Impact of Health Policy on Community Care",
+            "essay_text": "short text",
+        },
+        follow_redirects=True,
+    )
+
+    assert response.status_code == 200
+    assert b"at least 1500 words" in response.data.lower()
 
 
 def test_admin_dashboard_lists_requests(client):
