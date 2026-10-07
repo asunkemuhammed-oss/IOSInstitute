@@ -546,10 +546,6 @@ def researcher_assessment():
             flash("Please complete the research assessment form before submitting.")
             return render_template("researcher_assessment.html", user=user, form=request.form)
 
-        if word_count < 1500:
-            flash("Your article must be at least 1500 words for researcher assessment review.")
-            return render_template("researcher_assessment.html", user=user, form=request.form)
-
         get_db().execute(
             "UPDATE users SET researcher_assessment_area = ?, researcher_assessment_title = ?, researcher_assessment_text = ?, researcher_assessment_status = ?, researcher_assessment_word_count = ? WHERE id = ?",
             (research_area, essay_title, essay_text, "submitted", word_count, user["id"]),

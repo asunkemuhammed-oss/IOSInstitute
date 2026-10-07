@@ -315,7 +315,7 @@ def test_researcher_dashboard_is_available_for_researcher_role(client):
     assert b"Research Library" in response.data
 
 
-def test_researcher_assessment_requires_1500_word_submission(client):
+def test_researcher_assessment_accepts_demo_submission_and_redirects_to_dashboard(client):
     email = f"researcherassess{uuid.uuid4().hex[:8]}@example.com"
 
     with app.app_context():
@@ -339,13 +339,13 @@ def test_researcher_assessment_requires_1500_word_submission(client):
         data={
             "research_area": "Public Health",
             "essay_title": "Impact of Health Policy on Community Care",
-            "essay_text": "short text",
+            "essay_text": "short demo article text",
         },
-        follow_redirects=True,
+        follow_redirects=False,
     )
 
-    assert response.status_code == 200
-    assert b"at least 1500 words" in response.data.lower()
+    assert response.status_code == 302
+    assert response.headers["Location"].endswith("/researcher-dashboard")
 
 
 def test_admin_dashboard_lists_requests(client):
