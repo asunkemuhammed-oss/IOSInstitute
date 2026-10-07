@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IOS Tech SkillUp</title>
+    <style>
+      :root {
+        --primary: #0b1f3a;
+        --secondary: #173a5e;
+        --accent: #f4b400;
+        --accent-soft: #fff1cc;
+        --muted: #53657a;
+        --line: rgba(11, 31, 58, 0.09);
+        --bg: #f7f8fc;
+        --white: #ffffff;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(180deg, #eef3ff 0%, #f7f8fc 100%);
+        color: var(--primary);
+      }
+      a { text-decoration: none; }
+      .container { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+      .topbar {
+        background: rgba(255,255,255,0.88);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      .topbar-inner {
+        display: flex; align-items: center; justify-content: space-between;
+        min-height: 78px; gap: 16px;
+      }
+      .brand { display:flex; align-items:center; gap:12px; }
+      .brand-mark { width: 52px; height: 52px; border-radius: 16px; overflow:hidden; background:#fff; border:1px solid var(--line);} 
+      .brand-mark img { width:100%; height:100%; object-fit:cover; }
+      .brand-name { font-size: 1.7rem; font-weight:800; letter-spacing: .06em; }
+      .nav-links { display:flex; align-items:center; gap: 20px; flex-wrap: wrap; }
+      .nav-item a { color: var(--primary); font-weight:700; }
+      .nav-cta { display:flex; gap:10px; }
+      .ghost-btn, .primary-btn, .secondary-btn {
+        display:inline-flex; align-items:center; justify-content:center; border-radius: 12px; padding: 12px 18px; font-weight:700;
+      }
+      .ghost-btn { background: #fff; border:1px solid var(--line); color:var(--primary); }
+      .primary-btn { background: var(--primary); color:white; }
+      .secondary-btn { background: var(--accent-soft); color: var(--primary); }
+
+      main { padding: 44px 0 80px; }
+      .hero {
+        background: linear-gradient(135deg, rgba(18,35,61,0.98), rgba(17,91,153,0.82));
+        border-radius: 28px;
+        color: white;
+        padding: 42px 34px;
+        box-shadow: 0 30px 60px rgba(11,31,58,0.12);
+      }
+      .hero h1 { margin: 0 0 14px; font-size: clamp(2.2rem, 5vw, 4rem); line-height:1.06; }
+      .hero p { margin: 0; max-width: 700px; color: rgba(255,255,255,0.85); font-size: 1.08rem; }
+      .hero-actions { margin-top: 22px; display:flex; gap:14px; flex-wrap: wrap; }
+      .hero .secondary-btn { background: rgba(255,255,255,0.12); color:white; border:1px solid rgba(255,255,255,0.18); }
+
+      .programs-header { margin: 44px 0 20px; }
+      .programs-header h2 { margin: 0 0 12px; font-size: clamp(1.9rem, 3vw, 2.5rem); }
+      .programs-header p { margin:0; color: var(--muted); line-height:1.7; }
+
+      .program-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+      }
+      .card {
+        background: rgba(255,255,255,0.8);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 22px 18px;
+        box-shadow: 0 14px 28px rgba(11,31,58,0.04);
+      }
+      .card h3 { margin: 0 0 10px; color: var(--primary); font-size:1.35rem; }
+      .card p { margin: 0; color: var(--muted); line-height: 1.7; }
+      .tool-list {
+        display:flex; flex-wrap:wrap; gap:8px; margin: 16px 0 18px;
+      }
+      .tool {
+        background: var(--accent-soft); color:var(--primary); border-radius:999px; padding: 7px 10px; font-weight:700; font-size:0.74rem;
+      }
+      .meta {
+        display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 16px 0;
+      }
+      .meta-item { background: rgba(11,31,58,0.02); border:1px solid var(--line); border-radius: 12px; padding:10px; }
+      .meta-item strong { display:block; color: var(--primary); font-size:.78rem; letter-spacing: .04em; text-transform: uppercase; margin-bottom:6px; }
+      .meta-item span { color: var(--muted); font-size: .92rem; }
+      .card .actions { display:flex; gap:10px; margin-top:18px; }
+
+      .info-strip {
+        margin-top: 52px; background: #fff; border:1px solid var(--line); border-radius: 24px; padding: 24px 20px;
+      }
+      .info-strip h3 { margin-top:0; }
+      .info-strip ul { color: var(--muted); line-height:1.8; }
+
+      @media (max-width: 900px) {
+        .program-grid { grid-template-columns: 1fr 1fr; }
+        .nav-links { display:none; }
+      }
+      @media (max-width: 640px) {
+        .program-grid { grid-template-columns: 1fr; }
+        .meta { grid-template-columns: 1fr; }
+        .hero { padding: 28px 20px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div class="brand">
+          <div class="brand-mark"><img src="/static/images/team/REALLOGO.jpg" alt="IOS logo" /></div>
+          <div class="brand-name">IOS</div>
+        </div>
+        <nav class="nav-links">
+          <div class="nav-item"><a href="/">Home</a></div>
+          <div class="nav-item"><a href="/research-institute">Research</a></div>
+          <div class="nav-item"><a href="/tech-skillup">Tech SkillUp</a></div>
+          <div class="nav-item"><a href="/educational-consultancy">Consultancy</a></div>
+        </nav>
+        <div class="nav-cta">
+          <a class="ghost-btn" href="/login">Login</a>
+          <a class="primary-btn" href="/register">Register</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <section class="hero">
+          <h1>IOS Tech SkillUp</h1>
+          <p>Build practical digital, analytical, and professional skills with structured programs designed to help students and professionals grow with confidence.</p>
+          <div class="hero-actions">
+            <a class="primary-btn" href="/register">Register Now</a>
+            <a class="secondary-btn" href="/dashboard">Go to Learning Dashboard</a>
+          </div>
+        </section>
+
+        <div class="programs-header">
+          <h2>Available Programs</h2>
+          <p>Each course is designed around real-world skills, guided instruction, and practical outcomes that prepare learners for career growth and project delivery.</p>
+        </div>
+
+        <div class="program-grid">
+          {% for program in programs %}
+          <div class="card">
+            <h3>{{ program.name }}</h3>
+            <p><strong>Course description:</strong> {{ program.description }}</p>
+            <div class="tool-list">
+              {% for tool in program.tools %}
+              <span class="tool">{{ tool }}</span>
+              {% endfor %}
+            </div>
+            <div class="meta">
+              <div class="meta-item"><strong>Instructor</strong><span>{{ program.instructor }}</span></div>
+              <div class="meta-item"><strong>Duration</strong><span>{{ program.duration }}</span></div>
+              <div class="meta-item"><strong>Curriculum</strong><span>{{ program.curriculum }}</span></div>
+              <div class="meta-item"><strong>Fee</strong><span>{{ program.fee }}</span></div>
+              <div class="meta-item"><strong>Start date</strong><span>{{ program.start_date }}</span></div>
+              <div class="meta-item"><strong>Certificate information</strong><span>{{ program.certificate }}</span></div>
+            </div>
+            <div class="actions">
+              <a class="primary-btn" href="/register">Register</a>
+              <a class="ghost-btn" href="/login">Login</a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="info-strip">
+          <h3>Why learners choose IOS Tech SkillUp</h3>
+          <ul>
+            <li>Career-focused learning pathways with practical delivery.</li>
+            <li>Mentor-led instruction and applied project-based learning.</li>
+            <li>Flexible registration, digital access, and certification outcomes.</li>
+            <li>Supportive environment for career growth, skills development, and job readiness.</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IOSInstitute | Researcher Dashboard</title>
+    <style>
+      :root {
+        --bg: #efefe9;
+        --panel: rgba(255,255,255,0.42);
+        --card: rgba(255,255,255,0.56);
+        --line: rgba(17,24,39,0.12);
+        --primary: #1d2e41;
+        --text: #1a2430;
+        --muted: #53606f;
+        --accent: #d67a57;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+      .container { width: min(1200px, calc(100% - 32px)); margin: 0 auto; }
+      .topbar { padding: 18px 0; border-bottom: 1px solid var(--line); background: rgba(239,239,233,0.8); }
+      .header-inner { display: flex; justify-content: space-between; align-items: center; gap: 18px; }
+      .brand { display: flex; align-items: center; gap: 12px; }
+      .brand-mark { width: 34px; height: 34px; border-radius: 9px; background: var(--primary); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; }
+      .brand-name { font-size: 1.4rem; letter-spacing: -0.05em; color: var(--primary); font-weight:700; }
+      .nav { display: flex; gap: 18px; flex-wrap: wrap; }
+      .nav a { color: var(--primary); font-weight: 600; }
+      .page { padding: 32px 0 80px; }
+      .panel { background: rgba(255,255,255,0.38); border: 1px solid var(--line); border-radius: 24px; padding: 28px; }
+      h1 { margin: 0 0 10px; font-size: clamp(2.2rem, 3vw, 3.5rem); letter-spacing: -0.06em; color: var(--primary); }
+      .welcome { margin: 0 0 26px; color: var(--muted); font-size: 1.05rem; }
+      .stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-bottom: 28px; }
+      .stat-card {
+        background: rgba(255,255,255,0.42);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px 16px;
+      }
+      .stat-label { display: block; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.72rem; margin-bottom: 10px; }
+      .stat-value { font-size: clamp(1.5rem, 2vw, 2rem); font-weight: 700; color: var(--primary); letter-spacing: -0.05em; }
+      .content-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 22px; }
+      .card {
+        background: rgba(255,255,255,0.42);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 20px 18px;
+      }
+      .card h2 { margin: 0 0 14px; color: var(--primary); }
+      .queue-list { display: flex; flex-direction: column; gap: 12px; }
+      .queue-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: rgba(17,24,39,0.02);
+      }
+      .queue-item strong { color: var(--primary); }
+      .status {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(214,122,87,0.1);
+        color: var(--accent);
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .pill-list { display: flex; flex-wrap: wrap; gap: 8px; }
+      .pill { display: inline-block; padding: 8px 10px; border-radius: 999px; background: rgba(29, 91, 232, 0.08); color: var(--primary); font-weight: 700; font-size: 0.75rem; }
+      .logout { background: rgba(255,255,255,0.5); border: 1px solid var(--line); color: var(--primary); padding: 10px 16px; border-radius: 999px; }
+      @media (max-width: 760px) {
+        .stats-grid, .content-grid { grid-template-columns: 1fr; }
+        .header-inner { flex-direction: column; align-items: flex-start; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container header-inner">
+        <div class="brand">
+          <div class="brand-mark">IOS</div>
+          <div class="brand-name">IOS Researcher</div>
+        </div>
+        <nav class="nav">
+          <a href="#">Dashboard</a>
+          <a href="#">Projects</a>
+          <a href="#">Research Library</a>
+          <a href="#">Messages</a>
+          <a href="#">Profile</a>
+          <a class="logout" href="/logout">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <div class="container panel">
+        <h1>Researcher Dashboard</h1>
+        <p class="welcome">Welcome, {{ user["name"] }}. Manage your assigned research projects and support requests in one place.</p>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-label">Assigned</span>
+            <div class="stat-value">12</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">In Review</span>
+            <div class="stat-value">7</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Completed</span>
+            <div class="stat-value">28</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Open Messages</span>
+            <div class="stat-value">5</div>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <div class="card">
+            <h2>Project Queue</h2>
+            <div class="queue-list">
+              {% for item in queue %}
+                <div class="queue-item">
+                  <div>
+                    <strong>{{ item["topic"] }}</strong><br>
+                    <span style="color: var(--muted);">Student: {{ item["student"] }}</span>
+                  </div>
+                  <span class="status">{{ item["status"] }}</span>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Research Library</h2>
+            <div class="pill-list">
+              <span class="pill">Economics</span>
+              <span class="pill">Public Policy</span>
+              <span class="pill">Statistics</span>
+              <span class="pill">Methodology</span>
+              <span class="pill">Project Review</span>
+              <span class="pill">Data Analysis</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

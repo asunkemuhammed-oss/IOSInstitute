@@ -34,6 +34,81 @@ def test_home_page_has_main_navigation_and_about_sections(client):
     assert b"Our team" in response.data
 
 
+def test_research_institute_page_has_welcome_and_entry_actions(client):
+    response = client.get("/research-institute")
+
+    assert response.status_code == 200
+    assert b"Welcome to IOS Research Institute" in response.data
+    assert b"Sign Up" in response.data
+    assert b"Login" in response.data
+    assert b"Access research resources" in response.data
+    assert b"Publications" in response.data
+    assert b"Data" in response.data
+    assert b"Faculty" in response.data
+    assert b"Department" in response.data
+    assert b"Course" in response.data
+    assert b"Topic" in response.data
+    assert b"Year" in response.data
+    assert b"Effect of Public Health Expenditure on Economic Growth in Nigeria" in response.data
+
+
+def test_tech_skillup_page_has_programs_and_course_details(client):
+    response = client.get("/tech-skillup")
+
+    assert response.status_code == 200
+    assert b"Available Programs" in response.data
+    assert b"Data Analysis" in response.data
+    assert b"AI Automation" in response.data
+    assert b"Web Development" in response.data
+    assert b"Digital Marketing" in response.data
+    assert b"Course description" in response.data
+    assert b"Register" in response.data
+    assert b"Certificate" in response.data
+
+
+def test_educational_consultancy_page_has_services_and_booking_button(client):
+    response = client.get("/educational-consultancy")
+
+    assert response.status_code == 200
+    assert b"Academic counselling" in response.data
+    assert b"Career guidance" in response.data
+    assert b"SIWES support" in response.data
+    assert b"Student development" in response.data
+    assert b"Book a Consultation" in response.data
+
+
+def test_student_dashboard_has_research_library_and_modules(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+            ("Student User", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student"),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=True,
+    )
+
+    response = client.get("/dashboard")
+    assert response.status_code == 200
+    assert b"Student/Client Dashboard" in response.data
+    assert b"Research Library" in response.data
+    assert b"Faculty" in response.data
+    assert b"Department" in response.data
+    assert b"Course" in response.data
+    assert b"Topic" in response.data
+    assert b"Year" in response.data
+    assert b"Economics" in response.data
+    assert b"Effect of Public Health Expenditure on Economic Growth in Nigeria" in response.data
+
+
 def test_student_dashboard_shows_research_request_form(client):
     email = f"student{uuid.uuid4().hex[:8]}@example.com"
 
@@ -73,6 +148,42 @@ def test_student_dashboard_shows_research_request_form(client):
     assert b"Student profile" in profile_response.data
 
 
+def test_register_page_has_student_client_and_researcher_options(client):
+    response = client.get("/register")
+
+    assert response.status_code == 200
+    assert b"Student / Client" in response.data
+    assert b"project or research assistance" in response.data
+    assert b"Researcher" in response.data
+    assert b"Tech learner / applicant" not in response.data
+
+
+def test_researcher_dashboard_is_available_for_researcher_role(client):
+    email = f"researcher{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+            ("Researcher User", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "researcher"),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=True,
+    )
+
+    response = client.get("/researcher-dashboard")
+    assert response.status_code == 200
+    assert b"Researcher Dashboard" in response.data
+    assert b"Project Queue" in response.data
+    assert b"Research Library" in response.data
+
+
 def test_admin_dashboard_lists_requests(client):
     admin_email = f"admin{uuid.uuid4().hex[:8]}@example.com"
     student_email = f"student{uuid.uuid4().hex[:8]}@example.com"
@@ -103,7 +214,12 @@ def test_admin_dashboard_lists_requests(client):
 
     response = client.get("/admin-dashboard")
     assert response.status_code == 200
-    assert b"Admin dashboard" in response.data
+    assert b"IOS Admin" in response.data
+    assert b"1,245" in response.data
+    assert b"38" in response.data
+    assert b"76" in response.data
+    assert b"412" in response.data
+    assert b"24" in response.data
     assert b"AI in Education" in response.data
     assert b"submitted" in response.data
 

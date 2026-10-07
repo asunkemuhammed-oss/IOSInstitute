@@ -119,6 +119,135 @@
         color: var(--muted);
         font-size: 1.06rem;
       }
+      .dashboard-header {
+        margin-bottom: 18px;
+      }
+      .module-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin: 24px 0 30px;
+      }
+      .module-card {
+        background: rgba(255,255,255,0.38);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px 16px;
+      }
+      .module-card h3 {
+        margin: 0 0 8px;
+        font-size: 1.02rem;
+        color: var(--primary);
+      }
+      .module-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .library-panel {
+        margin-top: 16px;
+        background: rgba(255,255,255,0.3);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 24px;
+      }
+      .library-search {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 12px;
+        margin: 18px 0 20px;
+      }
+      .filter {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .filter label {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--primary);
+      }
+      .filter select,
+      .filter input {
+        width: 100%;
+        padding: 12px 10px;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.65);
+      }
+      .library-rows {
+        display: grid;
+        grid-template-columns: 1fr 1.1fr;
+        gap: 20px;
+      }
+      .topic-list {
+        background: rgba(255,255,255,0.38);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 16px;
+      }
+      .topic-list h3,
+      .paper-card h3 {
+        margin: 0 0 14px;
+        color: var(--primary);
+      }
+      .topic-list ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .topic-list li {
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: rgba(17,24,39,0.02);
+        color: var(--primary);
+        font-weight: 600;
+      }
+      .paper-card {
+        background: rgba(255,255,255,0.38);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px 16px;
+      }
+      .paper-card .meta {
+        display: inline-block;
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(214,122,87,0.08);
+        color: var(--accent);
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 12px;
+      }
+      .paper-card h4 {
+        margin: 0 0 12px;
+        font-size: 1.15rem;
+        letter-spacing: -0.02em;
+      }
+      .paper-card p {
+        color: var(--muted);
+        line-height: 1.7;
+      }
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+      .chip {
+        display: inline-block;
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(29, 91, 232, 0.08);
+        color: var(--primary);
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
       .flash {
         background: rgba(214,122,87,0.08);
         border: 1px solid rgba(214,122,87,0.18);
@@ -220,9 +349,11 @@
 
     <main class="page">
       <div class="container panel">
-        <span class="tiny">Request support</span>
-        <h1>Submit a research request to IOS support team</h1>
-        <p class="welcome">Welcome, {{ user["name"] }} ({{ user["role"]|title }}). Use the form below to share your research needs.</p>
+        <div class="dashboard-header">
+          <span class="tiny">Research dashboard</span>
+          <h1>Student/Client Dashboard</h1>
+          <p class="welcome">Welcome, {{ user["name"] }} ({{ user["role"]|title }}). Your research workspace is ready for discovery, requests, and project support.</p>
+        </div>
 
         {% with messages = get_flashed_messages() %}
           {% if messages %}
@@ -230,7 +361,100 @@
           {% endif %}
         {% endwith %}
 
-        <form method="post" action="/dashboard">
+        <div class="module-grid">
+          <div class="module-card">
+            <h3>Research Library</h3>
+            <p>Search and explore existing research resources, topics, and academic references.</p>
+          </div>
+          <div class="module-card">
+            <h3>Submit Research Request</h3>
+            <p>Share your area of study, topic, and support needs with the IOS support team.</p>
+          </div>
+          <div class="module-card">
+            <h3>My Projects</h3>
+            <p>Track your active projects, milestones, and evolving research progress.</p>
+          </div>
+          <div class="module-card">
+            <h3>Messages</h3>
+            <p>Stay in touch with consultants, supervisors, and research support teams.</p>
+          </div>
+          <div class="module-card">
+            <h3>Payments</h3>
+            <p>Manage invoices, payments, and recurring research service commitments.</p>
+          </div>
+          <div class="module-card">
+            <h3>Profile</h3>
+            <p>Update your academic information, interests, and contact details.</p>
+          </div>
+        </div>
+
+        <div class="library-panel">
+          <h2 style="margin: 0; color: var(--primary);">Research Library</h2>
+          <p style="margin: 10px 0 0; color: var(--muted);">This is where our existing research materials become extremely valuable.</p>
+
+          <div class="library-search">
+            <div class="filter">
+              <label>Faculty</label>
+              <select><option>Social Sciences</option></select>
+            </div>
+            <div class="filter">
+              <label>Department</label>
+              <select><option>Economics</option></select>
+            </div>
+            <div class="filter">
+              <label>Course</label>
+              <select><option>Economics</option></select>
+            </div>
+            <div class="filter">
+              <label>Topic</label>
+              <select><option>Inflation</option></select>
+            </div>
+            <div class="filter">
+              <label>Year</label>
+              <select><option>2026</option></select>
+            </div>
+            <div class="filter">
+              <label>&nbsp;</label>
+              <button type="button" class="submit-btn" style="margin-top: 0;">Search</button>
+            </div>
+          </div>
+
+          <div class="library-rows">
+            <div class="topic-list">
+              <h3>Economics</h3>
+              <ul>
+                <li>Inflation</li>
+                <li>Public Debt</li>
+                <li>Exchange Rate</li>
+                <li>Unemployment</li>
+                <li>Economic Growth</li>
+                <li>Human Capital</li>
+                <li>Health Expenditure</li>
+              </ul>
+            </div>
+
+            <div class="paper-card">
+              <div class="meta">Available Topic</div>
+              <h4>Effect of Public Health Expenditure on Economic Growth in Nigeria</h4>
+              <p><strong>Abstract:</strong> Preview</p>
+              <p><strong>Table of Contents:</strong> Preview</p>
+              <p><strong>Keywords:</strong> Health expenditure, economic growth, Nigeria</p>
+              <p><strong>Available Support:</strong> Research Consultation / Data Analysis / Methodology Guidance</p>
+              <div class="chip-row">
+                <span class="chip">Research Consultation</span>
+                <span class="chip">Data Analysis</span>
+                <span class="chip">Methodology Guidance</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 28px;">
+          <span class="tiny">Request support</span>
+          <h2 style="margin: 0 0 10px; color: var(--primary);">Submit a research request to IOS support team</h2>
+        </div>
+
+        <form method="post" action="/dashboard" style="margin-top: 18px;">
           <div class="form-wrap">
             <div class="field">
               <label for="research_type">Research Type</label>

@@ -17,8 +17,8 @@ app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD", "")
 app.config["MAIL_USE_TLS"] = os.environ.get("MAIL_USE_TLS", "True").lower() in {"1", "true", "yes"}
 
 ROLE_LABELS = {
-    "student": "Student – project assistance",
-    "client": "Tech learner / applicant",
+    "student": "Student / Client – project or research assistance",
+    "client": "Student / Client – project or research assistance",
     "admin": "Admin (internal access)",
     "researcher": "Researcher",
 }
@@ -133,6 +133,99 @@ def index():
     return render_template("home.html")
 
 
+@app.route("/research-institute")
+def research_institute():
+    return render_template("research_institute.html")
+
+
+@app.route("/tech-skillup")
+def tech_skillup():
+    programs = [
+        {
+            "name": "Data Analysis",
+            "description": "Learn how to turn raw data into business decisions using Excel, Power BI, SQL, and Python.",
+            "tools": ["Excel", "Power BI", "SQL", "Python"],
+            "instructor": "Dr. Amina Yusuf",
+            "duration": "8 weeks",
+            "curriculum": "Data cleaning, dashboarding, SQL queries, Python analysis, data storytelling",
+            "fee": "₦85,000",
+            "start_date": "18 Nov 2026",
+            "certificate": "Industry-recognized certificate upon completion",
+        },
+        {
+            "name": "AI Automation",
+            "description": "Build practical automations that save time, improve workflows, and create smarter business processes.",
+            "tools": ["Python", "Zapier", "AI Tools", "Workflow Design"],
+            "instructor": "Mr. Samuel Adeyemi",
+            "duration": "6 weeks",
+            "curriculum": "Prompt design, automation logic, no-code productivity, AI workflow implementation",
+            "fee": "₦75,000",
+            "start_date": "02 Dec 2026",
+            "certificate": "Completion certificate + project portfolio",
+        },
+        {
+            "name": "Data Science",
+            "description": "Understand data science fundamentals, model building, and evidence-based decision making for real-world problems.",
+            "tools": ["Python", "Pandas", "NumPy", "Machine Learning"],
+            "instructor": "Prof. Ijeoma Eze",
+            "duration": "10 weeks",
+            "curriculum": "Statistics, data wrangling, modeling, evaluation, insight presentation",
+            "fee": "₦120,000",
+            "start_date": "09 Nov 2026",
+            "certificate": "Certificate and capstone project assessment",
+        },
+        {
+            "name": "Web Development",
+            "description": "Learn how to design and build responsive, user-friendly websites and digital products.",
+            "tools": ["HTML", "CSS", "JavaScript", "React"],
+            "instructor": "Mrs. Grace Okafor",
+            "duration": "12 weeks",
+            "curriculum": "Front-end design, interactivity, APIs, deployment, project building",
+            "fee": "₦150,000",
+            "start_date": "20 Nov 2026",
+            "certificate": "Certificate + live project submission",
+        },
+        {
+            "name": "Digital Marketing",
+            "description": "Master modern digital marketing strategies, content planning, performance measurement, and social media growth.",
+            "tools": ["SEO", "Content Strategy", "Ads", "Analytics"],
+            "instructor": "Miss. Eniola Nehemotallah",
+            "duration": "8 weeks",
+            "curriculum": "Brand strategy, SEO, paid media, analytics, campaign planning",
+            "fee": "₦65,000",
+            "start_date": "30 Nov 2026",
+            "certificate": "Certificate with digital marketing workflows",
+        },
+        {
+            "name": "Graphic Design",
+            "description": "Create impactful visuals, brand identities, and digital creatives that communicate effectively.",
+            "tools": ["Canva", "Photoshop", "Illustrator", "Brand Design"],
+            "instructor": "Mr. Daniel Kalu",
+            "duration": "6 weeks",
+            "curriculum": "Design systems, typography, layouts, branding, design presentation",
+            "fee": "₦60,000",
+            "start_date": "14 Dec 2026",
+            "certificate": "Certificate and portfolio showcase",
+        },
+    ]
+    return render_template("tech_skillup.html", programs=programs)
+
+
+@app.route("/educational-consultancy")
+def educational_consultancy():
+    services = [
+        "Academic counselling",
+        "Career guidance",
+        "SIWES support",
+        "Student development",
+        "Educational advisory",
+        "Tutorials",
+        "Examination preparation",
+        "Institutional services",
+    ]
+    return render_template("educational_consultancy.html", services=services)
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     admin_mode = request.args.get("admin") == "1"
@@ -155,7 +248,9 @@ def login():
         session["role"] = user["role"]
         if user["role"] == "admin":
             return redirect(url_for("admin_dashboard"))
-        if user["role"] in {"student", "client", "researcher"}:
+        if user["role"] == "researcher":
+            return redirect(url_for("researcher_dashboard"))
+        if user["role"] in {"student", "client"}:
             return redirect(url_for("dashboard"))
         return redirect(url_for("register"))
 
@@ -245,6 +340,21 @@ def dashboard():
     return render_template("dashboard.html", user=user, requests=requests)
 
 
+@app.route("/researcher-dashboard")
+def researcher_dashboard():
+    user = current_user()
+    if not user or user["role"] != "researcher":
+        return redirect(url_for("login"))
+
+    assigned_queue = [
+        {"id": 1, "topic": "Impact of renewable energy financing on industrial growth", "status": "In review", "student": "Ada Okafor"},
+        {"id": 2, "topic": "Public health expenditure and economic growth in Nigeria", "status": "Ready for review", "student": "Tunde Lawal"},
+        {"id": 3, "topic": "Digital inclusion and education outcomes in urban schools", "status": "Awaiting data", "student": "Kemi Adebayo"},
+    ]
+
+    return render_template("researcher_dashboard.html", user=user, queue=assigned_queue)
+
+
 @app.route("/admin-dashboard", methods=["GET", "POST"])
 def admin_dashboard():
     user = current_user()
@@ -271,7 +381,16 @@ def admin_dashboard():
         """
     ).fetchall()
 
-    return render_template("admin_dashboard.html", user=user, requests=rows)
+    metrics = {
+        "users": 1245,
+        "researchers": 38,
+        "active_projects": 76,
+        "completed_projects": 412,
+        "courses": 24,
+        "revenue": "₦12.4M",
+    }
+
+    return render_template("admin_dashboard.html", user=user, requests=rows, metrics=metrics)
 
 
 @app.route("/register", methods=["GET", "POST"])
