@@ -74,16 +74,20 @@
 
         <label for="role">Register as</label>
         <select id="role" name="role" required>
-          <option value="">Select a role</option>
-          <option value="student">Student</option>
-          <option value="client">Client</option>
-          <option value="researcher">Researcher</option>
+          <option value="">Select an account type</option>
+          <option value="student">Student – project assistance</option>
+          <option value="client">Tech learner / applicant</option>
+          <option value="admin">Admin (internal use only)</option>
         </select>
 
         <button type="submit">Register</button>
       </form>
 
-      <p style="margin-top: 1rem; text-align: center; color: #425466;">
+      <p style="margin-top: 1rem; text-align: center; color: #425466; font-size: 0.92rem;">
+        Admin registration is restricted to internal staff. Use the admin login credentials to access the admin dashboard.
+      </p>
+
+      <p style="margin-top: 0.75rem; text-align: center; color: #425466;">
         Already have an account? <a href="/login" style="color: #1b2d42; font-weight: 700;">Sign in</a>
       </p>
     </div>

@@ -108,6 +108,30 @@ def test_admin_dashboard_lists_requests(client):
     assert b"submitted" in response.data
 
 
+def test_forgot_password_page_shows_reset_message(client):
+    email = f"reset{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+            ("Reset User", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student"),
+        )
+        db.commit()
+
+    response = client.post(
+        "/forgot-password",
+        data={"email": email},
+        follow_redirects=True,
+    )
+
+    assert response.status_code == 200
+    assert b"Forgot password" in response.data
+    assert b"reset link" in response.data.lower()
+
+
 def test_registration_success_creates_user_and_sends_confirmation_email(client):
     email = f"jane{uuid.uuid4().hex[:8]}@example.com"
     response = client.post(

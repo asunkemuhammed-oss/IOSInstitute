@@ -16,9 +16,19 @@ app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME", "")
 app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD", "")
 app.config["MAIL_USE_TLS"] = os.environ.get("MAIL_USE_TLS", "True").lower() in {"1", "true", "yes"}
 
-VALID_ROLES = ("student", "client", "researcher")
+ROLE_LABELS = {
+    "student": "Student – project assistance",
+    "client": "Tech learner / applicant",
+    "admin": "Admin (internal access)",
+    "researcher": "Researcher",
+}
+VALID_ROLES = tuple(ROLE_LABELS.keys())
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@iosinstitute.com")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "Admin@12345")
+
+
+def role_label(role):
+    return ROLE_LABELS.get(role, role.replace("_", " ").title())
 
 
 def get_db():
@@ -125,18 +135,21 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    admin_mode = request.args.get("admin") == "1"
+    default_email = "admin@iosinstitute.com" if admin_mode else ""
+
     if request.method == "POST":
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
 
         if not email or not password:
             flash("Please enter your email and password.")
-            return render_template("login.html")
+            return render_template("login.html", prefill_email=default_email, admin_mode=admin_mode)
 
         user = get_db().execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
         if not user or not check_password_hash(user["password"], password):
             flash("Invalid email or password")
-            return render_template("login.html")
+            return render_template("login.html", prefill_email=email, admin_mode=admin_mode)
 
         session["user_id"] = user["id"]
         session["role"] = user["role"]
@@ -146,7 +159,26 @@ def login():
             return redirect(url_for("dashboard"))
         return redirect(url_for("register"))
 
-    return render_template("login.html")
+    return render_template("login.html", prefill_email=default_email, admin_mode=admin_mode)
+
+
+@app.route("/forgot-password", methods=["GET", "POST"])
+def forgot_password():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip().lower()
+        if not email:
+            flash("Please enter your email address.")
+            return render_template("forgot_password.html")
+
+        user = get_db().execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
+        if user:
+            reset_message = f"A reset link has been sent to {email}."
+        else:
+            reset_message = "If an account exists for that email, a reset link has been sent."
+
+        return render_template("forgot_password.html", reset_message=reset_message)
+
+    return render_template("forgot_password.html")
 
 
 @app.route("/logout")
@@ -258,6 +290,10 @@ def register():
             flash("Please select a valid role.")
             return render_template("register.html")
 
+        if role == "admin":
+            flash("Admin access is restricted to internal staff. Please use the admin login credentials instead.")
+            return render_template("register.html")
+
         db = get_db()
         existing_user = db.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
         if existing_user:
@@ -270,9 +306,15 @@ def register():
         )
         db.commit()
 
-        send_confirmation_email(email, full_name, role)
+        send_confirmation_email(email, full_name, role_label(role))
 
-        return render_template("success.html", full_name=full_name, email=email, role=role)
+        return render_template(
+            "success.html",
+            full_name=full_name,
+            email=email,
+            role=role_label(role),
+            role_key=role,
+        )
 
     return render_template("register.html")
 

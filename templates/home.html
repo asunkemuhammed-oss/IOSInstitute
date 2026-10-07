@@ -488,6 +488,69 @@
         max-width: 720px;
       }
 
+      .portal-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+        margin: 10px 0 8px;
+      }
+
+      .portal-card {
+        background: rgba(255,255,255,0.38);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 26px 22px;
+        box-shadow: 0 12px 28px rgba(17, 24, 39, 0.04);
+      }
+
+      .portal-card h3 {
+        margin: 0 0 10px;
+        color: var(--primary);
+        letter-spacing: -0.04em;
+        font-size: clamp(1.8rem, 2.5vw, 2.5rem);
+      }
+
+      .portal-card p {
+        margin: 0 0 18px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .portal-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .portal-actions a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 16px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .portal-actions .primary {
+        background: var(--primary);
+        color: white;
+      }
+
+      .portal-actions .secondary {
+        background: rgba(29, 91, 232, 0.08);
+        color: var(--primary);
+        border: 1px solid rgba(29, 91, 232, 0.12);
+      }
+
+      .portal-actions .ghost {
+        background: rgba(214, 122, 87, 0.08);
+        color: var(--primary);
+        border: 1px solid rgba(214, 122, 87, 0.2);
+      }
+
       .about-intro {
         display: grid;
         grid-template-columns: 1.2fr 0.8fr;
@@ -802,35 +865,18 @@
         <div class="container topbar-inner">
           <div class="brand">
             <div class="brand-mark">
-              <img src="/static/images/team/LOGOIOS.jpg" alt="IOS logo">
+              <img src="/static/images/team/REALLOGO.jpg" alt="IOS logo">
             </div>
             <div class="brand-name">IOS</div>
           </div>
 
           <nav class="nav-links">
             <div class="nav-item"><a href="#home">Home</a></div>
-
-            <div class="nav-item has-menu">
-              <a class="has-caret" href="#about">Courses</a>
-              <div class="dropdown-menu">
-                <a href="#about">Overview</a>
-                <a href="#team">Mentors</a>
-                <a href="#contact">Contact</a>
-              </div>
-            </div>
-
-            <div class="nav-item has-menu">
-              <a class="has-caret" href="#tech-skills">Pages</a>
-              <div class="dropdown-menu">
-                <a href="#tech-skills">Programs</a>
-                <a href="#research-institute">Research</a>
-                <a href="#blog">Resources</a>
-              </div>
-            </div>
-
-            <div class="nav-item"><a href="#events">Events</a></div>
-            <div class="nav-item"><a href="#teachers">Teachers</a></div>
-            <div class="nav-item"><a href="#blog">Blog</a></div>
+            <div class="nav-item"><a href="#about">About</a></div>
+            <div class="nav-item"><a href="#team">Team</a></div>
+            <div class="nav-item"><a href="#tech-skills">Skills</a></div>
+            <div class="nav-item"><a href="#research-institute">Research</a></div>
+            <div class="nav-item"><a href="#blog">Resources</a></div>
             <div class="nav-item"><a href="#contact">Contact</a></div>
           </nav>
 
@@ -911,6 +957,32 @@
             <div class="hero-stat-box">
               <div class="stat-icon">▤</div>
               <strong>Research</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="portal-section">
+          <div class="container">
+            <div class="portal-grid">
+              <div class="portal-card">
+                <h3>IOS Research Institute</h3>
+                <p>Access research support, project guidance, and institutional collaboration pathways.</p>
+                <div class="portal-actions">
+                  <a class="primary" href="/register">Sign up</a>
+                  <a class="secondary" href="/login">Login</a>
+                  <a class="ghost" href="/login?admin=1">Admin</a>
+                </div>
+              </div>
+
+              <div class="portal-card">
+                <h3>IOS Tech Skill Up</h3>
+                <p>Learn practical digital and technical skills with guided programs designed for career growth.</p>
+                <div class="portal-actions">
+                  <a class="primary" href="/register">Sign up</a>
+                  <a class="secondary" href="/login">Login</a>
+                  <a class="ghost" href="#tech-skills">Tech skills</a>
+                </div>
+              </div>
             </div>
           </div>
         </section>
