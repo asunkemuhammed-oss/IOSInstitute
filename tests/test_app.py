@@ -189,6 +189,83 @@ def test_register_page_has_student_client_and_researcher_options(client):
     assert b"Tech learner / applicant" not in response.data
 
 
+def test_tech_skill_registration_collects_course_gender_and_learning_mode(client):
+    email = f"techlearner{uuid.uuid4().hex[:8]}@example.com"
+
+    response = client.post(
+        "/tech-register",
+        data={
+            "full_name": "Tech Learner",
+            "email": email,
+            "phone_number": "08031234567",
+            "course": "Data Analysis",
+            "gender": "Female",
+            "learning_mode": "Hybrid",
+            "password": "SecurePass123",
+        },
+        follow_redirects=False,
+    )
+
+    assert response.status_code == 302
+    assert response.headers["Location"].endswith("/tech-payment")
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        user = db.execute(
+            "SELECT name, email, phone_number, course, gender, learning_mode, role FROM users WHERE email = ?",
+            (email,),
+        ).fetchone()
+
+    assert user is not None
+    assert user[0] == "Tech Learner"
+    assert user[1] == email
+    assert user[2] == "08031234567"
+    assert user[3] == "Data Analysis"
+    assert user[4] == "Female"
+    assert user[5] == "Hybrid"
+    assert user[6] == "student"
+
+
+def test_tech_payment_redirects_to_dashboard_with_success_message(client):
+    email = f"techpayer{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, course, learning_mode) VALUES (?, ?, ?, ?, ?, ?)",
+            (
+                "Tech Payer",
+                email,
+                generate_password_hash("SecurePass123", method="pbkdf2:sha256"),
+                "student",
+                "Data Science",
+                "Hybrid",
+            ),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=True,
+    )
+
+    response = client.post(
+        "/tech-payment",
+        data={"payment_option": "single"},
+        follow_redirects=True,
+    )
+
+    assert response.status_code == 200
+    assert b"Payment successful" in response.data
+    assert b"IOS Tech Skills Dashboard" in response.data
+    assert b"Data Science" in response.data
+
+
 def test_researcher_dashboard_is_available_for_researcher_role(client):
     email = f"researcher{uuid.uuid4().hex[:8]}@example.com"
 

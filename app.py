@@ -46,6 +46,22 @@ def close_db(exception):
         db.close()
 
 
+def ensure_user_profile_columns():
+    db = get_db()
+    columns = [row[1] for row in db.execute("PRAGMA table_info(users)").fetchall()]
+    for field_name, field_sql in {
+        "phone_number": "ALTER TABLE users ADD COLUMN phone_number TEXT",
+        "gender": "ALTER TABLE users ADD COLUMN gender TEXT",
+        "course": "ALTER TABLE users ADD COLUMN course TEXT",
+        "learning_mode": "ALTER TABLE users ADD COLUMN learning_mode TEXT",
+        "payment_mode": "ALTER TABLE users ADD COLUMN payment_mode TEXT",
+        "portfolio_status": "ALTER TABLE users ADD COLUMN portfolio_status TEXT DEFAULT 'not_started'",
+    }.items():
+        if field_name not in columns:
+            db.execute(field_sql)
+    db.commit()
+
+
 def init_db():
     db = get_db()
     db.execute(
@@ -58,10 +74,17 @@ def init_db():
             role TEXT NOT NULL DEFAULT 'student',
             institution TEXT,
             department TEXT,
+            phone_number TEXT,
+            gender TEXT,
+            course TEXT,
+            learning_mode TEXT,
+            payment_mode TEXT,
+            portfolio_status TEXT DEFAULT 'not_started',
             created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         )
         """
     )
+    ensure_user_profile_columns()
     db.execute(
         """
         CREATE TABLE IF NOT EXISTS research_requests (
@@ -142,17 +165,6 @@ def skill_programs():
             "certificate": "Industry-recognized certificate upon completion",
         },
         {
-            "name": "AI Automation",
-            "description": "Build practical automations that save time, improve workflows, and create smarter business processes.",
-            "tools": ["Python", "Zapier", "AI Tools", "Workflow Design"],
-            "instructor": "Mr. Samuel Adeyemi",
-            "duration": "6 weeks",
-            "curriculum": "Prompt design, automation logic, no-code productivity, AI workflow implementation",
-            "fee": "₦75,000",
-            "start_date": "02 Dec 2026",
-            "certificate": "Completion certificate + project portfolio",
-        },
-        {
             "name": "Data Science",
             "description": "Understand data science fundamentals, model building, and evidence-based decision making for real-world problems.",
             "tools": ["Python", "Pandas", "NumPy", "Machine Learning"],
@@ -175,6 +187,17 @@ def skill_programs():
             "certificate": "Certificate + live project submission",
         },
         {
+            "name": "Financial Analysis",
+            "description": "Understand budgeting, reporting, forecasting, and performance analysis for smarter financial decisions.",
+            "tools": ["Excel", "Forecasting", "Budgeting", "Reporting"],
+            "instructor": "Mr. Adebayo Oladipo",
+            "duration": "7 weeks",
+            "curriculum": "Financial modeling, ratio analysis, budget planning, scenario analysis, interpretation",
+            "fee": "₦70,000",
+            "start_date": "26 Nov 2026",
+            "certificate": "Certificate in financial analysis and decision support",
+        },
+        {
             "name": "Digital Marketing",
             "description": "Master modern digital marketing strategies, content planning, performance measurement, and social media growth.",
             "tools": ["SEO", "Content Strategy", "Ads", "Analytics"],
@@ -186,7 +209,40 @@ def skill_programs():
             "certificate": "Certificate with digital marketing workflows",
         },
         {
-            "name": "Graphic Design",
+            "name": "Cyber Security",
+            "description": "Learn the foundations of cyber defense, threat analysis, system protection, and digital risk awareness.",
+            "tools": ["Networking", "Security Tools", "Risk Analysis", "Threat Intelligence"],
+            "instructor": "Mr. Chidi Okoye",
+            "duration": "9 weeks",
+            "curriculum": "Cyber hygiene, vulnerability analysis, security monitoring, incident response basics",
+            "fee": "₦95,000",
+            "start_date": "16 Nov 2026",
+            "certificate": "Cybersecurity awareness and practical defense certificate",
+        },
+        {
+            "name": "AI Automation",
+            "description": "Build practical automations that save time, improve workflows, and create smarter business processes.",
+            "tools": ["Python", "Zapier", "AI Tools", "Workflow Design"],
+            "instructor": "Mr. Samuel Adeyemi",
+            "duration": "6 weeks",
+            "curriculum": "Prompt design, automation logic, no-code productivity, AI workflow implementation",
+            "fee": "₦75,000",
+            "start_date": "02 Dec 2026",
+            "certificate": "Completion certificate + project portfolio",
+        },
+        {
+            "name": "Content Writing and Video Editing",
+            "description": "Create compelling written content and polished video stories that engage audiences across digital channels.",
+            "tools": ["Writing", "Storytelling", "Video Editing", "Content Strategy"],
+            "instructor": "Ms. Tolu Akinwumi",
+            "duration": "6 weeks",
+            "curriculum": "Content planning, script writing, video production, editing workflows, publishing strategy",
+            "fee": "₦60,000",
+            "start_date": "08 Dec 2026",
+            "certificate": "Certificate in content creation and video storytelling",
+        },
+        {
+            "name": "Graphics Design",
             "description": "Create impactful visuals, brand identities, and digital creatives that communicate effectively.",
             "tools": ["Canva", "Photoshop", "Illustrator", "Brand Design"],
             "instructor": "Mr. Daniel Kalu",
@@ -221,18 +277,24 @@ def tech_skills_dashboard():
         return redirect(url_for("login"))
 
     programs = skill_programs()
-    selected_skill = session.get("selected_skill")
-    selected_mode = session.get("selected_mode")
-    selected_schedule = session.get("selected_schedule")
+    selected_skill = session.get("selected_skill") or user["course"] or ""
+    selected_mode = session.get("selected_mode") or user["learning_mode"] or ""
+    selected_schedule = session.get("selected_schedule") or "Flexible"
 
     if request.method == "POST":
-        selected_skill = request.form.get("preferred_skill", "")
-        selected_mode = request.form.get("learning_mode", "")
-        selected_schedule = request.form.get("schedule", "")
+        selected_skill = request.form.get("preferred_skill", selected_skill)
+        selected_mode = request.form.get("learning_mode", selected_mode)
+        selected_schedule = request.form.get("schedule", selected_schedule)
 
         session["selected_skill"] = selected_skill
         session["selected_mode"] = selected_mode
         session["selected_schedule"] = selected_schedule
+
+        get_db().execute(
+            "UPDATE users SET course = ?, learning_mode = ? WHERE id = ?",
+            (selected_skill, selected_mode, user["id"]),
+        )
+        get_db().commit()
 
         if selected_skill and selected_mode:
             flash(f"Your {selected_skill} preference has been saved for the {selected_mode} delivery format.")
@@ -283,12 +345,16 @@ def tech_payment():
             session["tech_payment_status"] = "paid"
             session["tech_payment_option"] = "split"
             session["tech_payment_amount"] = "₦50,000 total (₦25,000 + ₦25,000)"
-            flash("Tech Skills payment plan saved successfully. Your split payment is now active.")
+            get_db().execute("UPDATE users SET payment_mode = ? WHERE id = ?", ("split", user["id"]))
+            get_db().commit()
+            flash("Payment successful! Your split plan is now active on your IOS Tech Skills dashboard.")
         else:
             session["tech_payment_status"] = "paid"
             session["tech_payment_option"] = "single"
             session["tech_payment_amount"] = "₦50,000"
-            flash("Tech Skills payment recorded successfully. You can now proceed to your dashboard.")
+            get_db().execute("UPDATE users SET payment_mode = ? WHERE id = ?", ("single", user["id"]))
+            get_db().commit()
+            flash("Payment successful! Welcome to your IOS Tech Skills dashboard.")
         return redirect(url_for("tech_skills_dashboard"))
 
     return render_template(
@@ -482,6 +548,58 @@ def admin_dashboard():
     }
 
     return render_template("admin_dashboard.html", user=user, requests=rows, metrics=metrics)
+
+
+@app.route("/tech-register", methods=["GET", "POST"])
+def tech_register():
+    courses = [program["name"] for program in skill_programs()]
+
+    if request.method == "POST":
+        full_name = request.form.get("full_name", "").strip()
+        email = request.form.get("email", "").strip().lower()
+        phone_number = request.form.get("phone_number", "").strip()
+        course = request.form.get("course", "").strip()
+        gender = request.form.get("gender", "").strip()
+        learning_mode = request.form.get("learning_mode", "").strip()
+        password = request.form.get("password", "")
+
+        if not full_name or not email or not phone_number or not course or not gender or not learning_mode or not password:
+            flash("Please complete all Tech Skills registration fields.")
+            return render_template("tech_register.html", courses=courses, form=request.form)
+
+        db = get_db()
+        existing_user = db.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
+        if existing_user:
+            flash("An account with this email already exists.")
+            return render_template("tech_register.html", courses=courses, form=request.form)
+
+        db.execute(
+            "INSERT INTO users (name, email, password, phone_number, gender, course, learning_mode, role, payment_mode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (
+                full_name,
+                email,
+                generate_password_hash(password, method="pbkdf2:sha256"),
+                phone_number,
+                gender,
+                course,
+                learning_mode,
+                "student",
+                "pending",
+            ),
+        )
+        db.commit()
+
+        user = db.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
+        session["user_id"] = user["id"]
+        session["role"] = "student"
+        session["selected_skill"] = course
+        session["selected_mode"] = learning_mode
+        session["selected_schedule"] = request.form.get("schedule", "") or "Flexible"
+
+        send_confirmation_email(email, full_name, "Student")
+        return redirect(url_for("tech_payment"))
+
+    return render_template("tech_register.html", courses=courses, form={})
 
 
 @app.route("/register", methods=["GET", "POST"])

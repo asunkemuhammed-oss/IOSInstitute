@@ -6,15 +6,16 @@
     <title>IOS Tech Skills Dashboard</title>
     <style>
       :root {
-        --bg: #edf8f5;
-        --page: linear-gradient(180deg, #edf8f5 0%, #f9f5ee 100%);
-        --primary: #0a3d36;
-        --secondary: #136a5c;
-        --accent: #f4bf45;
-        --accent-soft: rgba(244, 191, 69, 0.12);
-        --text: #12333b;
-        --muted: #53657a;
-        --line: rgba(10, 61, 54, 0.12);
+        --bg: #f4f1ff;
+        --page: linear-gradient(180deg, #f3eeff 0%, #fffaf3 100%);
+        --primary: #231a52;
+        --secondary: #5b3df5;
+        --accent: #ff8f3d;
+        --accent-soft: rgba(255, 143, 61, 0.12);
+        --warm: #ffb870;
+        --text: #1c2240;
+        --muted: #5b6179;
+        --line: rgba(35, 26, 82, 0.12);
         --white: #fff;
       }
 
@@ -29,7 +30,7 @@
       .container { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
 
       .topbar {
-        background: linear-gradient(90deg, rgba(10,61,54,0.96) 0%, rgba(17,108,92,0.96) 100%);
+        background: linear-gradient(90deg, rgba(35,26,82,0.98) 0%, rgba(91,61,245,0.96) 100%);
         border-bottom: 1px solid rgba(255,255,255,0.1);
       }
       .topbar-inner { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:78px; }
@@ -68,8 +69,8 @@
       .subtitle { margin:0; color: var(--muted); font-size:1.05rem; }
       .alert {
         margin: 18px 0 0;
-        border:1px solid rgba(244,191,69,0.35);
-        background: rgba(244,191,69,0.1);
+        border:1px solid rgba(255, 143, 61, 0.35);
+        background: rgba(255, 143, 61, 0.1);
         color: var(--primary);
         border-radius: 12px;
         padding: 12px 14px;
@@ -113,13 +114,14 @@
       .primary-btn {
         border:none; background: linear-gradient(135deg, var(--primary), var(--secondary));
         color:#fff; padding: 14px 18px; border-radius: 12px; font-weight:800; cursor:pointer;
+        box-shadow: 0 10px 20px rgba(91, 61, 245, 0.18);
       }
 
       .summary {
         margin-top: 18px;
         padding: 14px 16px;
-        background: rgba(17, 107, 92, 0.05);
-        border:1px solid rgba(17, 107, 92, 0.12);
+        background: rgba(91, 61, 245, 0.05);
+        border:1px solid rgba(91, 61, 245, 0.12);
         border-radius:12px;
         color: var(--primary);
       }
@@ -151,7 +153,7 @@
           <div class="brand-mark">
             <img src="/static/images/team/REALLOGO.jpg" alt="IOS logo">
           </div>
-          <div class="brand-name">IOS</div>
+          <div class="brand-name">IOS Tech Skills Institute</div>
         </div>
         <nav class="nav">
           <a href="/">Home</a>
@@ -165,9 +167,9 @@
 
     <main class="page">
       <div class="container panel">
-        <span class="eyebrow">Tech Skills portal</span>
+        <span class="eyebrow">Tech Skills institute</span>
         <h1>IOS Tech Skills Dashboard</h1>
-        <p class="subtitle">Welcome, {{ user["name"] }}. Choose the skill you want to focus on and set your preferred delivery mode.</p>
+        <p class="subtitle">Welcome, {{ user["name"] }}. Your training workspace is built for practical learning, skill growth, and career-ready outcomes.</p>
 
         {% with messages = get_flashed_messages() %}
           {% if messages %}
@@ -179,10 +181,32 @@
           <h2>Payment plan</h2>
           <p style="margin: 0 0 12px; color: var(--muted);">Course fee: <strong>₦50,000 total</strong>. You can pay once or split in two installments of <strong>₦25,000 + ₦25,000</strong>.</p>
           <p style="margin: 0 0 14px; color: var(--muted);">Demo payment status: {% if session.get('tech_payment_status') == 'paid' %}Paid{% else %}Not paid yet{% endif %}</p>
-          <a class="primary-btn" href="/tech-payment">Pay for skill training</a>
+          <a class="primary-btn" href="/tech-payment">Make payment</a>
         </div>
 
         <div class="layout">
+          <div class="card">
+            <h2>My learning overview</h2>
+            <div class="program-list" style="margin-top: 12px;">
+              <div class="program-item">
+                <strong>Current course</strong>
+                <div>{{ selected_skill or user['course'] or 'No course selected yet' }}</div>
+              </div>
+              <div class="program-item">
+                <strong>Delivery mode</strong>
+                <div>{{ selected_mode or user['learning_mode'] or 'Not set yet' }}</div>
+              </div>
+              <div class="program-item">
+                <strong>Portfolio status</strong>
+                <div>{{ user['portfolio_status'] or 'Not started' }}</div>
+              </div>
+              <div class="program-item">
+                <strong>Next class</strong>
+                <div>Weekday coaching session · 5:00 PM - 7:00 PM</div>
+              </div>
+            </div>
+          </div>
+
           <div class="card">
             <h2>Choose your skill</h2>
             <form method="post" action="/tech-skills-dashboard">
@@ -230,6 +254,22 @@
                 <div>Schedule: {{ selected_schedule or 'Flexible' }}</div>
               </div>
             {% endif %}
+          </div>
+        </div>
+
+        <div class="layout" style="margin-top: 24px;">
+          <div class="card">
+            <h2>Upcoming learning</h2>
+            <div class="program-list">
+              <div class="program-item">
+                <strong>Live mentorship session</strong>
+                <div>Introduction to practical case studies and project planning.</div>
+              </div>
+              <div class="program-item">
+                <strong>Assignment</strong>
+                <div>Submit a short project brief aligned to your chosen track.</div>
+              </div>
+            </div>
           </div>
 
           <div class="card">

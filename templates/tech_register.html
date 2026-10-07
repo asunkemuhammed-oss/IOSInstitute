@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IOS Tech SkillUp Registration</title>
+    <style>
+      :root {
+        --bg: #edf7f4;
+        --page: linear-gradient(180deg, #edf7f4 0%, #f8f5f0 100%);
+        --primary: #0b3d36;
+        --secondary: #0d6a5e;
+        --accent: #f5c65d;
+        --text: #17313d;
+        --muted: #58707b;
+        --line: rgba(11, 61, 54, 0.12);
+        --white: #fff;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { margin: 0; min-height: 100%; font-family: Arial, Helvetica, sans-serif; background: var(--page); color: var(--text); }
+      body { display: flex; justify-content: center; align-items: center; padding: 32px 18px; }
+      .card {
+        width: min(840px, 100%);
+        background: rgba(255,255,255,0.82);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 18px 36px rgba(11, 61, 54, 0.08);
+      }
+      .header {
+        background: linear-gradient(90deg, rgba(11,61,54,0.96), rgba(13,106,94,0.94));
+        color: var(--white);
+        padding: 28px 30px;
+      }
+      .header h1 { margin: 0 0 8px; font-size: clamp(1.8rem, 3vw, 2.5rem); }
+      .header p { margin: 0; color: rgba(255,255,255,0.8); line-height: 1.6; }
+      .body { padding: 28px 30px 32px; }
+      .message {
+        margin-bottom: 18px;
+        background: rgba(245, 198, 93, 0.12);
+        border: 1px solid rgba(245, 198, 93, 0.35);
+        border-radius: 12px;
+        color: var(--primary);
+        padding: 12px 14px;
+        font-weight: 700;
+      }
+      form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+      .field { display: flex; flex-direction: column; gap: 8px; }
+      .field.full { grid-column: 1 / -1; }
+      label { font-weight: 700; color: var(--primary); }
+      input, select, button {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.8);
+        font-size: 1rem;
+        color: var(--text);
+      }
+      select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--primary) 50%), linear-gradient(135deg, var(--primary) 50%, transparent 50%); background-position: calc(100% - 18px) calc(50% - 2px), calc(100% - 12px) calc(50% - 2px); background-size: 6px 6px, 6px 6px; background-repeat: no-repeat; }
+      .payment-note {
+        margin-top: 8px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(13, 106, 94, 0.15);
+        background: rgba(13, 106, 94, 0.04);
+        color: var(--muted);
+        line-height: 1.6;
+        grid-column: 1 / -1;
+      }
+      button {
+        margin-top: 8px;
+        border: none;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: var(--white);
+        font-weight: 800;
+        cursor: pointer;
+      }
+      .help {
+        grid-column: 1 / -1;
+        text-align: center;
+        color: var(--muted);
+      }
+      .help a { color: var(--secondary); font-weight: 700; }
+      @media (max-width: 640px) {
+        form { grid-template-columns: 1fr; }
+        .header, .body { padding-left: 18px; padding-right: 18px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="header">
+        <h1>IOS Tech SkillUp Registration</h1>
+        <p>Create your student account, choose your course, and continue to the payment page to secure your admission.</p>
+      </div>
+
+      <div class="body">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="message">{{ messages[0] }}</div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="post" action="/tech-register">
+          <div class="field full">
+            <label for="full_name">Full name</label>
+            <input id="full_name" name="full_name" type="text" value="{{ form.get('full_name', '') if form else '' }}" required>
+          </div>
+
+          <div class="field">
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" value="{{ form.get('email', '') if form else '' }}" required>
+          </div>
+
+          <div class="field">
+            <label for="phone_number">Phone number</label>
+            <input id="phone_number" name="phone_number" type="tel" value="{{ form.get('phone_number', '') if form else '' }}" required>
+          </div>
+
+          <div class="field">
+            <label for="course">Course to apply</label>
+            <select id="course" name="course" required>
+              <option value="">Select a course</option>
+              {% for course in courses %}
+                <option value="{{ course }}" {% if form and form.get('course') == course %}selected{% endif %}>{{ course }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+              <option value="">Select gender</option>
+              <option value="Male" {% if form and form.get('gender') == 'Male' %}selected{% endif %}>Male</option>
+              <option value="Female" {% if form and form.get('gender') == 'Female' %}selected{% endif %}>Female</option>
+              <option value="Other" {% if form and form.get('gender') == 'Other' %}selected{% endif %}>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="learning_mode">Mode of learning</label>
+            <select id="learning_mode" name="learning_mode" required>
+              <option value="">Select a mode</option>
+              <option value="Online" {% if form and form.get('learning_mode') == 'Online' %}selected{% endif %}>Online</option>
+              <option value="Physical" {% if form and form.get('learning_mode') == 'Physical' %}selected{% endif %}>Physical</option>
+              <option value="Hybrid" {% if form and form.get('learning_mode') == 'Hybrid' %}selected{% endif %}>Hybrid</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" required>
+          </div>
+
+          <div class="payment-note">
+            <strong>Demo payment step:</strong> After registration, you will be taken to the payment screen. The Tech Skills program fee is ₦50,000 total and can be paid once or split into two installments of ₦25,000 + ₦25,000.
+          </div>
+
+          <button type="submit">Register and continue to payment</button>
+
+          <div class="help">
+            Already have an account? <a href="/login">Login</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
