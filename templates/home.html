@@ -499,19 +499,59 @@
         background: rgba(255,255,255,0.38);
         border: 1px solid var(--line);
         border-radius: 24px;
-        padding: 26px 22px;
+        padding: 18px 18px 20px;
         box-shadow: 0 12px 28px rgba(17, 24, 39, 0.04);
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .portal-card--research { background: linear-gradient(145deg, rgba(13, 45, 76, 0.06), rgba(29, 91, 232, 0.1)); }
+      .portal-card--skills { background: linear-gradient(145deg, rgba(245, 189, 51, 0.08), rgba(255, 255, 255, 0.7)); }
+      .portal-card--consultancy { background: linear-gradient(145deg, rgba(68, 104, 173, 0.08), rgba(255, 255, 255, 0.72)); }
+
+      .portal-visual {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 140px;
+        border-radius: 18px;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+      }
+
+      .portal-visual::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(15,45,77,0.08), rgba(15,45,77,0.28));
+      }
+
+      .portal-icon {
+        position: relative;
+        z-index: 1;
+        width: 62px;
+        height: 62px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: rgba(255,255,255,0.9);
+        font-size: 1.8rem;
+        box-shadow: 0 12px 22px rgba(17, 24, 39, 0.12);
       }
 
       .portal-card h3 {
-        margin: 0 0 10px;
+        margin: 0;
         color: var(--primary);
         letter-spacing: -0.04em;
         font-size: clamp(1.8rem, 2.5vw, 2.5rem);
       }
 
       .portal-card p {
-        margin: 0 0 18px;
+        margin: 0;
         color: var(--muted);
         line-height: 1.7;
       }
@@ -944,16 +984,21 @@
           </div>
 
           <div class="container hero-stat-strip">
-            <div class="title">Best platform for skills, research, and growth</div>
+            <div class="title">Best platform for tech skills, research, and guidance</div>
 
             <div class="hero-stat-box">
               <div class="stat-icon">◎</div>
-              <strong>Technology</strong>
+              <strong>Tech Skills</strong>
             </div>
 
             <div class="hero-stat-box">
               <div class="stat-icon">▤</div>
               <strong>Research</strong>
+            </div>
+
+            <div class="hero-stat-box">
+              <div class="stat-icon">✦</div>
+              <strong>Consultancy</strong>
             </div>
           </div>
         </section>
@@ -961,7 +1006,10 @@
         <section class="portal-section">
           <div class="container">
             <div class="portal-grid">
-              <div class="portal-card">
+              <div class="portal-card portal-card--research">
+                <div class="portal-visual" style="background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80');">
+                  <div class="portal-icon">🔬</div>
+                </div>
                 <h3><a href="/research-institute" style="color: inherit; text-decoration: none;">IOS Research Institute</a></h3>
                 <p>Access research support, project guidance, and institutional collaboration pathways.</p>
                 <div class="portal-actions">
@@ -971,8 +1019,11 @@
                 </div>
               </div>
 
-              <div class="portal-card">
-                <h3>IOS Tech Skill Up</h3>
+              <div class="portal-card portal-card--skills">
+                <div class="portal-visual" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80');">
+                  <div class="portal-icon">💻</div>
+                </div>
+                <h3><a href="/tech-skillup" style="color: inherit; text-decoration: none;">IOS Tech Skill Up</a></h3>
                 <p>Learn practical digital and technical skills with guided programs designed for career growth.</p>
                 <div class="portal-actions">
                   <a class="primary" href="/tech-skillup">Enter</a>
@@ -981,8 +1032,11 @@
                 </div>
               </div>
 
-              <div class="portal-card">
-                <h3>IOS Educational Consultant</h3>
+              <div class="portal-card portal-card--consultancy">
+                <div class="portal-visual" style="background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80');">
+                  <div class="portal-icon">🎓</div>
+                </div>
+                <h3><a href="/educational-consultancy" style="color: inherit; text-decoration: none;">IOS Educational Consultant</a></h3>
                 <p>Get guidance on study planning, career direction, and institutional support with a direct consultation booking.</p>
                 <div class="portal-actions">
                   <a class="primary" href="/educational-consultancy">Book now</a>

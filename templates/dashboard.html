@@ -6,20 +6,22 @@
     <title>IOSInstitute | Dashboard</title>
     <style>
       :root {
-        --bg: #efefe9;
-        --panel: rgba(255,255,255,0.42);
-        --card: rgba(255,255,255,0.52);
+        --bg: #fff8ef;
+        --page: linear-gradient(180deg, #fffaf3 0%, #eef5ff 100%);
+        --panel: rgba(255,255,255,0.44);
+        --card: rgba(255,255,255,0.5);
         --text: #1a2430;
         --muted: #53606f;
-        --primary: #1d2e41;
-        --accent: #d67a57;
+        --primary: #10284a;
+        --accent: #f3b437;
+        --accent-soft: rgba(243, 180, 55, 0.12);
         --line: rgba(17,24,39,0.12);
       }
       * { box-sizing: border-box; }
       body {
         margin: 0;
         font-family: Arial, Helvetica, sans-serif;
-        background: var(--bg);
+        background: var(--page);
         color: var(--text);
       }
       .container {
@@ -28,8 +30,8 @@
       }
       .topbar {
         padding: 18px 0;
-        background: rgba(239,239,233,0.8);
-        border-bottom: 1px solid var(--line);
+        background: linear-gradient(90deg, rgba(16,40,74,0.96) 0%, rgba(29,91,232,0.92) 100%);
+        border-bottom: 1px solid rgba(255,255,255,0.12);
       }
       .header-inner {
         display: flex;
@@ -43,16 +45,22 @@
         gap: 12px;
       }
       .brand-mark {
-        width: 34px;
-        height: 34px;
-        border-radius: 9px;
-        background: var(--primary);
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
-        font-weight: 700;
-        font-size: 0.92rem;
+        background: rgba(255,255,255,0.14);
+        border: 1px solid rgba(255,255,255,0.18);
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+      }
+      .brand-mark img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
       }
       .brand-text {
         line-height: 1.1;
@@ -61,11 +69,11 @@
         font-size: 1.4rem;
         font-weight: 700;
         letter-spacing: -0.06em;
-        color: var(--primary);
+        color: #fff;
       }
       .brand-sub {
         font-size: 0.7rem;
-        color: var(--muted);
+        color: rgba(255,255,255,0.82);
         letter-spacing: 0.12em;
         text-transform: uppercase;
       }
@@ -76,14 +84,14 @@
         flex-wrap: wrap;
       }
       .nav a {
-        color: var(--primary);
+        color: #fff;
         font-size: 0.9rem;
         font-weight: 600;
       }
       .nav .logout {
-        background: rgba(255,255,255,0.5);
-        border: 1px solid var(--line);
-        color: var(--primary);
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.17);
+        color: #fff;
         padding: 10px 16px;
         border-radius: 999px;
       }
@@ -101,8 +109,8 @@
         margin-bottom: 18px;
         padding: 8px 12px;
         border-radius: 999px;
-        background: rgba(214,122,87,0.1);
-        color: var(--accent);
+        background: var(--accent-soft);
+        color: var(--primary);
         font-size: 0.76rem;
         font-weight: 700;
         letter-spacing: 0.12em;
@@ -328,10 +336,12 @@
     <header class="topbar">
       <div class="container header-inner">
         <div class="brand">
-          <div class="brand-mark">IOS</div>
+          <div class="brand-mark">
+            <img src="/static/images/team/REALLOGO.jpg" alt="IOS logo">
+          </div>
           <div class="brand-text">
             <div class="brand-name">IOS</div>
-            <div class="brand-sub">Institute of Scholars</div>
+            <div class="brand-sub">Tech Skills Institute</div>
           </div>
         </div>
 
@@ -350,9 +360,9 @@
     <main class="page">
       <div class="container panel">
         <div class="dashboard-header">
-          <span class="tiny">Research dashboard</span>
+          <span class="tiny">Tech Skills dashboard</span>
           <h1>Student/Client Dashboard</h1>
-          <p class="welcome">Welcome, {{ user["name"] }} ({{ user["role"]|title }}). Your research workspace is ready for discovery, requests, and project support.</p>
+          <p class="welcome"><strong>IOS Tech Skills Institute</strong> · Welcome, {{ user["name"] }} ({{ user["role"]|title }}). Your learning workspace is ready for skill-building, project support, and course exploration.</p>
         </div>
 
         {% with messages = get_flashed_messages() %}
