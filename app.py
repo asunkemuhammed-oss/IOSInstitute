@@ -444,6 +444,8 @@ def login():
             return redirect(url_for("dashboard"))
         return redirect(url_for("register"))
 
+    return render_template("login.html", prefill_email=default_email, admin_mode=admin_mode)
+
 
 @app.route("/forgot-password", methods=["GET", "POST"])
 def forgot_password():
