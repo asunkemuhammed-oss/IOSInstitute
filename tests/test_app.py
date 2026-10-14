@@ -190,6 +190,65 @@ def test_register_page_has_student_client_and_researcher_options(client):
     assert b"Tech learner / applicant" not in response.data
 
 
+def test_register_duplicate_email_shows_error_without_crashing(client):
+    email = f"duplicate{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+            ("Existing User", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student"),
+        )
+        db.commit()
+
+    response = client.post(
+        "/register",
+        data={
+            "full_name": "Duplicate User",
+            "email": email,
+            "password": "AnotherPass123",
+            "role": "student",
+        },
+        follow_redirects=True,
+    )
+
+    assert response.status_code == 200
+    assert b"already exists" in response.data.lower()
+
+
+def test_tech_register_duplicate_email_shows_error_without_crashing(client):
+    email = f"techdup{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, course, learning_mode) VALUES (?, ?, ?, ?, ?, ?)",
+            ("Tech Existing", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student", "Data Analysis", "Online"),
+        )
+        db.commit()
+
+    response = client.post(
+        "/tech-register",
+        data={
+            "full_name": "Tech Duplicate User",
+            "email": email,
+            "phone_number": "09000000000",
+            "course": "Data Analysis",
+            "gender": "Female",
+            "learning_mode": "Online",
+            "password": "AnotherPass123",
+        },
+        follow_redirects=True,
+    )
+
+    assert response.status_code == 200
+    assert b"already exists" in response.data.lower()
+
+
 def test_researcher_registration_stores_cv_and_portfolio_files(client):
     email = f"researcherupload{uuid.uuid4().hex[:8]}@example.com"
 
@@ -297,7 +356,7 @@ def test_tech_payment_redirects_to_dashboard_with_success_message(client):
 
     assert response.status_code == 200
     assert b"Payment successful" in response.data
-    assert b"IOS Tech Skills Dashboard" in response.data
+    assert b"IOS Tech SkillUp Dashboard" in response.data
     assert b"Data Science" in response.data
 
 
@@ -421,6 +480,99 @@ def test_admin_dashboard_lists_requests(client):
     assert b"24" in response.data
     assert b"AI in Education" in response.data
     assert b"submitted" in response.data
+
+
+def test_admin_dashboard_students_are_paginated(client):
+    admin_email = f"admin{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+            ("Admin User", admin_email, generate_password_hash("AdminPass123", method="pbkdf2:sha256"), "admin"),
+        )
+        for index in range(1, 15):
+            db.execute(
+                "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+                (f"Student {index}", f"student{index}{uuid.uuid4().hex[:4]}@example.com", generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student"),
+            )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": admin_email, "password": "AdminPass123"},
+        follow_redirects=True,
+    )
+
+    response = client.get("/admin-dashboard/students?page=2")
+    assert response.status_code == 200
+    assert b"page=2" in response.data
+    assert b"page=3" in response.data
+    assert b"Prev" in response.data
+    assert b"Next" in response.data
+
+
+def test_admin_dashboard_lists_tech_enrollments(client):
+    admin_email = f"admin{uuid.uuid4().hex[:8]}@example.com"
+    tech_email = f"tech{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, course, learning_mode, payment_mode) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            ("Tech Student", tech_email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student", "Web Development", "Online", "₦8,500"),
+        )
+        db.execute(
+            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+            ("Admin User", admin_email, generate_password_hash("AdminPass123", method="pbkdf2:sha256"), "admin"),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": admin_email, "password": "AdminPass123"},
+        follow_redirects=True,
+    )
+
+    response = client.get("/admin-dashboard")
+    assert response.status_code == 200
+    assert b"Web Development" in response.data
+    assert b"Tech Students" in response.data
+    assert tech_email.encode() in response.data
+
+
+def test_admin_dashboard_filter_and_search_tech_tab(client):
+    admin_email = f"admin{uuid.uuid4().hex[:8]}@example.com"
+    tech_email = f"tech{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, course, learning_mode, payment_mode) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            ("Tech Student", tech_email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student", "Web Development", "Online", "₦8,500"),
+        )
+        db.execute(
+            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+            ("Admin User", admin_email, generate_password_hash("AdminPass123", method="pbkdf2:sha256"), "admin"),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": admin_email, "password": "AdminPass123"},
+        follow_redirects=True,
+    )
+
+    response = client.get("/admin-dashboard?view=tech&q=web")
+    assert response.status_code == 200
+    assert b"Tech Students" in response.data
+    assert b"Web Development" in response.data
 
 
 def test_forgot_password_page_shows_reset_message(client):

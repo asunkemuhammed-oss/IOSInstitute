@@ -1,6 +1,7 @@
 import os
 import sqlite3
 from email.message import EmailMessage
+from math import ceil
 from smtplib import SMTP
 
 from flask import Flask, flash, g, redirect, render_template, request, session, url_for
@@ -207,6 +208,7 @@ def skill_programs():
             "fee": "₦85,000",
             "start_date": "18 Nov 2026",
             "certificate": "Industry-recognized certificate upon completion",
+            "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80",
         },
         {
             "name": "Data Science",
@@ -218,6 +220,7 @@ def skill_programs():
             "fee": "₦120,000",
             "start_date": "09 Nov 2026",
             "certificate": "Certificate and capstone project assessment",
+            "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80",
         },
         {
             "name": "Web Development",
@@ -229,6 +232,7 @@ def skill_programs():
             "fee": "₦150,000",
             "start_date": "20 Nov 2026",
             "certificate": "Certificate + live project submission",
+            "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80",
         },
         {
             "name": "Financial Analysis",
@@ -240,6 +244,7 @@ def skill_programs():
             "fee": "₦70,000",
             "start_date": "26 Nov 2026",
             "certificate": "Certificate in financial analysis and decision support",
+            "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=80",
         },
         {
             "name": "Digital Marketing",
@@ -251,6 +256,7 @@ def skill_programs():
             "fee": "₦65,000",
             "start_date": "30 Nov 2026",
             "certificate": "Certificate with digital marketing workflows",
+            "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80",
         },
         {
             "name": "Cyber Security",
@@ -262,6 +268,7 @@ def skill_programs():
             "fee": "₦95,000",
             "start_date": "16 Nov 2026",
             "certificate": "Cybersecurity awareness and practical defense certificate",
+            "image": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
         },
         {
             "name": "AI Automation",
@@ -273,6 +280,7 @@ def skill_programs():
             "fee": "₦75,000",
             "start_date": "02 Dec 2026",
             "certificate": "Completion certificate + project portfolio",
+            "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=900&q=80",
         },
         {
             "name": "Content Writing and Video Editing",
@@ -284,6 +292,7 @@ def skill_programs():
             "fee": "₦60,000",
             "start_date": "08 Dec 2026",
             "certificate": "Certificate in content creation and video storytelling",
+            "image": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80",
         },
         {
             "name": "Graphics Design",
@@ -295,6 +304,7 @@ def skill_programs():
             "fee": "₦60,000",
             "start_date": "14 Dec 2026",
             "certificate": "Certificate and portfolio showcase",
+            "image": "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80",
         },
     ]
 
@@ -388,26 +398,26 @@ def tech_payment():
         if payment_option == "split":
             session["tech_payment_status"] = "paid"
             session["tech_payment_option"] = "split"
-            session["tech_payment_amount"] = "₦50,000 total (₦25,000 + ₦25,000)"
+            session["tech_payment_amount"] = "₦8,500 total (₦4,250 + ₦4,250)"
             get_db().execute("UPDATE users SET payment_mode = ? WHERE id = ?", ("split", user["id"]))
             get_db().commit()
-            flash("Payment successful! Your split plan is now active on your IOS Tech Skills dashboard.")
+            flash("Payment successful! Your split plan is now active on your IOS Tech SkillUp dashboard.")
         else:
             session["tech_payment_status"] = "paid"
             session["tech_payment_option"] = "single"
-            session["tech_payment_amount"] = "₦50,000"
+            session["tech_payment_amount"] = "₦8,500"
             get_db().execute("UPDATE users SET payment_mode = ? WHERE id = ?", ("single", user["id"]))
             get_db().commit()
-            flash("Payment successful! Welcome to your IOS Tech Skills dashboard.")
+            flash("Payment successful! Welcome to your IOS Tech SkillUp dashboard.")
         return redirect(url_for("tech_skills_dashboard"))
 
     return render_template(
         "payment.html",
         portal="tech",
         title="IOS Tech SkillUp",
-        description="The skill program has a ₦50,000 total fee. You may pay it once or split it into two installments as a demo payment plan.",
-        fee="₦50,000",
-        payment_options=["Pay once (₦50,000)", "Pay twice (₦25,000 + ₦25,000)"],
+        description="The skill program has a ₦8,500 total fee. You may pay it once or split it into two installments as a demo payment plan.",
+        fee="₦8,500",
+        payment_options=["Pay once (₦8,500)", "Pay twice (₦4,250 + ₦4,250)"],
         demo_note="Demo checkout: this is a sample onboarding payment flow for the Tech Skills portal.",
     )
 
@@ -430,6 +440,7 @@ def educational_consultancy():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     admin_mode = request.args.get("admin") == "1"
+    tech_mode = request.args.get("portal") == "tech"
     default_email = "admin@iosinstitute.com" if admin_mode else ""
 
     if request.method == "POST":
@@ -438,12 +449,12 @@ def login():
 
         if not email or not password:
             flash("Please enter your email and password.")
-            return render_template("login.html", prefill_email=default_email, admin_mode=admin_mode)
+            return render_template("login.html", prefill_email=default_email, admin_mode=admin_mode, portal="tech" if tech_mode else "institute")
 
         user = get_db().execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
         if not user or not check_password_hash(user["password"], password):
             flash("Invalid email or password")
-            return render_template("login.html", prefill_email=email, admin_mode=admin_mode)
+            return render_template("login.html", prefill_email=email, admin_mode=admin_mode, portal="tech" if tech_mode else "institute")
 
         session["user_id"] = user["id"]
         session["role"] = user["role"]
@@ -462,7 +473,12 @@ def login():
             return redirect(url_for("dashboard"))
         return redirect(url_for("register"))
 
-    return render_template("login.html", prefill_email=default_email, admin_mode=admin_mode)
+    return render_template("login.html", prefill_email=default_email, admin_mode=admin_mode, portal="tech" if tech_mode else "institute")
+
+
+@app.route("/tech-login")
+def tech_login():
+    return redirect(url_for("login", portal="tech"))
 
 
 @app.route("/forgot-password", methods=["GET", "POST"])
@@ -631,11 +647,169 @@ def researcher_upload_documents():
     return redirect(url_for("researcher_dashboard"))
 
 
+def paginate_items(items, page, per_page=10):
+    page = max(1, int(page or 1))
+    total_items = len(items)
+    total_pages = max(1, ceil(total_items / per_page)) if total_items else 1
+    page = min(page, total_pages)
+    start = (page - 1) * per_page
+    end = start + per_page
+    return items[start:end], page, total_pages
+
+
+def admin_dashboard_data(active_view="overview", search_query="", page=1):
+    user = current_user()
+    if not user or user["role"] != "admin":
+        return None
+
+    search_query = (search_query or "").strip().lower()
+
+    rows = get_db().execute(
+        """
+        SELECT rr.id, rr.research_type, rr.topic, rr.institution, rr.department, rr.deadline, rr.status, u.name AS student_name
+        FROM research_requests rr
+        JOIN users u ON u.id = rr.user_id
+        ORDER BY rr.id DESC
+        """
+    ).fetchall()
+
+    student_rows = get_db().execute(
+        """
+        SELECT id, name, email, role, course, learning_mode, payment_mode, created_at
+        FROM users
+        WHERE role IN ('student', 'client')
+        ORDER BY created_at DESC
+        """
+    ).fetchall()
+
+    tech_rows = get_db().execute(
+        """
+        SELECT name, email, course, learning_mode, payment_mode, created_at
+        FROM users
+        WHERE role IN ('student', 'client')
+          AND (course IS NOT NULL OR learning_mode IS NOT NULL OR payment_mode IS NOT NULL)
+        ORDER BY created_at DESC
+        """
+    ).fetchall()
+
+    courses = skill_programs()
+
+    def matches_search(row_dict):
+        if not search_query:
+            return True
+        haystack = " ".join(str((row_dict.get(key) or "")).lower() for key in row_dict)
+        return search_query in haystack
+
+    filtered_requests = [
+        row for row in rows
+        if matches_search({
+            "student_name": row["student_name"],
+            "research_type": row["research_type"],
+            "topic": row["topic"],
+            "institution": row["institution"],
+            "department": row["department"],
+            "status": row["status"],
+        })
+    ]
+    filtered_students = [
+        row for row in student_rows
+        if matches_search({
+            "name": row["name"],
+            "email": row["email"],
+            "role": row["role"],
+            "course": row["course"],
+            "learning_mode": row["learning_mode"],
+            "payment_mode": row["payment_mode"],
+        })
+    ]
+    filtered_tech = [
+        row for row in tech_rows
+        if matches_search({
+            "name": row["name"],
+            "email": row["email"],
+            "course": row["course"],
+            "learning_mode": row["learning_mode"],
+            "payment_mode": row["payment_mode"],
+        })
+    ]
+    filtered_courses = [
+        program for program in courses
+        if not search_query or search_query in " ".join([
+            program.get("name", ""),
+            program.get("description", ""),
+            program.get("instructor", ""),
+            " ".join(program.get("tools", [])),
+        ]).lower()
+    ]
+
+    page = max(1, int(page or 1))
+    if active_view == "students":
+        current_view_items = filtered_students
+    elif active_view == "tech":
+        current_view_items = filtered_tech
+    elif active_view == "courses":
+        current_view_items = filtered_courses
+    else:
+        current_view_items = filtered_requests
+
+    paginated_requests, _, _ = paginate_items(filtered_requests, page)
+    paginated_students, _, _ = paginate_items(filtered_students, page)
+    paginated_tech, _, _ = paginate_items(filtered_tech, page)
+    paginated_courses, _, _ = paginate_items(filtered_courses, page)
+    current_view_page_items, current_page, total_pages = paginate_items(current_view_items, page)
+
+    if active_view == "students":
+        paginated_students = current_view_page_items
+    elif active_view == "tech":
+        paginated_tech = current_view_page_items
+    elif active_view == "courses":
+        paginated_courses = current_view_page_items
+    elif active_view == "research":
+        paginated_requests = current_view_page_items
+
+    pending_research = sum(1 for row in rows if str(row["status"]).lower() in {"submitted", "in review"})
+    approved_research = sum(1 for row in rows if str(row["status"]).lower() == "approved")
+    completed_research = sum(1 for row in rows if str(row["status"]).lower() == "completed")
+
+    metrics = {
+        "users": 1245,
+        "researchers": 38,
+        "active_projects": 76,
+        "completed_projects": 412,
+        "courses": 24,
+        "revenue": "₦12.4M",
+        "pending_research": pending_research,
+        "approved_research": approved_research,
+        "completed_research": completed_research,
+        "student_count": len(student_rows),
+        "tech_count": len(tech_rows),
+    }
+
+    return {
+        "user": user,
+        "requests": paginated_requests,
+        "students": paginated_students,
+        "tech_enrollments": paginated_tech,
+        "courses": paginated_courses,
+        "metrics": metrics,
+        "active_view": active_view,
+        "search_query": search_query,
+        "page": current_page,
+        "total_pages": total_pages,
+        "per_page": 10,
+    }
+
+
 @app.route("/admin-dashboard", methods=["GET", "POST"])
+@app.route("/admin-dashboard/overview", methods=["GET", "POST"])
 def admin_dashboard():
     user = current_user()
     if not user or user["role"] != "admin":
         return redirect(url_for("login"))
+
+    active_view = request.args.get("view", "overview") or "overview"
+    search_query = (request.args.get("q", "") or "").strip().lower()
+    page = request.args.get("page", 1, type=int) or 1
 
     if request.method == "POST":
         request_id = request.form.get("request_id")
@@ -648,25 +822,77 @@ def admin_dashboard():
             get_db().commit()
             flash("Request status updated successfully.")
 
-    rows = get_db().execute(
-        """
-        SELECT rr.id, rr.research_type, rr.topic, rr.institution, rr.department, rr.deadline, rr.status, u.name AS student_name
-        FROM research_requests rr
-        JOIN users u ON u.id = rr.user_id
-        ORDER BY rr.id DESC
-        """
-    ).fetchall()
+    context = admin_dashboard_data(active_view=active_view, search_query=search_query, page=page)
+    if context is None:
+        return redirect(url_for("login"))
+    return render_template("admin_dashboard.html", **context)
 
-    metrics = {
-        "users": 1245,
-        "researchers": 38,
-        "active_projects": 76,
-        "completed_projects": 412,
-        "courses": 24,
-        "revenue": "₦12.4M",
-    }
 
-    return render_template("admin_dashboard.html", user=user, requests=rows, metrics=metrics)
+@app.route("/admin-dashboard/students", methods=["GET", "POST"])
+def admin_students():
+    user = current_user()
+    if not user or user["role"] != "admin":
+        return redirect(url_for("login"))
+    if request.method == "POST":
+        return redirect(url_for("admin_students", q=request.args.get("q", "")))
+    context = admin_dashboard_data(active_view="students", search_query=request.args.get("q", ""), page=request.args.get("page", 1, type=int) or 1)
+    if context is None:
+        return redirect(url_for("login"))
+    return render_template("admin_dashboard.html", **context)
+
+
+@app.route("/admin-dashboard/research", methods=["GET", "POST"])
+def admin_research():
+    user = current_user()
+    if not user or user["role"] != "admin":
+        return redirect(url_for("login"))
+    if request.method == "POST":
+        request_id = request.form.get("request_id")
+        status = request.form.get("status", "submitted")
+        if request_id:
+            get_db().execute(
+                "UPDATE research_requests SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+                (status, int(request_id)),
+            )
+            get_db().commit()
+            flash("Request status updated successfully.")
+    context = admin_dashboard_data(active_view="research", search_query=request.args.get("q", ""), page=request.args.get("page", 1, type=int) or 1)
+    if context is None:
+        return redirect(url_for("login"))
+    return render_template("admin_dashboard.html", **context)
+
+
+@app.route("/admin-dashboard/tech", methods=["GET", "POST"])
+def admin_tech():
+    user = current_user()
+    if not user or user["role"] != "admin":
+        return redirect(url_for("login"))
+    context = admin_dashboard_data(active_view="tech", search_query=request.args.get("q", ""), page=request.args.get("page", 1, type=int) or 1)
+    if context is None:
+        return redirect(url_for("login"))
+    return render_template("admin_dashboard.html", **context)
+
+
+@app.route("/admin-dashboard/courses", methods=["GET", "POST"])
+def admin_courses():
+    user = current_user()
+    if not user or user["role"] != "admin":
+        return redirect(url_for("login"))
+    context = admin_dashboard_data(active_view="courses", search_query=request.args.get("q", ""), page=request.args.get("page", 1, type=int) or 1)
+    if context is None:
+        return redirect(url_for("login"))
+    return render_template("admin_dashboard.html", **context)
+
+
+@app.route("/admin-dashboard/settings", methods=["GET", "POST"])
+def admin_settings():
+    user = current_user()
+    if not user or user["role"] != "admin":
+        return redirect(url_for("login"))
+    context = admin_dashboard_data(active_view="settings", search_query=request.args.get("q", ""), page=request.args.get("page", 1, type=int) or 1)
+    if context is None:
+        return redirect(url_for("login"))
+    return render_template("admin_dashboard.html", **context)
 
 
 @app.route("/tech-register", methods=["GET", "POST"])
@@ -692,21 +918,26 @@ def tech_register():
             flash("An account with this email already exists.")
             return render_template("tech_register.html", courses=courses, form=request.form)
 
-        db.execute(
-            "INSERT INTO users (name, email, password, phone_number, gender, course, learning_mode, role, payment_mode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (
-                full_name,
-                email,
-                generate_password_hash(password, method="pbkdf2:sha256"),
-                phone_number,
-                gender,
-                course,
-                learning_mode,
-                "student",
-                "pending",
-            ),
-        )
-        db.commit()
+        try:
+            db.execute(
+                "INSERT INTO users (name, email, password, phone_number, gender, course, learning_mode, role, payment_mode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (
+                    full_name,
+                    email,
+                    generate_password_hash(password, method="pbkdf2:sha256"),
+                    phone_number,
+                    gender,
+                    course,
+                    learning_mode,
+                    "student",
+                    "pending",
+                ),
+            )
+            db.commit()
+        except sqlite3.IntegrityError:
+            db.rollback()
+            flash("An account with this email already exists. Please log in or use another email address.")
+            return render_template("tech_register.html", courses=courses, form=request.form)
 
         user = db.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
         session["user_id"] = user["id"]
@@ -747,11 +978,16 @@ def register():
             flash("An account with this email already exists.")
             return render_template("register.html")
 
-        db.execute(
-            "INSERT INTO users (name, email, password, role, researcher_assessment_status) VALUES (?, ?, ?, ?, ?)",
-            (full_name, email, generate_password_hash(password, method="pbkdf2:sha256"), role, "not_started" if role == "researcher" else None),
-        )
-        db.commit()
+        try:
+            db.execute(
+                "INSERT INTO users (name, email, password, role, researcher_assessment_status) VALUES (?, ?, ?, ?, ?)",
+                (full_name, email, generate_password_hash(password, method="pbkdf2:sha256"), role, "not_started" if role == "researcher" else None),
+            )
+            db.commit()
+        except sqlite3.IntegrityError:
+            db.rollback()
+            flash("An account with this email already exists. Please log in or use a different email.")
+            return render_template("register.html", form=request.form)
 
         if role == "researcher":
             user = db.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()

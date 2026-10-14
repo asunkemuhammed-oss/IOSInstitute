@@ -1,0 +1,44 @@
+<svg width="900" height="620" viewBox="0 0 900 620" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="brandGreen" x1="110" y1="80" x2="760" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B5C53"/>
+      <stop offset="1" stop-color="#0D3D3A"/>
+    </linearGradient>
+    <linearGradient id="brandGold" x1="170" y1="130" x2="560" y2="440" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8D96E"/>
+      <stop offset="1" stop-color="#E6B741"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(40 80)">
+    <rect x="30" y="70" width="260" height="260" rx="52" fill="#EAEFEF"/>
+    <circle cx="160" cy="150" r="58" fill="url(#brandGold)"/>
+    <path d="M118 150C118 116 138 90 160 90C182 90 202 116 202 150V190H118V150Z" fill="url(#brandGold)"/>
+    <path d="M101 230C101 191 127 174 160 174C193 174 219 191 219 230V246H101V230Z" fill="url(#brandGold)"/>
+    <circle cx="160" cy="150" r="33" fill="#0B5C53" fill-opacity="0.12"/>
+    <path d="M132 150H188" stroke="#0B5C53" stroke-width="10" stroke-linecap="round"/>
+    <path d="M160 120V180" stroke="#0B5C53" stroke-width="10" stroke-linecap="round"/>
+
+    <rect x="82" y="120" width="160" height="120" rx="18" fill="url(#brandGreen)"/>
+    <path d="M108 200L160 146L212 200" stroke="#F8D96E" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M136 146V200" stroke="#F8D96E" stroke-width="12" stroke-linecap="round"/>
+    <path d="M184 146V200" stroke="#F8D96E" stroke-width="12" stroke-linecap="round"/>
+    <rect x="86" y="214" width="148" height="20" rx="10" fill="#F1F7F6" fill-opacity="0.8"/>
+
+    <path d="M290 94L340 52" stroke="#F8D96E" stroke-width="10" stroke-linecap="round"/>
+    <path d="M340 52H378" stroke="#F8D96E" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="378" cy="52" r="14" fill="#F8D96E"/>
+    <path d="M28 302H92" stroke="#F8D96E" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="92" cy="302" r="12" fill="#F8D96E"/>
+    <path d="M229 302H290" stroke="#F8D96E" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="290" cy="302" r="12" fill="#F8D96E"/>
+  </g>
+
+  <g transform="translate(360 140)">
+    <text x="0" y="180" font-size="190" font-family="Arial, Helvetica, sans-serif" font-weight="900" fill="#0B5C53" letter-spacing="-8">IOS</text>
+    <text x="6" y="264" font-size="54" font-family="Arial, Helvetica, sans-serif" font-weight="800" fill="#0B5C53" letter-spacing="6">TECH SKILL UP</text>
+    <path d="M10 292H420" stroke="#DAB14A" stroke-width="8" stroke-linecap="round"/>
+    <path d="M116 292L156 252L196 292L236 252L276 292L316 252L356 292" stroke="#DAB14A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="72" y="364" font-size="42" font-family="Arial, Helvetica, sans-serif" font-weight="700" fill="#0B5C53" letter-spacing="10">LEARN • BUILD • EXCEL</text>
+  </g>
+</svg>

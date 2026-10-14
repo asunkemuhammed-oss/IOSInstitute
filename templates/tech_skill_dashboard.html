@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IOS Tech Skills Dashboard</title>
+    <title>IOS Tech SkillUp Dashboard</title>
     <style>
       :root {
         --bg: #f4f1ff;
@@ -151,9 +151,9 @@
       <div class="container topbar-inner">
         <div class="brand">
           <div class="brand-mark">
-            <img src="/static/images/team/REALLOGO.jpg" alt="IOS logo">
+            <img src="/static/images/team/IOS TECH.jpg" alt="IOS Tech SkillUp logo">
           </div>
-          <div class="brand-name">IOS Tech Skills Institute</div>
+          <div class="brand-name">IOS Tech SkillUp</div>
         </div>
         <nav class="nav">
           <a href="/">Home</a>
@@ -167,8 +167,8 @@
 
     <main class="page">
       <div class="container panel">
-        <span class="eyebrow">Tech Skills institute</span>
-        <h1>IOS Tech Skills Dashboard</h1>
+        <span class="eyebrow">Tech SkillUp</span>
+        <h1>IOS Tech SkillUp Dashboard</h1>
         <p class="subtitle">Welcome, {{ user["name"] }}. Your training workspace is built for practical learning, skill growth, and career-ready outcomes.</p>
 
         {% with messages = get_flashed_messages() %}
@@ -179,7 +179,7 @@
 
         <div class="card" style="margin-top: 20px;">
           <h2>Payment plan</h2>
-          <p style="margin: 0 0 12px; color: var(--muted);">Course fee: <strong>₦50,000 total</strong>. You can pay once or split in two installments of <strong>₦25,000 + ₦25,000</strong>.</p>
+          <p style="margin: 0 0 12px; color: var(--muted);">Course fee: <strong>₦8,500 total</strong>. You can pay once or split in two installments of <strong>₦4,250 + ₦4,250</strong>.</p>
           <p style="margin: 0 0 14px; color: var(--muted);">Demo payment status: {% if session.get('tech_payment_status') == 'paid' %}Paid{% else %}Not paid yet{% endif %}</p>
           <a class="primary-btn" href="/tech-payment">Make payment</a>
         </div>
@@ -276,13 +276,18 @@
             <h2>Available courses</h2>
             <div class="program-list">
               {% for program in programs %}
-                <div class="program-item">
-                  <strong>{{ program.name }}</strong>
-                  <div>{{ program.description }}</div>
-                  <div class="tags">
-                    {% for tool in program.tools %}
-                      <span class="tag">{{ tool }}</span>
-                    {% endfor %}
+                <div class="program-item" style="display: flex; align-items: flex-start; gap: 12px;">
+                  {% if program.image %}
+                    <img src="{{ program.image }}" alt="{{ program.name }}" style="width: 72px; height: 72px; object-fit: cover; border-radius: 12px; border: 1px solid rgba(11,31,58,0.08); flex-shrink: 0;">
+                  {% endif %}
+                  <div style="flex: 1;">
+                    <strong>{{ program.name }}</strong>
+                    <div>{{ program.description }}</div>
+                    <div class="tags">
+                      {% for tool in program.tools %}
+                        <span class="tag">{{ tool }}</span>
+                      {% endfor %}
+                    </div>
                   </div>
                 </div>
               {% endfor %}

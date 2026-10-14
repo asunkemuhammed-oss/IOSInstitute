@@ -82,6 +82,219 @@
         display: block;
       }
 
+      .featured-course {
+        margin: 40px 0 16px;
+        background: rgba(255,255,255,0.78);
+        border: 1px solid var(--line);
+        border-radius: 26px;
+        overflow: hidden;
+        box-shadow: 0 18px 35px rgba(11,31,58,0.06);
+      }
+
+      .feature-banner {
+        position: relative;
+        background: linear-gradient(135deg, #f2c84a 0%, #f7d35f 28%, #f3b127 100%);
+        min-height: 430px;
+        padding: 30px 28px 24px;
+        display: flex;
+        align-items: flex-end;
+        border-bottom: 1px solid rgba(11,31,58,0.12);
+      }
+
+      .feature-banner::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(13,30,21,0.12), rgba(255,255,255,0.08));
+      }
+
+      .feature-banner-inner {
+        position: relative;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .feature-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 18px;
+        background: rgba(11,31,58,0.96);
+        color: #fff;
+        border-radius: 16px 16px 0 16px;
+        font-weight: 900;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        font-size: clamp(1.1rem, 2vw, 2.1rem);
+        line-height: 1.1;
+        max-width: 70%;
+        box-shadow: 0 14px 28px rgba(11,31,58,0.15);
+      }
+
+      .feature-road {
+        position: relative;
+        background: rgba(11,31,58,0.96);
+        border-radius: 16px 16px 0 0;
+        min-height: 120px;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+        overflow: hidden;
+      }
+
+      .feature-road::before {
+        content: "";
+        position: absolute;
+        left: 6%;
+        right: 6%;
+        top: 38%;
+        height: 36%;
+        background: linear-gradient(90deg, rgba(255,255,255,0.05), rgba(255,255,255,0.18), rgba(255,255,255,0.05));
+        border-radius: 12px;
+        transform: skewY(-6deg);
+      }
+
+      .feature-road::after {
+        content: "";
+        position: absolute;
+        left: 8%;
+        right: 8%;
+        bottom: 14%;
+        height: 18px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.05);
+      }
+
+      .feature-mark {
+        position: absolute;
+        left: 14%;
+        bottom: 18%;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: rgba(11,31,58,0.8);
+        border: 2px solid rgba(255,255,255,0.18);
+        display: grid;
+        place-items: center;
+        color: white;
+        font-weight: 900;
+        font-size: 4rem;
+      }
+
+      .feature-steps {
+        position: absolute;
+        right: 8%;
+        bottom: 15%;
+        display: flex;
+        gap: 18px;
+        align-items: center;
+      }
+
+      .step-tag {
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        border: 2px solid rgba(255,255,255,0.28);
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-weight: 800;
+        font-size: 1.2rem;
+        background: rgba(11,31,58,0.18);
+      }
+
+      .feature-main {
+        display: grid;
+        grid-template-columns: minmax(0, 1.8fr) minmax(250px, 0.9fr);
+        gap: 24px;
+        padding: 28px 22px 26px;
+      }
+
+      .feature-body {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .feature-title {
+        font-size: clamp(2.1rem, 3.8vw, 3.4rem);
+        letter-spacing: -0.06em;
+        line-height: 1;
+        margin: 0;
+        color: var(--primary);
+      }
+
+      .feature-description {
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.7;
+      }
+
+      .feature-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 10px;
+      }
+
+      .feature-list li {
+        color: var(--primary);
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .feature-list li::before {
+        content: "•";
+        color: #f26d35;
+        font-size: 1.4rem;
+        line-height: 1;
+      }
+
+      .feature-side {
+        background: rgba(237,247,245,0.8);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px 16px;
+      }
+
+      .feature-side h3 {
+        margin: 0 0 12px;
+        color: var(--primary);
+        font-size: 1.15rem;
+      }
+
+      .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 12px;
+      }
+
+      .info-list li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 0.98rem;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(11,31,58,0.08);
+      }
+
+      .info-list li:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+      }
+
+      .info-list strong {
+        color: var(--primary);
+        font-weight: 800;
+      }
+
       .programs-header { margin: 44px 0 20px; }
       .programs-header h2 { margin: 0 0 12px; font-size: clamp(1.9rem, 3vw, 2.5rem); }
       .programs-header p { margin:0; color: var(--muted); line-height:1.7; }
@@ -97,6 +310,16 @@
         border-radius: 22px;
         padding: 22px 18px;
         box-shadow: 0 14px 28px rgba(11,31,58,0.04);
+        overflow: hidden;
+      }
+      .program-image {
+        width: 100%;
+        height: 190px;
+        object-fit: cover;
+        border-radius: 16px;
+        display: block;
+        margin-bottom: 18px;
+        border: 1px solid rgba(11,31,58,0.08);
       }
       .card h3 { margin: 0 0 10px; color: var(--primary); font-size:1.35rem; }
       .card p { margin: 0; color: var(--muted); line-height: 1.7; }
@@ -135,7 +358,7 @@
     <header class="topbar">
       <div class="container topbar-inner">
         <div class="brand">
-          <div class="brand-mark"><img src="/static/images/team/REALLOGO.jpg" alt="IOS logo" /></div>
+          <div class="brand-mark"><img src="/static/images/team/tech-skill-identity.svg" alt="Tech SkillUp identity" /></div>
           <div class="brand-name">IOS</div>
         </div>
         <nav class="nav-links">
@@ -163,7 +386,48 @@
             </div>
           </div>
           <div class="hero-visual">
-            <img src="/static/images/team/IOS TECH.jpg" alt="IOS Tech SkillUp training image" />
+            <img src="/static/images/team/tech-skill-identity.svg" alt="Tech SkillUp training image" />
+          </div>
+        </section>
+
+        <section class="featured-course" aria-label="Featured Tech Skill course">
+          <div class="feature-banner">
+            <div class="feature-banner-inner">
+              <div class="feature-badge">Front-end Engineering</div>
+              <div class="feature-road">
+                <div class="feature-mark">B</div>
+                <div class="feature-steps">
+                  <span class="step-tag">5</span>
+                  <span class="step-tag">3</span>
+                  <span class="step-tag">JS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="feature-main">
+            <div class="feature-body">
+              <h2 class="feature-title">Front-end Engineering</h2>
+              <p class="feature-description">Front-end engineering focuses on creating the beautiful face of a website or app. It’s about designing and building the parts that users see and interact with like the page structure, layouts, buttons, images, and more. Front-end engineers use languages like HTML, CSS, React JS, JavaScript, and more.</p>
+              <ul class="feature-list">
+                <li>HTML5</li>
+                <li>CSS3</li>
+                <li>Bootstrap</li>
+                <li>JavaScript</li>
+                <li>React JS</li>
+                <li>GitHub</li>
+              </ul>
+            </div>
+
+            <aside class="feature-side">
+              <h3>Course Details</h3>
+              <ul class="info-list">
+                <li><span>Duration</span><strong>4 months</strong></li>
+                <li><span>Classes</span><strong>3 days/week</strong></li>
+                <li><span>Schedule</span><strong>2 hours/day</strong></li>
+                <li><span>Format</span><strong>Hybrid</strong></li>
+              </ul>
+            </aside>
           </div>
         </section>
 
@@ -175,6 +439,9 @@
         <div class="program-grid">
           {% for program in programs %}
           <div class="card">
+            {% if program.image %}
+            <img class="program-image" src="{{ program.image }}" alt="{{ program.name }} course image">
+            {% endif %}
             <h3>{{ program.name }}</h3>
             <p><strong>Course description:</strong> {{ program.description }}</p>
             <div class="tool-list">

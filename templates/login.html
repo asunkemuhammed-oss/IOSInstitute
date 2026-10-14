@@ -3,122 +3,253 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IOSInstitute | Login</title>
+    <title>{% if admin_mode %}IOS Admin | Login{% elif portal == 'tech' %}IOS Tech SkillUp | Login{% else %}IOS Institute | Login{% endif %}</title>
     <style>
       :root {
-        --bg: #efefe9;
-        --panel: rgba(255,255,255,0.42);
-        --text: #17212b;
-        --muted: #546171;
+        --stone: #f5f1ec;
+        --panel: rgba(255,255,255,0.78);
+        --soft: #f5f5f3;
+        --text: #1d2a36;
+        --muted: #5d6975;
         --primary: #123f37;
-        --accent: #d9a53d;
-        --line: rgba(18, 63, 55, 0.1);
+        --primary-dark: #0b2d2a;
+        --green: #2dbf73;
+        --line: rgba(18, 63, 55, 0.12);
       }
+
       * { box-sizing: border-box; }
-      body {
+      html, body {
         margin: 0;
+        min-height: 100%;
         font-family: Arial, Helvetica, sans-serif;
-        background: linear-gradient(180deg, #f2f0ec 0%, #e7e4df 100%);
+        background: #f2f0ec;
         color: var(--text);
       }
-      .container {
+
+      body {
+        min-height: 100vh;
+      }
+
+      .page {
         min-height: 100vh;
         display: grid;
+        grid-template-columns: 1.02fr 1.18fr;
+      }
+
+      .left {
+        background: #f5f5f3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 34px;
+      }
+
+      .login-shell {
+        width: min(500px, 100%);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 26px;
+      }
+
+      .brand-mark {
+        width: 58px;
+        height: 58px;
+        border-radius: 18px;
+        overflow: hidden;
+        background: #fff;
+        display: grid;
         place-items: center;
-        padding: 28px;
+        box-shadow: 0 12px 20px rgba(18,63,55,0.12);
+        border: 1px solid rgba(18,63,55,0.08);
       }
-      .card {
-        width: min(440px, 100%);
-        background: rgba(255,255,255,0.36);
-        border: 1px solid var(--line);
-        border-radius: 22px;
-        padding: 28px 26px;
-        box-shadow: 0 18px 40px rgba(16, 24, 40, 0.06);
+
+      .brand-mark img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
       }
+
+      .brand-text {
+        font-weight: 800;
+        font-size: clamp(2rem, 2vw, 3rem);
+        letter-spacing: -0.06em;
+        color: var(--primary);
+        line-height: 1;
+      }
+
+      .brand-text small {
+        display: block;
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-top: 5px;
+      }
+
       h1 {
-        margin: 0 0 8px;
-        font-size: 2.1rem;
+        margin: 0 0 28px;
+        font-size: clamp(2rem, 2.4vw, 3rem);
         letter-spacing: -0.05em;
         color: var(--primary);
       }
-      .subtitle {
-        margin: 0 0 22px;
+
+      .form-wrap {
+        display: grid;
+        gap: 18px;
+      }
+
+      .field {
+        position: relative;
+      }
+
+      .field input {
+        width: 100%;
+        height: 62px;
+        border-radius: 12px;
+        border: 1px solid rgba(17,24,39,0.08);
+        background: rgba(255,255,255,0.72);
+        padding: 0 48px 0 18px;
+        font-size: 1.02rem;
+        color: var(--text);
+        outline: none;
+      }
+
+      .field .icon {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.2rem;
         color: var(--muted);
       }
-      label {
-        display: block;
-        font-weight: 700;
-        margin-bottom: 8px;
-        color: var(--primary);
-      }
-      input {
-        width: 100%;
-        padding: 14px 12px;
-        border-radius: 12px;
-        border: 1px solid var(--line);
-        background: rgba(255,255,255,0.35);
-        margin-bottom: 18px;
-        font-size: 1rem;
-      }
-      button {
-        width: 100%;
+
+      .submit-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border: none;
+        background: linear-gradient(135deg, #2ec978 0%, #2cb86f 100%);
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 800;
         border-radius: 12px;
-        background: var(--primary);
-        color: white;
-        padding: 14px 18px;
-        font-weight: 700;
-        font-size: 1rem;
+        width: 100%;
+        height: 64px;
         cursor: pointer;
+        box-shadow: 0 16px 22px rgba(46, 201, 120, 0.2);
       }
+
+      .extra-links {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+      }
+
+      .muted-link {
+        color: var(--primary);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
       .flash {
-        margin: 0 0 16px;
+        margin: 0 0 18px;
         padding: 10px 12px;
         border-radius: 10px;
-        background: rgba(217, 165, 61, 0.12);
-        color: #6a4c16;
-        border: 1px solid rgba(217, 165, 61, 0.25);
+        background: rgba(245, 198, 93, 0.12);
+        border: 1px solid rgba(245, 198, 93, 0.32);
+        color: #6d5307;
+        font-weight: 700;
       }
-      .muted-link {
-        display: inline-block;
-        margin-top: 16px;
-        color: var(--primary);
-        font-weight: 600;
+
+      .right {
+        background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80');
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
+      }
+
+      @media (max-width: 900px) {
+        .page {
+          grid-template-columns: 1fr;
+        }
+
+        .right {
+          min-height: 260px;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <div class="card">
-        <h1>Login</h1>
-        <p class="subtitle">Access your IOS account</p>
-        {% if admin_mode %}
-          <p class="subtitle" style="margin-top: -10px; margin-bottom: 14px; font-size: 0.88rem; color: var(--muted);">
-            Admin access: admin@iosinstitute.com / Admin@12345
-          </p>
-        {% endif %}
+    <div class="page">
+      <div class="left">
+        <div class="login-shell">
+          <div class="brand">
+            <div class="brand-mark">
+              {% if admin_mode %}
+                <img src="/static/images/team/REALLOGO.jpg" alt="IOS Admin logo">
+              {% elif portal == 'tech' %}
+                <img src="/static/images/team/tech-skill-identity.svg" alt="IOS Tech SkillUp logo">
+              {% else %}
+                <img src="/static/images/team/REALLOGO.jpg" alt="IOS Institute logo">
+              {% endif %}
+            </div>
+            <div class="brand-text">
+              {% if admin_mode %}
+                IOS<small>Admin</small>
+              {% elif portal == 'tech' %}
+                IOS<small>Tech SkillUp</small>
+              {% else %}
+                IOS<small>ICT Academy</small>
+              {% endif %}
+            </div>
+          </div>
 
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <div class="flash">{{ messages[0] }}</div>
-          {% endif %}
-        {% endwith %}
+          <h1>{% if admin_mode %}Admin Login{% elif portal == 'tech' %}Tech SkillUp Login{% else %}User Login{% endif %}</h1>
 
-        <form method="post">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" placeholder="you@example.com" value="{{ prefill_email or '' }}" required>
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <div class="flash">{{ messages[0] }}</div>
+            {% endif %}
+          {% endwith %}
 
-          <label for="password">Password</label>
-          <input id="password" name="password" type="password" placeholder="Password" required>
+          <form method="post" class="form-wrap">
+            {% if admin_mode %}
+              <div class="flash" style="margin-top: -6px; margin-bottom: 0; background: rgba(18,63,55,0.05); color: var(--primary); border-color: rgba(18,63,55,0.12);">
+                Demo admin account: admin@iosinstitute.com / Admin@12345
+              </div>
+            {% elif portal == 'tech' %}
+              <div class="flash" style="margin-top: -6px; margin-bottom: 0; background: rgba(91,61,245,0.05); color: #291f64; border-color: rgba(91,61,245,0.12);">
+                Tech portal login for IOS Tech SkillUp students and learners.
+              </div>
+            {% endif %}
 
-          <button type="submit">Sign in</button>
-        </form>
+            <div class="field">
+              <input id="email" name="email" type="email" value="{{ prefill_email or '' }}" placeholder="Username" required>
+              <span class="icon">✉</span>
+            </div>
 
-        <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 14px;">
-          <a class="muted-link" href="/forgot-password">Forgot password?</a>
-          <a class="muted-link" href="/register">Create an account</a>
+            <div class="field">
+              <input id="password" name="password" type="password" placeholder="Password" required>
+              <span class="icon">🔒</span>
+            </div>
+
+            <button class="submit-btn" type="submit">Sign In</button>
+          </form>
+
+          <div class="extra-links">
+            <a class="muted-link" href="/forgot-password">↩ Forgot Password</a>
+          </div>
         </div>
       </div>
+
+      <div class="right" aria-label="Learning and coding image"></div>
     </div>
   </body>
 </html>

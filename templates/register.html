@@ -3,112 +3,250 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Register</title>
+    <title>IOS Institute | Register</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(180deg, #edf5f2 0%, #f8f4eb 100%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      :root {
+        --stone: #f3f1ee;
+        --panel: rgba(255,255,255,0.82);
+        --text: #1d2a36;
+        --muted: #5d6975;
+        --primary: #123f37;
+        --primary-dark: #0b2d2a;
+        --green: #2dbf73;
+        --line: rgba(18, 63, 55, 0.12);
+      }
+
+      * { box-sizing: border-box; }
+      html, body { margin: 0; min-height: 100%; font-family: Arial, Helvetica, sans-serif; background: #f4f1ed; color: var(--text); }
+      body { min-height: 100vh; }
+
+      .page {
         min-height: 100vh;
-        margin: 0;
+        display: grid;
+        grid-template-columns: 1.02fr 1.18fr;
       }
-      .card {
-        background: white;
-        padding: 2rem;
-        width: min(420px, 90vw);
-        border-radius: 12px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+
+      .left {
+        background: #f6f3f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 44px 30px;
       }
-      h1 {
-        margin-top: 0;
+
+      .form-shell {
+        width: min(560px, 100%);
       }
-      label {
-        display: block;
-        margin-top: 1rem;
-        font-weight: 600;
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 24px;
       }
-      input, select, button {
+
+      .brand-mark {
+        width: 58px;
+        height: 58px;
+        border-radius: 18px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 12px 22px rgba(18,63,55,0.12);
+        border: 1px solid rgba(18,63,55,0.08);
+      }
+
+      .brand-mark img {
         width: 100%;
-        box-sizing: border-box;
-        padding: 0.8rem;
-        margin-top: 0.35rem;
-        border-radius: 8px;
-        border: 1px solid #cfd8e3;
+        height: 100%;
+        object-fit: cover;
+        display: block;
       }
-      button {
-        margin-top: 1.5rem;
-        background: linear-gradient(135deg, #123f37 0%, #1d725f 100%);
-        color: white;
-        border: none;
-        font-weight: 600;
-        cursor: pointer;
+
+      .brand-text {
+        font-weight: 800;
+        font-size: clamp(2.1rem, 2.8vw, 3rem);
+        letter-spacing: -0.06em;
+        color: var(--primary);
+        line-height: 1;
       }
+
+      .brand-text small {
+        display: block;
+        font-size: 0.7rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-top: 5px;
+      }
+
+      h1 {
+        margin: 0 0 22px;
+        font-size: clamp(2rem, 2.5vw, 3rem);
+        letter-spacing: -0.05em;
+        color: var(--primary);
+      }
+
       .message {
-        margin-bottom: 1rem;
-        color: #b42318;
-        font-weight: 600;
+        margin: 0 0 18px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: rgba(245, 198, 93, 0.12);
+        border: 1px solid rgba(245, 198, 93, 0.35);
+        color: #6f5909;
+        font-weight: 700;
+      }
+
+      form {
+        display: grid;
+        gap: 16px;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+      }
+
+      label {
+        font-weight: 700;
+        color: var(--primary);
+      }
+
+      input, select {
+        width: 100%;
+        height: 58px;
+        border-radius: 12px;
+        border: 1px solid rgba(17,24,39,0.08);
+        background: rgba(255,255,255,0.7);
+        padding: 0 16px;
+        font-size: 1rem;
+        color: var(--text);
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .submit-btn {
+        border: none;
+        background: linear-gradient(135deg, #2ec978 0%, #2cb86f 100%);
+        color: #fff;
+        border-radius: 12px;
+        width: 100%;
+        min-height: 62px;
+        font-size: 1.1rem;
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 0 16px 20px rgba(46, 201, 120, 0.18);
+      }
+
+      .help {
+        margin-top: 16px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .help a {
+        color: var(--primary);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .right {
+        background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80');
+        background-size: cover;
+        background-position: center;
+        min-height: 100vh;
+      }
+
+      @media (max-width: 900px) {
+        .page { grid-template-columns: 1fr; }
+        .right { min-height: 260px; }
+        .row { grid-template-columns: 1fr; }
       }
     </style>
   </head>
   <body>
-    <div class="card">
-      <h1>Create an account</h1>
+    <div class="page">
+      <div class="left">
+        <div class="form-shell">
+          <div class="brand">
+            <div class="brand-mark">
+              <img src="/static/images/team/REALLOGO.jpg" alt="IOS Institute logo">
+            </div>
+            <div class="brand-text">IOS<small>ICT Academy</small></div>
+          </div>
 
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          <div class="message">{{ messages[0] }}</div>
-        {% endif %}
-      {% endwith %}
+          <h1>Create an account</h1>
 
-      <form method="post" enctype="multipart/form-data">
-        <label for="full_name">Full name</label>
-        <input id="full_name" name="full_name" type="text" required>
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <div class="message">{{ messages[0] }}</div>
+            {% endif %}
+          {% endwith %}
 
-        <label for="email">Email address</label>
-        <input id="email" name="email" type="email" required>
+          <form method="post" enctype="multipart/form-data">
+            <div class="field">
+              <label for="full_name">Full name</label>
+              <input id="full_name" name="full_name" type="text" required>
+            </div>
 
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" required>
+            <div class="row">
+              <div class="field">
+                <label for="email">Email address</label>
+                <input id="email" name="email" type="email" required>
+              </div>
 
-        <label for="role">Register as</label>
-        <select id="role" name="role" required>
-          <option value="">Select an account type</option>
-          <option value="student">Student / Client – project or research assistance</option>
-          <option value="researcher">Researcher</option>
-        </select>
+              <div class="field">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" required>
+              </div>
+            </div>
 
-        <div id="researcher-documents" style="display: none; margin-top: 1rem;">
-          <label for="cv_file">CV</label>
-          <input id="cv_file" name="cv_file" type="file" accept=".pdf,.doc,.docx">
+            <div class="field">
+              <label for="role">Register as</label>
+              <select id="role" name="role" required>
+                <option value="">Select an account type</option>
+                <option value="student">Student / Client – project or research assistance</option>
+                <option value="researcher">Researcher</option>
+              </select>
+            </div>
 
-          <label for="portfolio_file">Portfolio</label>
-          <input id="portfolio_file" name="portfolio_file" type="file" accept=".pdf,.doc,.docx">
+            <div id="researcher-documents" style="display:none; gap:16px; display:grid;">
+              <div class="field">
+                <label for="cv_file">CV</label>
+                <input id="cv_file" name="cv_file" type="file" accept=".pdf,.doc,.docx">
+              </div>
+
+              <div class="field">
+                <label for="portfolio_file">Portfolio</label>
+                <input id="portfolio_file" name="portfolio_file" type="file" accept=".pdf,.doc,.docx">
+              </div>
+            </div>
+
+            <button class="submit-btn" type="submit">Register</button>
+          </form>
+
+          <p class="help">
+            Already have an account? <a href="/login">Sign in</a>
+          </p>
         </div>
+      </div>
 
-        <button type="submit">Register</button>
-      </form>
-
-      <script>
-        const roleSelect = document.getElementById('role');
-        const researcherDocuments = document.getElementById('researcher-documents');
-
-        function toggleResearcherDocuments() {
-          const show = roleSelect.value === 'researcher';
-          researcherDocuments.style.display = show ? 'block' : 'none';
-        }
-
-        roleSelect.addEventListener('change', toggleResearcherDocuments);
-      </script>
-
-      <p style="margin-top: 1rem; text-align: center; color: #425466; font-size: 0.92rem;">
-        Admin registration is restricted to internal staff. Use the admin login credentials to access the admin dashboard.
-      </p>
-
-      <p style="margin-top: 0.75rem; text-align: center; color: #425466;">
-        Already have an account? <a href="/login" style="color: #123f37; font-weight: 700;">Sign in</a>
-      </p>
+      <div class="right" aria-label="Learning and coding image"></div>
     </div>
+
+    <script>
+      const roleSelect = document.getElementById('role');
+      const researcherDocuments = document.getElementById('researcher-documents');
+
+      function toggleResearcherDocuments() {
+        const show = roleSelect.value === 'researcher';
+        researcherDocuments.style.display = show ? 'grid' : 'none';
+      }
+
+      roleSelect.addEventListener('change', toggleResearcherDocuments);
+    </script>
   </body>
 </html>
