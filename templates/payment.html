@@ -90,22 +90,47 @@
 
         <div class="fee-box">Amount due: {{ fee }}</div>
 
+        {% if selected_courses %}
+          <div class="fee-box" style="margin-top: 16px; background: rgba(19,106,92,0.06); border-color: rgba(19,106,92,0.12);">
+            <div style="display: grid; gap: 8px;">
+              <span style="font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: #53657a;">Selected courses</span>
+              {% for course in selected_courses %}
+                <div style="display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid rgba(10,61,54,0.08);">
+                  <span>{{ course.name }}</span>
+                  <strong>{{ course.display }}</strong>
+                </div>
+              {% endfor %}
+              <div style="display: flex; justify-content: space-between; gap: 12px; padding-top: 8px; font-size: 1.1rem; font-weight: 800; color: var(--primary);">
+                <span>Total</span>
+                <strong>{{ total_amount or fee }}</strong>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
         <form method="post">
             <div class="option-list">
               {% for option in payment_options %}
-                <label class="option">
-                  <input type="radio" name="payment_option" value="{{ 'split' if 'twice' in option.lower() or 'split' in option.lower() else 'single' }}" checked>
-                  <span>{{ option }}</span>
-                </label>
+                {% if option is mapping %}
+                  <label class="option">
+                    <input type="radio" name="payment_option" value="{{ option.value }}" {% if loop.first %}checked{% endif %}>
+                    <span>{{ option.label }}</span>
+                  </label>
+                {% else %}
+                  <label class="option">
+                    <input type="radio" name="payment_option" value="{{ 'split' if 'twice' in option.lower() or 'split' in option.lower() else 'single' }}" checked>
+                    <span>{{ option }}</span>
+                  </label>
+                {% endif %}
               {% endfor %}
             </div>
 
             <div class="demo-note">
-              <strong>Demo payment:</strong> {{ demo_note }}
+              <strong>Paystack Demo:</strong> {{ demo_note }}
             </div>
 
             <div class="actions">
-              <button class="primary-btn" type="submit">Make payment</button>
+              <button class="primary-btn" type="submit">Pay with Paystack Demo</button>
               <a class="secondary-btn" href="{% if portal == 'research' %}/dashboard{% else %}/tech-skills-dashboard{% endif %}">Go back</a>
             </div>
         </form>

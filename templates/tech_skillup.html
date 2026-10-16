@@ -42,7 +42,34 @@
       .brand-mark img { width:100%; height:100%; object-fit:cover; }
       .brand-name { font-size: 1.7rem; font-weight:800; letter-spacing: .06em; }
       .nav-links { display:flex; align-items:center; gap: 20px; flex-wrap: wrap; }
+      .nav-item { position: relative; }
       .nav-item a { color: var(--primary); font-weight:700; }
+      .has-menu > a { display: inline-flex; align-items: center; gap: 8px; }
+      .has-caret::after { content: "▾"; font-size: 0.8rem; }
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        min-width: 220px;
+        display: none;
+        background: rgba(255,255,255,0.96);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: 0 20px 35px rgba(10,61,54,0.08);
+        overflow: hidden;
+      }
+      .has-menu:hover .dropdown-menu,
+      .has-menu:focus-within .dropdown-menu {
+        display: block;
+      }
+      .dropdown-menu a {
+        display: block;
+        padding: 12px 16px;
+        color: var(--primary);
+        font-weight: 700;
+        border-bottom: 1px solid rgba(10,61,54,0.06);
+      }
+      .dropdown-menu a:last-child { border-bottom: 0; }
       .nav-cta { display:flex; gap:10px; }
       .ghost-btn, .primary-btn, .secondary-btn {
         display:inline-flex; align-items:center; justify-content:center; border-radius: 12px; padding: 12px 18px; font-weight:700;
@@ -295,6 +322,41 @@
         font-weight: 800;
       }
 
+      .promo-strip {
+        margin: 28px 0 18px;
+        background: linear-gradient(135deg, #0a3d36 0%, #0f5a4a 100%);
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 20px;
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        color: white;
+        box-shadow: 0 18px 32px rgba(10,61,54,0.12);
+      }
+      .promo-tag {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #f4bf45;
+        color: #0a3d36;
+        border-radius: 999px;
+        padding: 8px 14px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+      }
+      .promo-text {
+        font-size: 0.95rem;
+        font-weight: 700;
+        opacity: 0.96;
+      }
+      .promo-text strong {
+        font-size: 1.1rem;
+      }
+
       .programs-header { margin: 44px 0 20px; }
       .programs-header h2 { margin: 0 0 12px; font-size: clamp(1.9rem, 3vw, 2.5rem); }
       .programs-header p { margin:0; color: var(--muted); line-height:1.7; }
@@ -335,6 +397,20 @@
       .meta-item { background: rgba(11,31,58,0.02); border:1px solid var(--line); border-radius: 12px; padding:10px; }
       .meta-item strong { display:block; color: var(--primary); font-size:.78rem; letter-spacing: .04em; text-transform: uppercase; margin-bottom:6px; }
       .meta-item span { color: var(--muted); font-size: .92rem; }
+      .discount-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f4bf45 0%, #f0a81c 100%);
+        color: #0a3d36;
+        font-weight: 900;
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border-radius: 999px;
+        padding: 7px 12px;
+        margin-bottom: 12px;
+      }
       .card .actions { display:flex; gap:10px; margin-top:18px; }
 
       .info-strip {
@@ -361,16 +437,21 @@
           <div class="brand-mark"><img src="/static/images/team/tech-skill-identity.svg" alt="Tech SkillUp identity" /></div>
           <div class="brand-name">IOS</div>
         </div>
-        <nav class="nav-links">
+
+        <nav class="nav-links" aria-label="Main navigation">
           <div class="nav-item"><a href="/">Home</a></div>
-          <div class="nav-item"><a href="/research-institute">Research</a></div>
-          <div class="nav-item"><a href="/tech-skillup">Tech SkillUp</a></div>
-          <div class="nav-item"><a href="/educational-consultancy">Consultancy</a></div>
+          <div class="nav-item"><a href="#courses">Courses</a></div>
+          <div class="nav-item"><a href="#testimonials">Testimonial</a></div>
+          <div class="nav-item has-menu">
+            <a href="#portal" class="has-caret">Portal</a>
+            <div class="dropdown-menu" aria-label="Portal menu">
+              <a href="/login">Student Login</a>
+              <a href="/login?admin=1">Admin Login</a>
+            </div>
+          </div>
+          <div class="nav-item"><a href="#contact">Contact Us</a></div>
         </nav>
-        <div class="nav-cta">
-          <a class="ghost-btn" href="/login">Login</a>
-          <a class="primary-btn" href="/tech-register">Register</a>
-        </div>
+
       </div>
     </header>
 
@@ -390,46 +471,21 @@
           </div>
         </section>
 
-        <section class="featured-course" aria-label="Featured Tech Skill course">
-          <div class="feature-banner">
-            <div class="feature-banner-inner">
-              <div class="feature-badge">Front-end Engineering</div>
-              <div class="feature-road">
-                <div class="feature-mark">B</div>
-                <div class="feature-steps">
-                  <span class="step-tag">5</span>
-                  <span class="step-tag">3</span>
-                  <span class="step-tag">JS</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="promo-strip" aria-label="Discount announcement">
+          <div class="promo-tag">50% OFF</div>
+          <div class="promo-text">Take advantage of our limited-time offer on select Tech SkillUp programs. <strong>Enroll now and save big.</strong></div>
+        </div>
 
-          <div class="feature-main">
-            <div class="feature-body">
-              <h2 class="feature-title">Front-end Engineering</h2>
-              <p class="feature-description">Front-end engineering focuses on creating the beautiful face of a website or app. It’s about designing and building the parts that users see and interact with like the page structure, layouts, buttons, images, and more. Front-end engineers use languages like HTML, CSS, React JS, JavaScript, and more.</p>
-              <ul class="feature-list">
-                <li>HTML5</li>
-                <li>CSS3</li>
-                <li>Bootstrap</li>
-                <li>JavaScript</li>
-                <li>React JS</li>
-                <li>GitHub</li>
-              </ul>
-            </div>
-
-            <aside class="feature-side">
-              <h3>Course Details</h3>
-              <ul class="info-list">
-                <li><span>Duration</span><strong>4 months</strong></li>
-                <li><span>Classes</span><strong>3 days/week</strong></li>
-                <li><span>Schedule</span><strong>2 hours/day</strong></li>
-                <li><span>Format</span><strong>Hybrid</strong></li>
-              </ul>
-            </aside>
-          </div>
-        </section>
+        <div class="info-strip" style="margin-top: 30px;">
+          <h3>How to get started</h3>
+          <ol style="margin: 0; padding-left: 20px; color: var(--muted); line-height: 1.9;">
+            <li><strong>Step 1 - Click here to fill the application form.</strong> After filling the form, you'll be redirected to your portal where you will be asked to pay a one-time application fee of <strong>₦8,500</strong>. (This covers your application form, ID card, jotter, pen & sticker.)</li>
+            <li><strong>Step 2 - We will review your application and send an email or SMS upon approval.</strong></li>
+            <li><strong>Step 3 - Log in to your portal to proceed with the tuition fee.</strong></li>
+          </ol>
+          <p style="margin: 16px 0 0; color: var(--primary); font-weight:700;">Here are the payment plans: Option 1 - You may choose to pay once. Option 2 - Pay every month.</p>
+          <p style="margin: 10px 0 0; color: var(--primary); font-weight:700;">We can't wait to welcome you on board and embark on this exciting journey together!</p>
+        </div>
 
         <div class="programs-header">
           <h2>Available Programs</h2>
@@ -442,6 +498,7 @@
             {% if program.image %}
             <img class="program-image" src="{{ program.image }}" alt="{{ program.name }} course image">
             {% endif %}
+            <div class="discount-badge">{{ program.get('discount', '50% OFF') }}</div>
             <h3>{{ program.name }}</h3>
             <p><strong>Course description:</strong> {{ program.description }}</p>
             <div class="tool-list">
@@ -450,11 +507,11 @@
               {% endfor %}
             </div>
             <div class="meta">
-              <div class="meta-item"><strong>Instructor</strong><span>{{ program.instructor }}</span></div>
               <div class="meta-item"><strong>Duration</strong><span>{{ program.duration }}</span></div>
-              <div class="meta-item"><strong>Curriculum</strong><span>{{ program.curriculum }}</span></div>
+              <div class="meta-item"><strong>Class</strong><span>{{ program.get('schedule', '3 days/week · 2 hours/day') }}</span></div>
+              <div class="meta-item"><strong>Curriculum</strong><span>{{ program.curriculum|join(', ') if program.curriculum is iterable and program.curriculum is not string else program.curriculum }}</span></div>
               <div class="meta-item"><strong>Fee</strong><span>{{ program.fee }}</span></div>
-              <div class="meta-item"><strong>Start date</strong><span>{{ program.start_date }}</span></div>
+              <div class="meta-item"><strong>Start date</strong><span>{{ program.get('start_date', '03 Jan 2027') }}</span></div>
               <div class="meta-item"><strong>Certificate information</strong><span>{{ program.certificate }}</span></div>
             </div>
             <div class="actions">

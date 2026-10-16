@@ -1,4 +1,5 @@
 import os
+import re
 import sqlite3
 from email.message import EmailMessage
 from math import ceil
@@ -196,6 +197,58 @@ def row_value(row, key, default=None):
         return default
 
 
+def tech_application_fee_paid(user):
+    if user is None:
+        return False
+    payment_state = str(row_value(user, "payment_mode", "pending") or "pending").strip().lower()
+    return payment_state in {"single", "split", "paid", "approved", "complete", "monthly"}
+
+
+def parse_money(value):
+    if value is None:
+        return 0
+    cleaned = re.sub(r"[^0-9]", "", str(value))
+    if not cleaned:
+        return 0
+    return int(cleaned)
+
+
+def normalize_course_names(raw_value):
+    items = []
+    if raw_value is None:
+        return items
+    if isinstance(raw_value, (list, tuple)):
+        raw_value = ",".join(str(item) for item in raw_value)
+    for part in str(raw_value).split(","):
+        cleaned = part.strip()
+        if cleaned:
+            items.append(cleaned)
+    return items
+
+
+def course_payment_summary(course_names):
+    normalized = normalize_course_names(course_names)
+    if not normalized:
+        return {"items": [], "total": 0, "display": "₦0"}
+
+    program_map = {program["name"]: program for program in skill_programs()}
+    breakdown = []
+    total = 0
+    for name in normalized:
+        program = program_map.get(name)
+        if not program:
+            continue
+        amount = parse_money(program.get("fee", 0))
+        total += amount
+        breakdown.append({"name": name, "amount": amount, "display": program.get("fee", "₦0")})
+
+    return {
+        "items": breakdown,
+        "total": total,
+        "display": f"₦{total:,}",
+    }
+
+
 def skill_programs():
     return [
         {
@@ -203,10 +256,18 @@ def skill_programs():
             "description": "Learn how to turn raw data into business decisions using Excel, Power BI, SQL, and Python.",
             "tools": ["Excel", "Power BI", "SQL", "Python"],
             "instructor": "Dr. Amina Yusuf",
-            "duration": "8 weeks",
-            "curriculum": "Data cleaning, dashboarding, SQL queries, Python analysis, data storytelling",
-            "fee": "₦85,000",
-            "start_date": "18 Nov 2026",
+            "duration": "3 months",
+            "curriculum": [
+                "SQL For Data Analysis",
+                "Introduction to Python Programming",
+                "Microsoft Excel",
+                "Statistics for Data Analysis with python",
+                "Business Intelligence with PowerBI",
+            ],
+            "fee": "₦150,000",
+            "discount": "50% OFF",
+            "schedule": "3 days/week · 2 hours/day",
+            "start_date": "03 Jan 2027",
             "certificate": "Industry-recognized certificate upon completion",
             "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80",
         },
@@ -215,10 +276,19 @@ def skill_programs():
             "description": "Understand data science fundamentals, model building, and evidence-based decision making for real-world problems.",
             "tools": ["Python", "Pandas", "NumPy", "Machine Learning"],
             "instructor": "Prof. Ijeoma Eze",
-            "duration": "10 weeks",
-            "curriculum": "Statistics, data wrangling, modeling, evaluation, insight presentation",
-            "fee": "₦120,000",
-            "start_date": "09 Nov 2026",
+            "duration": "4 months",
+            "curriculum": [
+                "SQL For Data Science",
+                "Introduction to Python Programming",
+                "Statistics for Data Science",
+                "iPython",
+                "Machine Learning",
+                "Deep Learning Frameworks & Architectures",
+            ],
+            "fee": "₦200,000",
+            "discount": "50% OFF",
+            "schedule": "3 days/week · 2 hours/day",
+            "start_date": "03 Jan 2027",
             "certificate": "Certificate and capstone project assessment",
             "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80",
         },
@@ -230,7 +300,9 @@ def skill_programs():
             "duration": "12 weeks",
             "curriculum": "Front-end design, interactivity, APIs, deployment, project building",
             "fee": "₦150,000",
-            "start_date": "20 Nov 2026",
+            "discount": "50% OFF",
+            "schedule": "3 days/week · 2 hours/day",
+            "start_date": "03 Jan 2027",
             "certificate": "Certificate + live project submission",
             "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80",
         },
@@ -239,46 +311,91 @@ def skill_programs():
             "description": "Understand budgeting, reporting, forecasting, and performance analysis for smarter financial decisions.",
             "tools": ["Excel", "Forecasting", "Budgeting", "Reporting"],
             "instructor": "Mr. Adebayo Oladipo",
-            "duration": "7 weeks",
-            "curriculum": "Financial modeling, ratio analysis, budget planning, scenario analysis, interpretation",
-            "fee": "₦70,000",
-            "start_date": "26 Nov 2026",
+            "duration": "3 months",
+            "curriculum": [
+                "Linear analysis",
+                "Ratio analysis",
+                "Budget planning",
+                "Scenario analysis",
+                "Interpretation",
+            ],
+            "fee": "₦150,000",
+            "discount": "50% OFF",
+            "schedule": "3 days/week · 2 hours/day",
+            "start_date": "03 Jan 2027",
             "certificate": "Certificate in financial analysis and decision support",
-            "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=80",
+            "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80",
         },
         {
             "name": "Digital Marketing",
             "description": "Master modern digital marketing strategies, content planning, performance measurement, and social media growth.",
             "tools": ["SEO", "Content Strategy", "Ads", "Analytics"],
             "instructor": "Miss. Eniola Nehemotallah",
-            "duration": "8 weeks",
-            "curriculum": "Brand strategy, SEO, paid media, analytics, campaign planning",
-            "fee": "₦65,000",
-            "start_date": "30 Nov 2026",
+            "duration": "2 months",
+            "curriculum": [
+                "Content Marketing",
+                "Email Marketing",
+                "SEO",
+                "SMM",
+                "Ads",
+                "Copywriting",
+                "WordPress",
+            ],
+            "fee": "₦100,000",
+            "discount": "50% OFF",
+            "schedule": "3 days/week · 2 hours/day",
+            "start_date": "03 Jan 2027",
             "certificate": "Certificate with digital marketing workflows",
-            "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80",
+            "image": "/static/images/DIGITAL.jpg",
         },
         {
             "name": "Cyber Security",
-            "description": "Learn the foundations of cyber defense, threat analysis, system protection, and digital risk awareness.",
-            "tools": ["Networking", "Security Tools", "Risk Analysis", "Threat Intelligence"],
+            "description": "Build practical skills in digital defense, network protection, threat analysis, and security best practices for safer systems and online environments.",
+            "tools": ["Networking", "Security Tools", "Linux", "Ethical Hacking", "SIEM"],
             "instructor": "Mr. Chidi Okoye",
-            "duration": "9 weeks",
-            "curriculum": "Cyber hygiene, vulnerability analysis, security monitoring, incident response basics",
-            "fee": "₦95,000",
-            "start_date": "16 Nov 2026",
+            "duration": "4 months",
+            "curriculum": [
+                "Introduction to Cybersecurity",
+                "Networking Fundamentals and Security",
+                "Operating System and Security (Windows & Linux)",
+                "Web Application Security",
+                "Introduction to Ethical Hacking",
+                "Basic Security Tools and Techniques",
+                "Cybersecurity Best Practices and Legal Considerations",
+                "Log Monitoring and Analysis using SIEM tools",
+            ],
+            "fee": "₦290,000",
+            "discount": "50% OFF",
+            "schedule": "3 days/week · 2 hours/day",
+            "start_date": "03 Jan 2027",
             "certificate": "Cybersecurity awareness and practical defense certificate",
-            "image": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
+            "image": "/static/images/CYBERjpg",
         },
         {
-            "name": "AI Automation",
+            "name": "AI Automation & Advanced Digital Marketing",
             "description": "Build practical automations that save time, improve workflows, and create smarter business processes.",
-            "tools": ["Python", "Zapier", "AI Tools", "Workflow Design"],
+            "tools": ["AI", "Marketing Automation", "AI Copywriting", "Funnels"],
             "instructor": "Mr. Samuel Adeyemi",
-            "duration": "6 weeks",
-            "curriculum": "Prompt design, automation logic, no-code productivity, AI workflow implementation",
-            "fee": "₦75,000",
-            "start_date": "02 Dec 2026",
+            "duration": "3 months",
+            "curriculum": [
+                "Generative AI for Marketing",
+                "AI Copywriting & Content Automation",
+                "AI Video Creation & Graphic Design",
+                "AI Landing Pages & Funnel Building",
+                "AI Vibe Coding (No-Code Product Creation)",
+                "Monetization",
+                "Marketing Automation (Make & Zapier)",
+                "AI-Powered Paid Advertising",
+                "CPA & Performance Marketing",
+                "Advanced Email Marketing & AI Automation",
+                "AI Analytics, Tracking & Optimization",
+                "AI-Powered Social Media Growth Systems",
+                "Agency Systems & Client Acquisition",
+            ],
+            "fee": "₦200,000",
+            "discount": "50% OFF",
+            "schedule": "3 days/week · 2 hours/day",
+            "start_date": "03 Jan 2027",
             "certificate": "Completion certificate + project portfolio",
             "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=900&q=80",
         },
@@ -287,24 +404,60 @@ def skill_programs():
             "description": "Create compelling written content and polished video stories that engage audiences across digital channels.",
             "tools": ["Writing", "Storytelling", "Video Editing", "Content Strategy"],
             "instructor": "Ms. Tolu Akinwumi",
-            "duration": "6 weeks",
-            "curriculum": "Content planning, script writing, video production, editing workflows, publishing strategy",
-            "fee": "₦60,000",
-            "start_date": "08 Dec 2026",
+            "duration": "2 months",
+            "curriculum": [
+                "Introduction to Content Creation and Digital Media",
+                "Idea Generation and Storytelling",
+                "Content Writing, Copywriting and Scriptwriting",
+                "Social Media Content Creation and Content Strategy",
+                "Video Editing Techniques: Cutting, Transitions and Effects",
+                "Audio Editing, Subtitles, Colour Correction and Branding",
+                "AI Tools, Content Publishing, Portfolio Development and Freelancing",
+                "Recommended Tools: CapCut, Canva, VN Video Editor",
+            ],
+            "fee": "₦100,000",
+            "discount": "50% OFF",
+            "schedule": "3 days/week · 2 hours/day",
+            "start_date": "03 Jan 2027",
             "certificate": "Certificate in content creation and video storytelling",
-            "image": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80",
+            "image": "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=900&q=80",
+        },
+        {
+            "name": "Web Development",
+            "description": "A full-stack engineering career path involves becoming skilled in both front-end and back-end development for websites and applications. This means you'll learn how to create the user interface that people see and interact with (front-end) as well as the behind-the-scenes logic, databases, and servers (back-end).",
+            "tools": ["HTML", "CSS", "JavaScript", "React", "Node.js", "MongoDB"],
+            "instructor": "Mrs. Grace Okafor",
+            "duration": "5 months",
+            "curriculum": [
+                "Front-end Engineering",
+                "Back-end Engineering",
+            ],
+            "fee": "₦300,000",
+            "discount": "50% OFF",
+            "schedule": "3 days/week · 2 hours/day",
+            "start_date": "03 Jan 2027",
+            "certificate": "Certificate + live project submission",
+            "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80",
         },
         {
             "name": "Graphics Design",
             "description": "Create impactful visuals, brand identities, and digital creatives that communicate effectively.",
             "tools": ["Canva", "Photoshop", "Illustrator", "Brand Design"],
             "instructor": "Mr. Daniel Kalu",
-            "duration": "6 weeks",
-            "curriculum": "Design systems, typography, layouts, branding, design presentation",
-            "fee": "₦60,000",
-            "start_date": "14 Dec 2026",
+            "duration": "2 months",
+            "curriculum": [
+                "Graphic design basics",
+                "Adobe Photoshop",
+                "Photo Manipulations",
+                "Adobe illustrator",
+                "Brands Identity",
+            ],
+            "fee": "₦80,000",
+            "discount": "50% OFF",
+            "schedule": "3 days/week · 2 hours/day",
+            "start_date": "03 Jan 2027",
             "certificate": "Certificate and portfolio showcase",
-            "image": "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80",
+            "image": "/static/images/GRAPHICS.jpg",
         },
     ]
 
@@ -330,23 +483,36 @@ def tech_skills_dashboard():
     if not user:
         return redirect(url_for("login"))
 
+    if user["role"] in {"student", "client"} and row_value(user, "course") and row_value(user, "learning_mode") and not tech_application_fee_paid(user):
+        flash("Please complete the ₦8,500 application fee before you can access your dashboard.")
+        return redirect(url_for("tech_payment"))
+
     programs = skill_programs()
     selected_skill = session.get("selected_skill") or user["course"] or ""
+    selected_courses = normalize_course_names(session.get("selected_courses") or user["course"] or selected_skill)
     selected_mode = session.get("selected_mode") or user["learning_mode"] or ""
     selected_schedule = session.get("selected_schedule") or "Flexible"
+    course_payment_status = session.get("tech_course_payment_status") == "paid"
+    course_summary = course_payment_summary(selected_courses)
 
     if request.method == "POST":
         selected_skill = request.form.get("preferred_skill", selected_skill)
         selected_mode = request.form.get("learning_mode", selected_mode)
         selected_schedule = request.form.get("schedule", selected_schedule)
+        selected_courses = normalize_course_names(request.form.getlist("course") or selected_skill)
 
         session["selected_skill"] = selected_skill
         session["selected_mode"] = selected_mode
         session["selected_schedule"] = selected_schedule
+        session["selected_courses"] = selected_courses
+
+        if not course_payment_status and selected_courses:
+            flash("Select your course(s) and complete the tuition checkout before your skill plan is activated.")
+            return redirect(url_for("tech_course_payment"))
 
         get_db().execute(
             "UPDATE users SET course = ?, learning_mode = ? WHERE id = ?",
-            (selected_skill, selected_mode, user["id"]),
+            (", ".join(selected_courses) if selected_courses else selected_skill, selected_mode, user["id"]),
         )
         get_db().commit()
 
@@ -358,8 +524,72 @@ def tech_skills_dashboard():
         user=user,
         programs=programs,
         selected_skill=selected_skill,
+        selected_courses=selected_courses,
         selected_mode=selected_mode,
         selected_schedule=selected_schedule,
+        course_payment_status=course_payment_status,
+        course_payment_total=course_summary["display"],
+    )
+
+
+@app.route("/tech-course-payment", methods=["GET", "POST"])
+def tech_course_payment():
+    user = current_user()
+    if not user:
+        return redirect(url_for("login"))
+
+    if not tech_application_fee_paid(user):
+        flash("Please complete the ₦8,500 application fee before selecting your course(s).")
+        return redirect(url_for("tech_payment"))
+
+    programs = skill_programs()
+    chosen_courses = normalize_course_names(
+        request.form.getlist("course")
+        or request.form.get("course")
+        or request.form.get("preferred_skill")
+        or session.get("selected_courses")
+        or user["course"]
+    )
+    summary = course_payment_summary(chosen_courses)
+
+    if request.method == "POST":
+        chosen_courses = normalize_course_names(request.form.getlist("course") or request.form.get("course") or request.form.get("preferred_skill"))
+        if not chosen_courses:
+            flash("Please select at least one course before making payment.")
+            return redirect(url_for("tech_skills_dashboard"))
+
+        payment_option = request.form.get("payment_option", "single")
+        summary = course_payment_summary(chosen_courses)
+        session["selected_courses"] = chosen_courses
+        session["selected_skill"] = chosen_courses[0]
+        session["tech_course_payment_status"] = "paid"
+        session["tech_course_payment_option"] = payment_option
+        session["tech_course_payment_total"] = summary["display"]
+
+        get_db().execute(
+            "UPDATE users SET course = ?, learning_mode = ? WHERE id = ?",
+            (", ".join(chosen_courses), session.get("selected_mode") or user["learning_mode"] or "Hybrid", user["id"]),
+        )
+        get_db().commit()
+
+        flash(f"Paystack Demo: course payment of {summary['display']} was successfully received for {', '.join(chosen_courses)}.")
+        return redirect(url_for("tech_skills_dashboard"))
+
+    payment_options = [
+        {"label": f"Pay once ({summary['display']})", "value": "single"},
+        {"label": f"Pay twice ({summary['display']} total, split into two instalments)", "value": "split"},
+    ]
+
+    return render_template(
+        "payment.html",
+        portal="tech-course",
+        title="Course tuition payment",
+        description="Choose your course(s), review the tuition total, and complete a demo Paystack checkout before your final enrolment is activated.",
+        fee=summary["display"],
+        payment_options=payment_options,
+        selected_courses=summary["items"],
+        total_amount=summary["display"],
+        demo_note="Demo checkout: this is a sample Paystack-style payment flow for tech course tuition.",
     )
 
 
@@ -411,13 +641,17 @@ def tech_payment():
             flash("Payment successful! Welcome to your IOS Tech SkillUp dashboard.")
         return redirect(url_for("tech_skills_dashboard"))
 
+    payment_options = [
+        {"label": "Pay once (₦8,500)", "value": "single"},
+        {"label": "Pay every month (₦4,250/month)", "value": "split"},
+    ]
     return render_template(
         "payment.html",
         portal="tech",
         title="IOS Tech SkillUp",
-        description="The skill program has a ₦8,500 total fee. You may pay it once or split it into two installments as a demo payment plan.",
+        description="After the application form, you will be redirected to your portal to pay the one-time application fee of ₦8,500. Once this is completed, you will have access to your dashboard and can continue with your tuition plan.",
         fee="₦8,500",
-        payment_options=["Pay once (₦8,500)", "Pay twice (₦4,250 + ₦4,250)"],
+        payment_options=payment_options,
         demo_note="Demo checkout: this is a sample onboarding payment flow for the Tech Skills portal.",
     )
 
@@ -469,6 +703,8 @@ def login():
             course = row_value(user, "course")
             learning_mode = row_value(user, "learning_mode")
             if course and learning_mode:
+                if not tech_application_fee_paid(user):
+                    return redirect(url_for("tech_payment"))
                 return redirect(url_for("tech_skills_dashboard"))
             return redirect(url_for("dashboard"))
         return redirect(url_for("register"))

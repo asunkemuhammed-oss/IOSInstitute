@@ -52,6 +52,8 @@
     </style>
   </head>
   <body>
+    {% set dashboard_url = '/tech-skills-dashboard' if user['role'] in ['student', 'client'] and (user['course'] or user['learning_mode'] or session.get('selected_skill') or session.get('selected_mode')) else '/dashboard' %}
+
     <header class="topbar">
       <div class="container header-inner">
         <div class="brand">
@@ -59,7 +61,7 @@
           <div class="brand-name">IOS</div>
         </div>
         <nav class="nav">
-          <a href="/dashboard">Dashboard</a>
+          <a href="{{ dashboard_url }}">Dashboard</a>
           <a href="/profile">Profile</a>
           <a href="/logout">Logout</a>
         </nav>
@@ -86,7 +88,7 @@
         </div>
 
         <div class="buttons">
-          <a class="btn primary" href="/dashboard">Go to dashboard</a>
+          <a class="btn primary" href="{{ dashboard_url }}">Go to dashboard</a>
           <a class="btn secondary" href="/logout">Logout</a>
         </div>
 

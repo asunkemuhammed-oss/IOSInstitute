@@ -411,8 +411,22 @@
         transform: translateY(-50%);
         display: flex;
         flex-direction: column;
-        gap: 14px;
+        gap: 10px;
         z-index: 5;
+      }
+
+      .social-label {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.9);
+        color: var(--primary);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-align: center;
+        box-shadow: 0 10px 18px rgba(17, 24, 39, 0.08);
       }
 
       .social-link {
@@ -442,7 +456,14 @@
       .social-whatsapp { background: #25D366; }
       .social-facebook { background: #1877F2; }
       .social-instagram { background: linear-gradient(135deg, #f9ce34 0%, #ee2a7b 40%, #6228d7 100%); }
-      .social-twitter { background: #1DA1F2; }
+      .social-linkedin { background: #0A66C2; }
+      .social-youtube { background: #FF0000; }
+      .social-tiktok { background: linear-gradient(135deg, #000000 0%, #1f1f1f 100%); }
+      .social-link .brand-word {
+        font-weight: 800;
+        font-size: 1.05rem;
+        line-height: 1;
+      }
 
       .hero-stat-strip {
         width: min(100%, 1180px);
@@ -984,16 +1005,11 @@
 
           <nav class="nav-links">
             <div class="nav-item"><a href="#home">Home</a></div>
-            <div class="nav-item"><a href="#courses">Courses</a></div>
-            <div class="nav-item"><a href="#testimonials">Testimonial</a></div>
-            <div class="nav-item has-menu">
-              <a href="#portal" class="has-caret">Portal</a>
-              <div class="dropdown-menu" aria-label="Portal menu">
-                <a href="/login">Student Login</a>
-                <a href="/login?admin=1">Admin Login</a>
-              </div>
-            </div>
+            <div class="nav-item"><a href="#about">About Us</a></div>
+            <div class="nav-item"><a href="/research-institute">Research</a></div>
+            <div class="nav-item"><a href="/tech-skillup">Tech Skills</a></div>
             <div class="nav-item"><a href="#contact">Contact Us</a></div>
+            <div class="nav-item"><a href="#blog">Resources &amp; Blog</a></div>
           </nav>
 
           <div class="nav-cta" aria-hidden="true" style="visibility: hidden; pointer-events: none;">
@@ -1048,17 +1064,24 @@
               </div>
 
               <div class="social-stack" aria-label="Social media links">
-                <a class="social-link social-whatsapp" href="#" aria-label="WhatsApp">
+                <span class="social-label">Follow IOS</span>
+                <a class="social-link social-whatsapp" href="https://wa.me/2347086476413" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.11 4.9A9.67 9.67 0 0 0 12.05 2a9.72 9.72 0 0 0-8.38 14.76L2 22l5.41-1.44A9.73 9.73 0 0 0 12.05 22c5.38 0 9.75-4.37 9.75-9.75 0-2.6-1.04-5.05-2.69-6.85Zm-7.06 14.92-.03 0-3.19.85.86-3.08-.02-.03A7.8 7.8 0 0 1 4.3 11.9a7.76 7.76 0 0 1 13.48-5.5 7.74 7.74 0 0 1-1.73 11.52Zm4.27-5.82c-.23-.12-1.36-.67-1.57-.74-.21-.08-.36-.12-.51.12-.15.23-.58.74-.71.9-.13.15-.26.17-.49.05-.23-.12-.97-.35-1.85-1.12-.68-.6-1.14-1.35-1.27-1.58-.13-.23-.01-.36.11-.48.11-.11.23-.26.35-.39.12-.13.16-.23.23-.39.08-.15.04-.29-.02-.41-.06-.12-.51-1.25-.7-1.7-.18-.45-.37-.38-.51-.38h-.44c-.15 0-.4.05-.6.29-.21.24-1.02 1-1.02 2.43 0 1.42 1.04 2.81 1.18 3 .15.19 2.04 3.12 4.94 4.38.69.29 1.23.47 1.65.6.69.22 1.32.19 1.81.11.55-.08 1.7-.7 1.93-1.38.23-.68.23-1.26.16-1.38-.07-.12-.26-.19-.49-.31Z"/></svg>
                 </a>
-                <a class="social-link social-facebook" href="#" aria-label="Facebook">
+                <a class="social-link social-facebook" href="https://www.facebook.com/share/1ECccdHq7D/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 22v-8h2.7l.4-3h-3.1V7.1c0-.87.24-1.46 1.5-1.46H17V2.9c-.26-.03-1.15-.1-2.18-.1-2.18 0-3.68 1.33-3.68 3.78V11H8.8v3h2.34v8h2.36Z"/></svg>
                 </a>
-                <a class="social-link social-instagram" href="#" aria-label="Instagram">
+                <a class="social-link social-instagram" href="https://www.instagram.com/instituteofscholars/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5Zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5Zm5.25-3.25a1.25 1.25 0 1 1-1.25 1.25 1.25 1.25 0 0 1 1.25-1.25Z"/></svg>
                 </a>
-                <a class="social-link social-twitter" href="#" aria-label="Twitter">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.9 3.4c-.8.5-1.7.8-2.6 1 .9-.5 1.6-1.3 1.9-2.2-.8.5-1.8.9-2.8 1.1A4.3 4.3 0 0 0 12.1 7c0 .3 0 .7.1 1A12.2 12.2 0 0 1 3.7 4.8c-.4.7-.6 1.5-.6 2.3 0 1.6.8 3 2.1 3.8-.8 0-1.5-.2-2.1-.5v.1c0 2.2 1.6 4.1 3.7 4.6-.4.1-.8.2-1.2.2-.3 0-.6 0-.9-.1.6 1.9 2.3 3.2 4.3 3.2A8.7 8.7 0 0 1 2 18.5a12.2 12.2 0 0 0 6.7 2c8 0 12.4-6.6 12.4-12.3v-.6c.9-.6 1.7-1.4 2.2-2.2-.8.4-1.7.6-2.6.8Z"/></svg>
+                <a class="social-link social-linkedin" href="https://www.linkedin.com/company/instituteofscholars/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                  <span class="brand-word">in</span>
+                </a>
+                <a class="social-link social-youtube" href="https://youtube.com/@instituteofscholarsios?si=_9xRZeraBzWiLb1P" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.5 8.1c-.2-1.4-1.4-2.6-2.9-2.8C17.7 5 12 5 12 5s-5.7 0-7.6.3A3.4 3.4 0 0 0 1.5 8.1C1.3 9.6 1.3 12 1.3 12s0 2.4.2 3.9c.2 1.4 1.4 2.6 2.9 2.8 1.9.3 7.6.3 7.6.3s5.7 0 7.6-.3c1.5-.2 2.7-1.4 2.9-2.8.2-1.5.2-3.9.2-3.9s0-2.4-.2-3.9ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+                </a>
+                <a class="social-link social-tiktok" href="https://www.tiktok.com/@institute.of.scho" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                  <span class="brand-word" style="font-size: 0.94rem;">♪</span>
                 </a>
               </div>
 

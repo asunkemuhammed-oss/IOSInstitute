@@ -6,170 +6,546 @@
     <title>IOS Tech SkillUp Dashboard</title>
     <style>
       :root {
-        --bg: #f4f1ff;
-        --page: linear-gradient(180deg, #f3eeff 0%, #fffaf3 100%);
-        --primary: #231a52;
-        --secondary: #5b3df5;
-        --accent: #ff8f3d;
-        --accent-soft: rgba(255, 143, 61, 0.12);
-        --warm: #ffb870;
-        --text: #1c2240;
-        --muted: #5b6179;
-        --line: rgba(35, 26, 82, 0.12);
-        --white: #fff;
+        --page-bg: #eef3f7;
+        --panel-bg: #ffffff;
+        --sidebar-bg: #f5f7fb;
+        --soft: #f0f4ff;
+        --primary: #1f2d3d;
+        --secondary: #2d5e86;
+        --accent: #ef9a2c;
+        --accent-soft: rgba(239, 154, 44, 0.12);
+        --success: #1a9b6f;
+        --success-soft: rgba(26, 155, 111, 0.12);
+        --muted: #5d6b7a;
+        --line: rgba(31, 45, 61, 0.1);
+        --shadow: 0 14px 30px rgba(16, 31, 45, 0.08);
       }
 
       * { box-sizing: border-box; }
-      body {
+      html, body {
         margin: 0;
+        min-height: 100%;
         font-family: Arial, Helvetica, sans-serif;
-        background: var(--page);
-        color: var(--text);
+        background: var(--page-bg);
+        color: var(--primary);
+      }
+      body {
+        min-height: 100vh;
       }
       a { text-decoration: none; }
-      .container { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+      button, input, select {
+        font: inherit;
+      }
+
+      .student-shell {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        background: var(--sidebar-bg);
+        border-right: 1px solid var(--line);
+        padding: 26px 18px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .brand-box {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 6px 4px;
+      }
+      .brand-mark {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: white;
+      }
+      .brand-mark img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .brand-mini {
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .brand-name {
+        font-size: 1.2rem;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+      }
+
+      .side-nav {
+        display: grid;
+        gap: 8px;
+      }
+      .side-nav a {
+        display: block;
+        padding: 12px 14px;
+        border-radius: 12px;
+        font-weight: 700;
+        color: var(--primary);
+        background: transparent;
+      }
+      .side-nav a.active {
+        background: white;
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+      }
+
+      .sidebar-card {
+        margin-top: auto;
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 16px;
+        display: grid;
+        gap: 6px;
+      }
+      .sidebar-card .label {
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+      .sidebar-card strong {
+        font-size: 1.1rem;
+      }
+      .sidebar-card small {
+        color: var(--muted);
+      }
+
+      .dashboard-main {
+        padding: 26px 28px 40px;
+      }
 
       .topbar {
-        background: linear-gradient(90deg, rgba(35,26,82,0.98) 0%, rgba(91,61,245,0.96) 100%);
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-      }
-      .topbar-inner { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:78px; }
-      .brand { display:flex; align-items:center; gap:12px; }
-      .brand-mark { width:42px; height:42px; border-radius:12px; overflow:hidden; background: rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.18); }
-      .brand-mark img { width:100%; height:100%; object-fit:cover; display:block; }
-      .brand-name { color:#fff; font-size:1.5rem; font-weight:800; letter-spacing:-0.05em; }
-      .nav { display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
-      .nav a { color:#fff; font-weight:700; font-size:0.85rem; }
-      .logout { background: rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.16); border-radius:999px; padding:10px 16px; }
-
-      .page { padding: 34px 0 80px; }
-      .panel {
-        background: rgba(255,255,255,0.42);
-        border: 1px solid var(--line);
-        border-radius: 28px;
-        padding: 28px;
+        background: linear-gradient(135deg, #1f2d3d 0%, #2a536f 100%);
+        border-radius: 22px;
+        padding: 22px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        color: white;
+        box-shadow: var(--shadow);
       }
       .eyebrow {
-        display:inline-block;
-        padding:8px 12px;
-        background: var(--accent-soft);
-        border-radius:999px;
-        color: var(--primary);
-        font-size:0.76rem;
-        font-weight:800;
-        letter-spacing:0.09em;
-        text-transform:uppercase;
+        display: inline-block;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.86);
+        padding: 7px 10px;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin: 0 0 10px;
       }
-      h1 {
-        margin: 18px 0 8px;
-        font-size: clamp(2.2rem, 4vw, 3.5rem);
-        letter-spacing: -0.06em;
-        color: var(--primary);
+      .topbar h1 {
+        margin: 0;
+        font-size: clamp(1.8rem, 2vw, 2.6rem);
+        letter-spacing: -0.05em;
       }
-      .subtitle { margin:0; color: var(--muted); font-size:1.05rem; }
-      .alert {
-        margin: 18px 0 0;
-        border:1px solid rgba(255, 143, 61, 0.35);
-        background: rgba(255, 143, 61, 0.1);
-        color: var(--primary);
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .topbar-actions button,
+      .topbar-actions a {
         border-radius: 12px;
-        padding: 12px 14px;
+        border: 1px solid rgba(255,255,255,0.14);
+        background: rgba(255,255,255,0.08);
+        color: white;
+        padding: 10px 14px;
+        font-weight: 700;
       }
 
-      .layout {
-        display:grid;
+      .alert {
+        margin: 18px 0 0;
+        background: rgba(239, 154, 44, 0.12);
+        border: 1px solid rgba(239, 154, 44, 0.25);
+        color: #724405;
+        padding: 12px 14px;
+        border-radius: 12px;
+        font-weight: 700;
+      }
+
+      .hero-panel {
+        margin-top: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        background: linear-gradient(135deg, #edf5ff 0%, #f7f3ff 100%);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 24px 22px;
+        box-shadow: var(--shadow);
+      }
+      .tag {
+        margin: 0 0 12px;
+        display: inline-block;
+        background: var(--success-soft);
+        color: var(--success);
+        padding: 7px 10px;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .hero-panel h2 {
+        margin: 0 0 10px;
+        font-size: clamp(1.6rem, 2vw, 2.4rem);
+        letter-spacing: -0.05em;
+      }
+      .hero-panel p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+      .hero-note {
+        min-width: 180px;
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 18px 16px;
+        display: grid;
+        gap: 8px;
+      }
+      .hero-note span {
+        color: var(--muted);
+        font-size: 0.76rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .hero-note strong {
+        font-size: 1.4rem;
+        letter-spacing: -0.05em;
+      }
+
+      .summary-grid,
+      .dashboard-grid,
+      .bottom-grid {
+        display: grid;
+        gap: 22px;
+        margin-top: 24px;
+      }
+      .summary-grid {
+        grid-template-columns: 1.3fr 0.9fr;
+      }
+      .dashboard-grid {
         grid-template-columns: 1.1fr 0.9fr;
-        gap: 24px;
-        margin-top: 26px;
       }
-      .card {
-        background: rgba(255,255,255,0.7);
-        border:1px solid var(--line);
-        border-radius:22px;
-        padding:22px 18px;
+      .bottom-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
-      .card h2 { margin:0 0 18px; color: var(--primary); }
-      .field { display:flex; flex-direction:column; gap:8px; margin-bottom:18px; }
-      label { font-weight:700; color: var(--primary); }
-      select, input, textarea {
+
+      .info-card {
+        background: var(--panel-bg);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 20px 18px;
+        box-shadow: var(--shadow);
+      }
+      .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .card-header h3 {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 7px 10px;
+      }
+      .chip.success {
+        background: var(--success-soft);
+        color: var(--success);
+      }
+      .chip.paid {
+        background: rgba(26, 155, 111, 0.12);
+        color: var(--success);
+      }
+
+      .details-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 12px;
+      }
+      .details-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(31,45,61,0.08);
+      }
+      .details-list li:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      .details-list span {
+        color: var(--muted);
+      }
+      .details-list strong {
+        text-align: right;
+      }
+
+      .fee-box {
+        background: var(--soft);
+        border: 1px solid rgba(31, 45, 61, 0.08);
+        border-radius: 16px;
+        padding: 20px 16px;
+        display: grid;
+        gap: 6px;
+      }
+      .fee-box small {
+        color: var(--muted);
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .fee-box strong {
+        font-size: 2rem;
+        letter-spacing: -0.06em;
+      }
+      .payment-meta {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin: 18px 0 20px;
+      }
+      .payment-meta div {
+        background: #f9fafc;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px 10px;
+        display: grid;
+        gap: 5px;
+      }
+      .payment-meta span {
+        color: var(--muted);
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .primary-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 12px 16px;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .steps-list {
+        display: grid;
+        gap: 14px;
+      }
+      .step-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 14px 12px;
+        background: #fafbff;
+      }
+      .step-item.complete {
+        background: rgba(26, 155, 111, 0.04);
+      }
+      .step-item.active {
+        background: rgba(239, 154, 44, 0.06);
+      }
+      .step-badge {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary);
+        color: white;
+        font-size: 0.76rem;
+        font-weight: 800;
+        flex-shrink: 0;
+      }
+      .step-item p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .skill-form {
+        display: grid;
+        gap: 12px;
+      }
+      .skill-form label {
+        font-weight: 700;
+      }
+      .skill-form select,
+      .skill-form input {
         width: 100%;
         padding: 12px 14px;
         border: 1px solid var(--line);
         border-radius: 12px;
-        background: rgba(255,255,255,0.75);
-        font-size: 1rem;
-        color: var(--text);
-      }
-      .mode-grid { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:12px; margin:18px 0; }
-      .mode-option {
-        display:flex;
-        align-items:center;
-        gap:8px;
-        border:1px solid var(--line);
-        border-radius:12px;
-        padding:12px 14px;
-        background: rgba(255,255,255,0.74);
-      }
-      .mode-option input { width:auto; }
-      .primary-btn {
-        border:none; background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color:#fff; padding: 14px 18px; border-radius: 12px; font-weight:800; cursor:pointer;
-        box-shadow: 0 10px 20px rgba(91, 61, 245, 0.18);
-      }
-
-      .summary {
-        margin-top: 18px;
-        padding: 14px 16px;
-        background: rgba(91, 61, 245, 0.05);
-        border:1px solid rgba(91, 61, 245, 0.12);
-        border-radius:12px;
+        background: #f9fafc;
         color: var(--primary);
       }
-      .summary strong { display:block; margin-bottom:8px; }
-      .program-list { display:flex; flex-direction:column; gap:12px; }
-      .program-item {
-        border:1px solid var(--line);
-        border-radius:14px;
-        padding:12px 14px;
-        background: rgba(255,255,255,0.7);
+      .mode-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
       }
-      .program-item strong { display:block; color: var(--primary); margin-bottom:6px; }
-      .tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
-      .tag {
-        display:inline-block; padding:6px 10px; border-radius:999px; background: var(--accent-soft); color: var(--primary); font-size:0.72rem; font-weight:700;
+      .mode-grid label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 10px 12px;
+        background: #fafbff;
+        font-weight: 700;
+      }
+      .mode-grid input {
+        width: auto;
       }
 
-      @media (max-width: 760px) {
-        .layout { grid-template-columns: 1fr; }
-        .mode-grid { grid-template-columns: 1fr; }
-        .topbar-inner { flex-direction:column; align-items:flex-start; padding:10px 0; }
+      .course-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .course-option {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #fafbff;
+        padding: 12px 14px;
+      }
+      .course-option span {
+        font-weight: 700;
+      }
+      .course-option small {
+        color: var(--muted);
+      }
+      .course-option input {
+        width: auto;
+      }
+
+      .mini-box {
+        display: grid;
+        gap: 8px;
+        background: #fafbff;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px;
+      }
+      .mini-box p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .announcement-list {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      @media (max-width: 920px) {
+        .student-shell {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          border-right: none;
+          border-bottom: 1px solid var(--line);
+        }
+        .summary-grid,
+        .dashboard-grid,
+        .bottom-grid {
+          grid-template-columns: 1fr;
+        }
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
       }
     </style>
   </head>
   <body>
-    <header class="topbar">
-      <div class="container topbar-inner">
-        <div class="brand">
+    <div class="student-shell">
+      <aside class="sidebar">
+        <div class="brand-box">
           <div class="brand-mark">
-            <img src="/static/images/team/IOS TECH.jpg" alt="IOS Tech SkillUp logo">
+            <img src="/static/images/team/IOS TECH.jpg" alt="IOS Tech SkillUp">
           </div>
-          <div class="brand-name">IOS Tech SkillUp</div>
+          <div>
+            <div class="brand-mini">IOS</div>
+            <div class="brand-name">Tech SkillUp</div>
+          </div>
         </div>
-        <nav class="nav">
-          <a href="/">Home</a>
-          <a href="/tech-skillup">Programs</a>
-          <a href="/tech-skills-dashboard">Dashboard</a>
-          <a href="/profile">Profile</a>
-          <a class="logout" href="/logout">Logout</a>
-        </nav>
-      </div>
-    </header>
 
-    <main class="page">
-      <div class="container panel">
-        <span class="eyebrow">Tech SkillUp</span>
-        <h1>IOS Tech SkillUp Dashboard</h1>
-        <p class="subtitle">Welcome, {{ user["name"] }}. Your training workspace is built for practical learning, skill growth, and career-ready outcomes.</p>
+        <nav class="side-nav" aria-label="Student navigation">
+          <a class="active" href="/tech-skills-dashboard">Home</a>
+          <a href="/tech-skillup">Programs</a>
+          <a href="/tech-payment">Payment</a>
+          <a href="/profile">Profile</a>
+          <a href="/logout">Logout</a>
+        </nav>
+
+        <div class="sidebar-card">
+          <span class="label">Enrollment status</span>
+          <strong>Active</strong>
+          <small>Application fee paid</small>
+        </div>
+      </aside>
+
+      <main class="dashboard-main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Student portal</p>
+            <h1>Welcome back, {{ user["name"] }}</h1>
+          </div>
+          <div class="topbar-actions">
+            <button type="button">New message</button>
+            <a href="/logout">Logout</a>
+          </div>
+        </header>
 
         {% with messages = get_flashed_messages() %}
           {% if messages %}
@@ -177,124 +553,182 @@
           {% endif %}
         {% endwith %}
 
-        <div class="card" style="margin-top: 20px;">
-          <h2>Payment plan</h2>
-          <p style="margin: 0 0 12px; color: var(--muted);">Course fee: <strong>₦8,500 total</strong>. You can pay once or split in two installments of <strong>₦4,250 + ₦4,250</strong>.</p>
-          <p style="margin: 0 0 14px; color: var(--muted);">Demo payment status: {% if session.get('tech_payment_status') == 'paid' %}Paid{% else %}Not paid yet{% endif %}</p>
-          <a class="primary-btn" href="/tech-payment">Make payment</a>
-        </div>
-
-        <div class="layout">
-          <div class="card">
-            <h2>My learning overview</h2>
-            <div class="program-list" style="margin-top: 12px;">
-              <div class="program-item">
-                <strong>Current course</strong>
-                <div>{{ selected_skill or user['course'] or 'No course selected yet' }}</div>
-              </div>
-              <div class="program-item">
-                <strong>Delivery mode</strong>
-                <div>{{ selected_mode or user['learning_mode'] or 'Not set yet' }}</div>
-              </div>
-              <div class="program-item">
-                <strong>Portfolio status</strong>
-                <div>{{ user['portfolio_status'] or 'Not started' }}</div>
-              </div>
-              <div class="program-item">
-                <strong>Next class</strong>
-                <div>Weekday coaching session · 5:00 PM - 7:00 PM</div>
-              </div>
-            </div>
+        <section class="hero-panel">
+          <div>
+            <p class="tag">Enrollment confirmed</p>
+            <h2>Your learning journey has started.</h2>
+            <p>You are now enrolled in <strong>{{ selected_skill or user['course'] or 'your selected program' }}</strong> with a <strong>{{ selected_mode or user['learning_mode'] or 'flexible learning plan' }}</strong> delivery mode.</p>
           </div>
 
-          <div class="card">
-            <h2>Choose your skill</h2>
-            <form method="post" action="/tech-skills-dashboard">
-              <div class="field">
-                <label for="preferred_skill">Preferred skill</label>
-                <select id="preferred_skill" name="preferred_skill">
-                  <option value="">Select a skill</option>
-                  {% for program in programs %}
-                    <option value="{{ program.name }}" {% if selected_skill == program.name %}selected{% endif %}>{{ program.name }}</option>
-                  {% endfor %}
-                </select>
-              </div>
+          <div class="hero-note">
+            <span>Application fee</span>
+            <strong>₦8,500 paid</strong>
+          </div>
+        </section>
 
-              <div class="field">
+        <section class="summary-grid">
+          <article class="info-card">
+            <div class="card-header">
+              <h3>Student profile</h3>
+              <span class="chip success">Active</span>
+            </div>
+            <ul class="details-list">
+              <li><span>Name</span><strong>{{ user['name'] }}</strong></li>
+              <li><span>Email</span><strong>{{ user['email'] }}</strong></li>
+              <li><span>Phone</span><strong>{{ user['phone_number'] or 'Not provided yet' }}</strong></li>
+              <li><span>Course</span><strong>{{ selected_skill or user['course'] or 'Not selected yet' }}</strong></li>
+              <li><span>Mode</span><strong>{{ selected_mode or user['learning_mode'] or 'Not set yet' }}</strong></li>
+              <li><span>Schedule</span><strong>{{ selected_schedule or 'Flexible' }}</strong></li>
+            </ul>
+          </article>
+
+          <article class="info-card">
+            <div class="card-header">
+              <h3>Payment status</h3>
+              <span class="chip paid">Paid</span>
+            </div>
+            <div class="fee-box">
+              <small>Application fee</small>
+              <strong>₦8,500</strong>
+            </div>
+            <div class="payment-meta">
+              <div>
+                <span>Plan</span>
+                <strong>
+                  {% if session.get('tech_course_payment_option') == 'split' %}
+                    Split payment
+                  {% else %}
+                    One-time payment
+                  {% endif %}
+                </strong>
+              </div>
+              <div>
+                <span>Status</span>
+                <strong>Approved</strong>
+              </div>
+            </div>
+            <a class="primary-btn" href="/tech-payment">Review payment</a>
+          </article>
+        </section>
+
+        <section class="dashboard-grid">
+          <article class="info-card">
+            <div class="card-header">
+              <h3>Enrollment steps</h3>
+            </div>
+            <div class="steps-list">
+              <div class="step-item complete">
+                <span class="step-badge">1</span>
+                <div>
+                  <strong>Application form completed</strong>
+                  <p>Your registration details were submitted successfully.</p>
+                </div>
+              </div>
+              <div class="step-item complete">
+                <span class="step-badge">2</span>
+                <div>
+                  <strong>Application fee paid</strong>
+                  <p>₦8,500 was paid for the application form, ID card, jotter, pen and sticker.</p>
+                </div>
+              </div>
+              <div class="step-item active">
+                <span class="step-badge">3</span>
+                <div>
+                  <strong>Tuition plan next</strong>
+                  <p>Choose your payment method to continue with your tuition fee and move to the next stage.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="info-card">
+            <div class="card-header">
+              <h3>Choose your skill</h3>
+              {% if course_payment_status %}
+                <span class="chip success">Tuition paid</span>
+              {% else %}
+                <span class="chip">Payment due</span>
+              {% endif %}
+            </div>
+
+            {% if course_payment_status %}
+              <div class="mini-box">
+                <strong>Selected course(s)</strong>
+                {% if selected_courses %}
+                  {% for course_name in selected_courses %}
+                    <span style="display: inline-block; background: rgba(31,45,61,0.06); border-radius: 999px; padding: 6px 10px; font-weight: 700; margin-right: 8px; margin-bottom: 8px;">{{ course_name }}</span>
+                  {% endfor %}
+                {% else %}
+                  <p>No course selected yet.</p>
+                {% endif %}
+                <p><strong>Total paid:</strong> {{ course_payment_total }}</p>
+              </div>
+              <div style="margin-top: 14px;">
+                <a class="primary-btn" href="/tech-course-payment">Review course payment</a>
+              </div>
+            {% else %}
+              <form method="post" action="/tech-course-payment" class="skill-form">
+                <label>Select course(s)</label>
+                <div class="course-grid">
+                  {% for program in programs %}
+                    <label class="course-option">
+                      <input type="checkbox" name="course" value="{{ program.name }}" {% if program.name in selected_courses %}checked{% endif %}>
+                      <span>{{ program.name }}</span>
+                      <small>{{ program.fee }}</small>
+                    </label>
+                  {% endfor %}
+                </div>
+
                 <label>Learning mode</label>
                 <div class="mode-grid">
-                  <label class="mode-option">
-                    <input type="radio" name="learning_mode" value="Online" {% if selected_mode == 'Online' %}checked{% endif %}>
-                    <span>Online</span>
-                  </label>
-                  <label class="mode-option">
-                    <input type="radio" name="learning_mode" value="Physical" {% if selected_mode == 'Physical' %}checked{% endif %}>
-                    <span>Physical</span>
-                  </label>
-                  <label class="mode-option">
-                    <input type="radio" name="learning_mode" value="Hybrid" {% if selected_mode == 'Hybrid' %}checked{% endif %}>
-                    <span>Hybrid</span>
-                  </label>
+                  <label><input type="radio" name="learning_mode" value="Online" {% if selected_mode == 'Online' %}checked{% endif %}> Online</label>
+                  <label><input type="radio" name="learning_mode" value="Physical" {% if selected_mode == 'Physical' %}checked{% endif %}> Physical</label>
+                  <label><input type="radio" name="learning_mode" value="Hybrid" {% if selected_mode == 'Hybrid' %}checked{% endif %}> Hybrid</label>
                 </div>
-              </div>
 
-              <div class="field">
                 <label for="schedule">Preferred schedule</label>
-                <input id="schedule" name="schedule" type="text" value="{{ selected_schedule or '' }}" placeholder="Weekdays, weekends, evenings, or flexible schedule">
-              </div>
+                <input id="schedule" name="schedule" type="text" value="{{ selected_schedule or '' }}" placeholder="Weekdays or flexible schedule">
 
-              <button class="primary-btn" type="submit">Save my skill plan</button>
-            </form>
-
-            {% if selected_skill or selected_mode or selected_schedule %}
-              <div class="summary">
-                <strong>Your current skill plan</strong>
-                <div>Skill: {{ selected_skill or 'Not selected yet' }}</div>
-                <div>Mode: {{ selected_mode or 'Not selected yet' }}</div>
-                <div>Schedule: {{ selected_schedule or 'Flexible' }}</div>
-              </div>
+                <button class="primary-btn" type="submit">Pay with Paystack Demo</button>
+              </form>
             {% endif %}
-          </div>
-        </div>
+          </article>
+        </section>
 
-        <div class="layout" style="margin-top: 24px;">
-          <div class="card">
-            <h2>Upcoming learning</h2>
-            <div class="program-list">
-              <div class="program-item">
-                <strong>Live mentorship session</strong>
-                <div>Introduction to practical case studies and project planning.</div>
-              </div>
-              <div class="program-item">
-                <strong>Assignment</strong>
-                <div>Submit a short project brief aligned to your chosen track.</div>
-              </div>
+        <section class="bottom-grid">
+          <article class="info-card">
+            <div class="card-header">
+              <h3>Upcoming class</h3>
             </div>
-          </div>
+            <div class="mini-box">
+              <strong>Weekend practical session</strong>
+              <p>Next class: Tuesday · 5:00 PM - 7:00 PM</p>
+            </div>
+          </article>
 
-          <div class="card">
-            <h2>Available courses</h2>
-            <div class="program-list">
-              {% for program in programs %}
-                <div class="program-item" style="display: flex; align-items: flex-start; gap: 12px;">
-                  {% if program.image %}
-                    <img src="{{ program.image }}" alt="{{ program.name }}" style="width: 72px; height: 72px; object-fit: cover; border-radius: 12px; border: 1px solid rgba(11,31,58,0.08); flex-shrink: 0;">
-                  {% endif %}
-                  <div style="flex: 1;">
-                    <strong>{{ program.name }}</strong>
-                    <div>{{ program.description }}</div>
-                    <div class="tags">
-                      {% for tool in program.tools %}
-                        <span class="tag">{{ tool }}</span>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </div>
-              {% endfor %}
+          <article class="info-card">
+            <div class="card-header">
+              <h3>Announcements</h3>
             </div>
-          </div>
-        </div>
-      </div>
-    </main>
+            <ul class="announcement-list">
+              <li>Welcome session begins this week.</li>
+              <li>Project-based assignments will be shared soon.</li>
+              <li>Portfolio and certificate support available.</li>
+            </ul>
+          </article>
+
+          <article class="info-card">
+            <div class="card-header">
+              <h3>Support</h3>
+            </div>
+            <ul class="announcement-list">
+              <li>Email: support@iosinstitute.com</li>
+              <li>Phone: +234 800 000 0000</li>
+              <li>Help desk available Monday to Saturday.</li>
+            </ul>
+          </article>
+        </section>
+      </main>
+    </div>
   </body>
 </html>

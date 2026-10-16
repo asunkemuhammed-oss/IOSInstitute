@@ -106,6 +106,42 @@ def test_tech_skills_dashboard_has_course_selection_and_delivery_modes(client):
     assert b"Data Analysis" in response.data
 
 
+def test_tech_course_payment_requires_course_selection_and_totals_multi_course_fee(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, payment_mode) VALUES (?, ?, ?, ?, ?)",
+            ("Student User", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student", "single"),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=True,
+    )
+
+    response = client.post(
+        "/tech-course-payment",
+        data={
+            "course": ["Data Analysis", "Digital Marketing"],
+            "payment_option": "split",
+        },
+        follow_redirects=True,
+    )
+
+    assert response.status_code == 200
+    assert b"Paystack Demo" in response.data
+    assert b"Data Analysis" in response.data
+    assert b"Digital Marketing" in response.data
+    assert b"250,000" in response.data
+    assert b"Split payment" in response.data
+
+
 def test_student_dashboard_has_research_library_and_modules(client):
     email = f"student{uuid.uuid4().hex[:8]}@example.com"
 
@@ -360,7 +396,7 @@ def test_tech_payment_redirects_to_dashboard_with_success_message(client):
     assert b"Data Science" in response.data
 
 
-def test_tech_student_login_redirects_to_tech_skills_dashboard(client):
+def test_tech_student_without_application_fee_is_redirected_to_payment(client):
     email = f"techstudent{uuid.uuid4().hex[:8]}@example.com"
 
     with app.app_context():
@@ -368,8 +404,31 @@ def test_tech_student_login_redirects_to_tech_skills_dashboard(client):
 
         db = get_db()
         db.execute(
-            "INSERT INTO users (name, email, password, role, course, learning_mode) VALUES (?, ?, ?, ?, ?, ?)",
-            ("Tech Student", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student", "Data Analysis", "Hybrid"),
+            "INSERT INTO users (name, email, password, role, course, learning_mode, payment_mode) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            ("Tech Student", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student", "Data Analysis", "Hybrid", "pending"),
+        )
+        db.commit()
+
+    response = client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=False,
+    )
+
+    assert response.status_code == 302
+    assert response.headers["Location"].endswith("/tech-payment")
+
+
+def test_tech_student_with_paid_application_fee_can_open_dashboard(client):
+    email = f"techstudentpaid{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, course, learning_mode, payment_mode) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            ("Tech Student Paid", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student", "Data Analysis", "Hybrid", "single"),
         )
         db.commit()
 
@@ -381,6 +440,31 @@ def test_tech_student_login_redirects_to_tech_skills_dashboard(client):
 
     assert response.status_code == 302
     assert response.headers["Location"].endswith("/tech-skills-dashboard")
+
+
+def test_tech_student_profile_routes_back_to_tech_dashboard(client):
+    email = f"techprofile{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, course, learning_mode, payment_mode) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            ("Tech Profile User", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student", "AI Automation", "Online", "single"),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=True,
+    )
+
+    response = client.get("/profile")
+    assert response.status_code == 200
+    assert b"href=\"/tech-skills-dashboard\"" in response.data
+    assert b"href=\"/dashboard\"" not in response.data
 
 
 def test_researcher_dashboard_is_available_for_researcher_role(client):
