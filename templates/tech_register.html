@@ -180,6 +180,18 @@
 
           <h1>Register</h1>
 
+          <div class="message" style="background: rgba(18,63,55,0.05); border-color: rgba(18,63,55,0.12); color: var(--primary);">
+            <strong>How to get started</strong>
+            <ol style="margin: 10px 0 0; padding-left: 18px; line-height: 1.8; font-weight: 700;">
+              <li>Fill the application form.</li>
+              <li>You will be redirected to your portal to pay the one-time application fee of <strong>₦8,500</strong>.</li>
+              <li>After payment, you will have access to your dashboard and can continue with your tuition plan.</li>
+            </ol>
+            <p style="margin: 12px 0 0; font-weight: 700;">Here are the payment plans:</p>
+            <p style="margin: 6px 0 0;">Option 1 - Pay once</p>
+            <p style="margin: 4px 0 0;">Option 2 - Pay twice</p>
+          </div>
+
           {% with messages = get_flashed_messages() %}
             {% if messages %}
               <div class="message">{{ messages[0] }}</div>

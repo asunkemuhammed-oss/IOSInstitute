@@ -90,6 +90,38 @@
 
         <div class="fee-box">Amount due: {{ fee }}</div>
 
+        <div class="fee-box" style="margin-top: 16px; background: rgba(19,106,92,0.06); border-color: rgba(19,106,92,0.12);">
+          <div style="display: grid; gap: 12px;">
+            <span style="font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: #53657a;">Payment history</span>
+            <div style="display: flex; justify-content: space-between; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(10,61,54,0.08);">
+              <span>Application fee</span>
+              <strong>{{ payment_summary.application_fee.status }}</strong>
+              <span>{{ payment_summary.application_fee.amount }}</span>
+            </div>
+            {% if payment_ledger %}
+              {% for item in payment_ledger %}
+                <div style="display: flex; justify-content: space-between; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(10,61,54,0.08);">
+                  <span>{{ item.name }}</span>
+                  <strong>{{ item.status }}</strong>
+                  <span>{{ item.amount }}</span>
+                </div>
+              {% endfor %}
+            {% else %}
+              <div style="display: flex; justify-content: space-between; gap: 12px;">
+                <span>No course selected yet</span>
+                <strong>Pending</strong>
+                <span>₦0</span>
+              </div>
+            {% endif %}
+            {% if payment_summary.remaining_total %}
+              <div style="display: flex; justify-content: space-between; gap: 12px; font-weight: 800; color: var(--primary);">
+                <span>Outstanding</span>
+                <strong>{{ payment_summary.remaining_total }}</strong>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
         {% if selected_courses %}
           <div class="fee-box" style="margin-top: 16px; background: rgba(19,106,92,0.06); border-color: rgba(19,106,92,0.12);">
             <div style="display: grid; gap: 8px;">
@@ -109,6 +141,7 @@
         {% endif %}
 
         <form method="post">
+            <div style="margin-bottom: 8px; font-weight: 800; color: var(--primary);">Here are the payment plans:</div>
             <div class="option-list">
               {% for option in payment_options %}
                 {% if option is mapping %}

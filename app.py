@@ -249,6 +249,46 @@ def course_payment_summary(course_names):
     }
 
 
+def build_tech_payment_ledger(user):
+    selected_courses = normalize_course_names(session.get("selected_courses") or user["course"] or "")
+    paid_courses = normalize_course_names(session.get("tech_course_paid_courses"))
+    paid_status = session.get("tech_course_payment_status") == "paid"
+    program_map = {program["name"]: program for program in skill_programs()}
+
+    ledger = []
+    for course_name in selected_courses:
+        program = program_map.get(course_name)
+        if not program:
+            continue
+        status = "Paid" if paid_status or course_name in paid_courses else "Pending"
+        ledger.append({
+            "name": course_name,
+            "amount": program.get("fee", "₦0"),
+            "status": status,
+        })
+
+    if not ledger and user and row_value(user, "course"):
+        selected_courses = normalize_course_names(user["course"])
+        for course_name in selected_courses:
+            ledger.append({
+                "name": course_name,
+                "amount": program_map.get(course_name, {}).get("fee", "₦0"),
+                "status": "Pending",
+            })
+
+    application_fee_paid = tech_application_fee_paid(user)
+    remaining_total = sum(parse_money(item["amount"]) for item in ledger if item["status"] == "Pending")
+
+    return {
+        "application_fee": {
+            "status": "Paid" if application_fee_paid else "Pending",
+            "amount": "₦8,500",
+        },
+        "course_ledger": ledger,
+        "remaining_total": f"₦{remaining_total:,}",
+    }
+
+
 def skill_programs():
     return [
         {
@@ -293,18 +333,46 @@ def skill_programs():
             "image": "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80",
         },
         {
-            "name": "Web Development",
-            "description": "Learn how to design and build responsive, user-friendly websites and digital products.",
-            "tools": ["HTML", "CSS", "JavaScript", "React"],
+            "name": "Front End Development",
+            "description": "Learn how to design and build responsive, user-friendly interfaces that look great and work smoothly across devices.",
+            "tools": ["HTML", "CSS", "JavaScript", "React", "UI Design"],
             "instructor": "Mrs. Grace Okafor",
-            "duration": "12 weeks",
-            "curriculum": "Front-end design, interactivity, APIs, deployment, project building",
-            "fee": "₦150,000",
+            "duration": "3 months",
+            "curriculum": [
+                "HTML5 & CSS3",
+                "Responsive design",
+                "JavaScript fundamentals",
+                "React basics",
+                "User interface design and accessibility",
+                "Deployment and portfolio projects",
+            ],
+            "fee": "₦180,000",
             "discount": "50% OFF",
             "schedule": "3 days/week · 2 hours/day",
             "start_date": "03 Jan 2027",
             "certificate": "Certificate + live project submission",
             "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80",
+        },
+        {
+            "name": "Back End Development",
+            "description": "Learn the server-side logic, database management, and APIs that power modern web applications.",
+            "tools": ["Node.js", "Express", "MongoDB", "REST APIs"],
+            "instructor": "Mrs. Grace Okafor",
+            "duration": "2 months",
+            "curriculum": [
+                "Server-side JavaScript with Node.js",
+                "Express.js and API development",
+                "Database design and MongoDB",
+                "Authentication and authorization",
+                "Error handling and API testing",
+                "Backend deployment basics",
+            ],
+            "fee": "₦120,000",
+            "discount": "50% OFF",
+            "schedule": "3 days/week · 2 hours/day",
+            "start_date": "03 Jan 2027",
+            "certificate": "Certificate + practical backend project",
+            "image": "https://images.unsplash.com/photo-1558494949cc5c8f9f3c9f4d5d1d3d4b?auto=format&fit=crop&w=900&q=80",
         },
         {
             "name": "Financial Analysis",
@@ -424,14 +492,29 @@ def skill_programs():
         },
         {
             "name": "Web Development",
-            "description": "A full-stack engineering career path involves becoming skilled in both front-end and back-end development for websites and applications. This means you'll learn how to create the user interface that people see and interact with (front-end) as well as the behind-the-scenes logic, databases, and servers (back-end).",
+            "track": "Full Stack Engineering",
+            "description": "A full-stack engineering career path involves becoming skilled in both front-end and back-end development for websites and applications.",
             "tools": ["HTML", "CSS", "JavaScript", "React", "Node.js", "MongoDB"],
             "instructor": "Mrs. Grace Okafor",
             "duration": "5 months",
-            "curriculum": [
-                "Front-end Engineering",
-                "Back-end Engineering",
-            ],
+            "curriculum": {
+                "Front End": [
+                    "HTML5 & CSS3",
+                    "Responsive design",
+                    "JavaScript and DOM manipulation",
+                    "React and component design",
+                    "UI/UX implementation and accessibility",
+                    "Deployment and project build workflow",
+                ],
+                "Back End": [
+                    "Node.js and Express.js",
+                    "REST API design and structure",
+                    "MongoDB and database integration",
+                    "Authentication and authorization",
+                    "Server-side validation and testing",
+                    "Production deployment and project delivery",
+                ],
+            },
             "fee": "₦300,000",
             "discount": "50% OFF",
             "schedule": "3 days/week · 2 hours/day",
@@ -562,6 +645,7 @@ def tech_course_payment():
         summary = course_payment_summary(chosen_courses)
         session["selected_courses"] = chosen_courses
         session["selected_skill"] = chosen_courses[0]
+        session["tech_course_paid_courses"] = chosen_courses
         session["tech_course_payment_status"] = "paid"
         session["tech_course_payment_option"] = payment_option
         session["tech_course_payment_total"] = summary["display"]
@@ -579,6 +663,7 @@ def tech_course_payment():
         {"label": f"Pay once ({summary['display']})", "value": "single"},
         {"label": f"Pay twice ({summary['display']} total, split into two instalments)", "value": "split"},
     ]
+    payment_summary = build_tech_payment_ledger(user)
 
     return render_template(
         "payment.html",
@@ -589,6 +674,8 @@ def tech_course_payment():
         payment_options=payment_options,
         selected_courses=summary["items"],
         total_amount=summary["display"],
+        payment_ledger=payment_summary["course_ledger"],
+        payment_summary=payment_summary,
         demo_note="Demo checkout: this is a sample Paystack-style payment flow for tech course tuition.",
     )
 
@@ -642,9 +729,10 @@ def tech_payment():
         return redirect(url_for("tech_skills_dashboard"))
 
     payment_options = [
-        {"label": "Pay once (₦8,500)", "value": "single"},
-        {"label": "Pay every month (₦4,250/month)", "value": "split"},
+        {"label": "Option 1 - Pay once (₦8,500)", "value": "single"},
+        {"label": "Option 2 - Pay twice (₦8,500 total, split into two instalments)", "value": "split"},
     ]
+    payment_summary = build_tech_payment_ledger(user)
     return render_template(
         "payment.html",
         portal="tech",
@@ -652,6 +740,8 @@ def tech_payment():
         description="After the application form, you will be redirected to your portal to pay the one-time application fee of ₦8,500. Once this is completed, you will have access to your dashboard and can continue with your tuition plan.",
         fee="₦8,500",
         payment_options=payment_options,
+        payment_ledger=payment_summary["course_ledger"],
+        payment_summary=payment_summary,
         demo_note="Demo checkout: this is a sample onboarding payment flow for the Tech Skills portal.",
     )
 

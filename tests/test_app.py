@@ -142,6 +142,51 @@ def test_tech_course_payment_requires_course_selection_and_totals_multi_course_f
     assert b"Split payment" in response.data
 
 
+def test_tech_payment_page_lists_paid_and_pending_course_fees(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, payment_mode, course, learning_mode) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (
+                "Student User",
+                email,
+                generate_password_hash("SecurePass123", method="pbkdf2:sha256"),
+                "student",
+                "single",
+                "Data Analysis",
+                "Online",
+            ),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=True,
+    )
+
+    with client.session_transaction() as session:
+        session["selected_courses"] = ["Data Analysis", "Digital Marketing"]
+        session["tech_payment_status"] = "paid"
+        session["tech_payment_option"] = "single"
+        session["tech_course_payment_status"] = "partial"
+        session["tech_course_paid_courses"] = ["Data Analysis"]
+        session["tech_course_payment_total"] = "₦150,000"
+
+    response = client.get("/tech-payment")
+
+    assert response.status_code == 200
+    assert b"Payment history" in response.data
+    assert b"Application fee" in response.data
+    assert b"Data Analysis" in response.data
+    assert b"Digital Marketing" in response.data
+    assert b"Pending" in response.data
+
+
 def test_student_dashboard_has_research_library_and_modules(client):
     email = f"student{uuid.uuid4().hex[:8]}@example.com"
 

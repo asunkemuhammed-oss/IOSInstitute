@@ -431,7 +431,7 @@
     </style>
   </head>
   <body>
-    <header class="topbar">
+    <header class="topbar" id="top">
       <div class="container topbar-inner">
         <div class="brand">
           <div class="brand-mark"><img src="/static/images/team/tech-skill-identity.svg" alt="Tech SkillUp identity" /></div>
@@ -439,7 +439,7 @@
         </div>
 
         <nav class="nav-links" aria-label="Main navigation">
-          <div class="nav-item"><a href="/">Home</a></div>
+          <div class="nav-item"><a href="#top">Home</a></div>
           <div class="nav-item"><a href="#courses">Courses</a></div>
           <div class="nav-item"><a href="#testimonials">Testimonial</a></div>
           <div class="nav-item has-menu">
@@ -449,7 +449,6 @@
               <a href="/login?admin=1">Admin Login</a>
             </div>
           </div>
-          <div class="nav-item"><a href="#contact">Contact Us</a></div>
         </nav>
 
       </div>
@@ -476,23 +475,12 @@
           <div class="promo-text">Take advantage of our limited-time offer on select Tech SkillUp programs. <strong>Enroll now and save big.</strong></div>
         </div>
 
-        <div class="info-strip" style="margin-top: 30px;">
-          <h3>How to get started</h3>
-          <ol style="margin: 0; padding-left: 20px; color: var(--muted); line-height: 1.9;">
-            <li><strong>Step 1 - Click here to fill the application form.</strong> After filling the form, you'll be redirected to your portal where you will be asked to pay a one-time application fee of <strong>₦8,500</strong>. (This covers your application form, ID card, jotter, pen & sticker.)</li>
-            <li><strong>Step 2 - We will review your application and send an email or SMS upon approval.</strong></li>
-            <li><strong>Step 3 - Log in to your portal to proceed with the tuition fee.</strong></li>
-          </ol>
-          <p style="margin: 16px 0 0; color: var(--primary); font-weight:700;">Here are the payment plans: Option 1 - You may choose to pay once. Option 2 - Pay every month.</p>
-          <p style="margin: 10px 0 0; color: var(--primary); font-weight:700;">We can't wait to welcome you on board and embark on this exciting journey together!</p>
-        </div>
-
-        <div class="programs-header">
+        <div class="programs-header" id="courses">
           <h2>Available Programs</h2>
           <p>Each course is designed around real-world skills, guided instruction, and practical outcomes that prepare learners for career growth and project delivery.</p>
         </div>
 
-        <div class="program-grid">
+        <div class="program-grid" id="course-list">
           {% for program in programs %}
           <div class="card">
             {% if program.image %}
@@ -500,6 +488,9 @@
             {% endif %}
             <div class="discount-badge">{{ program.get('discount', '50% OFF') }}</div>
             <h3>{{ program.name }}</h3>
+            {% if program.get('track') %}
+            <p style="margin: 0 0 12px; color: var(--secondary); font-weight: 700;">{{ program.get('track') }}</p>
+            {% endif %}
             <p><strong>Course description:</strong> {{ program.description }}</p>
             <div class="tool-list">
               {% for tool in program.tools %}
@@ -509,7 +500,20 @@
             <div class="meta">
               <div class="meta-item"><strong>Duration</strong><span>{{ program.duration }}</span></div>
               <div class="meta-item"><strong>Class</strong><span>{{ program.get('schedule', '3 days/week · 2 hours/day') }}</span></div>
-              <div class="meta-item"><strong>Curriculum</strong><span>{{ program.curriculum|join(', ') if program.curriculum is iterable and program.curriculum is not string else program.curriculum }}</span></div>
+              <div class="meta-item">
+                <strong>Curriculum</strong>
+                <span>
+                  {% if program.curriculum is mapping %}
+                    {% for key, values in program.curriculum.items() %}
+                      <div><strong>{{ key }}</strong> ({{ values|join(', ') }})</div>
+                    {% endfor %}
+                  {% elif program.curriculum is iterable and program.curriculum is not string %}
+                    {{ program.curriculum|join(', ') }}
+                  {% else %}
+                    {{ program.curriculum }}
+                  {% endif %}
+                </span>
+              </div>
               <div class="meta-item"><strong>Fee</strong><span>{{ program.fee }}</span></div>
               <div class="meta-item"><strong>Start date</strong><span>{{ program.get('start_date', '03 Jan 2027') }}</span></div>
               <div class="meta-item"><strong>Certificate information</strong><span>{{ program.certificate }}</span></div>
@@ -520,6 +524,24 @@
             </div>
           </div>
           {% endfor %}
+        </div>
+
+        <div class="info-strip" id="testimonials">
+          <h3>Student testimonials</h3>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-top:18px;">
+            <div style="background:#fff; border:1px solid rgba(20,43,58,0.08); border-radius:14px; padding:18px; box-shadow:0 10px 22px rgba(20,43,58,0.04);">
+              <p style="margin:0 0 10px; color: var(--muted); line-height:1.7;">“The practical sessions made the learning feel real. I went from being unsure to confidently building projects and presenting them to clients.”</p>
+              <strong style="color: var(--primary);">- Chiamaka A.</strong>
+            </div>
+            <div style="background:#fff; border:1px solid rgba(20,43,58,0.08); border-radius:14px; padding:18px; box-shadow:0 10px 22px rgba(20,43,58,0.04);">
+              <p style="margin:0 0 10px; color: var(--muted); line-height:1.7;">“I loved the structure, the mentor support and the real-world approach. The digital marketing and AI classes helped me start my freelance work faster.”</p>
+              <strong style="color: var(--primary);">- Daniel O.</strong>
+            </div>
+            <div style="background:#fff; border:1px solid rgba(20,43,58,0.08); border-radius:14px; padding:18px; box-shadow:0 10px 22px rgba(20,43,58,0.04);">
+              <p style="margin:0 0 10px; color: var(--muted); line-height:1.7;">“The learning environment is motivating and professional. I now have a sharper portfolio and can apply my skills to real business problems.”</p>
+              <strong style="color: var(--primary);">- Ada E.</strong>
+            </div>
+          </div>
         </div>
 
         <div class="info-strip">
