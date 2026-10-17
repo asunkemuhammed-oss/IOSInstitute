@@ -39,6 +39,7 @@ def test_research_institute_page_has_welcome_and_entry_actions(client):
     response = client.get("/research-institute")
 
     assert response.status_code == 200
+    assert b"IOS RESEARCH INSTITUTE" in response.data
     assert b"Welcome to IOS Research Institute" in response.data
     assert b"Sign Up" in response.data
     assert b"Login" in response.data
