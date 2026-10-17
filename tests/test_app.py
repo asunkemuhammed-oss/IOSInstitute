@@ -336,12 +336,15 @@ def test_tech_payment_flow_has_review_checkout_and_success_actions(client):
     response = client.post(
         "/tech-payment",
         data={"payment_option": "single", "payment_stage": "success"},
-        follow_redirects=True,
+        follow_redirects=False,
     )
 
-    assert response.status_code == 200
-    assert b"Payment successful" in response.data
-    assert b"Start course" in response.data
+    assert response.status_code == 302
+    assert response.headers["Location"].endswith("/tech-skills-dashboard")
+
+    follow_up = client.get(response.headers["Location"], follow_redirects=True)
+    assert response.status_code == 302
+    assert b"Choose your skill" in follow_up.data
 
 
 def test_tech_online_course_has_start_class_learning_view(client):

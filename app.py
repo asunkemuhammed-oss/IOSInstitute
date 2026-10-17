@@ -900,21 +900,7 @@ def tech_payment():
             get_db().commit()
             flash("Payment successful! Welcome to your IOS Tech SkillUp dashboard.")
 
-        payment_summary = build_tech_payment_ledger(user)
-        return render_template(
-            "payment.html",
-            portal="tech",
-            title="Payment successful",
-            description="Your application fee has been received. You can continue to your student dashboard and begin your course.",
-            fee="₦8,500",
-            payment_options=[],
-            payment_ledger=payment_summary["course_ledger"],
-            payment_summary=payment_summary,
-            show_history=True,
-            payment_stage="success",
-            payment_success=True,
-            demo_note="Demo checkout: this is a sample onboarding payment flow for the Tech Skills portal.",
-        )
+        return redirect(url_for("tech_skills_dashboard"))
 
     if request.method == "POST" and payment_stage == "checkout":
         payment_summary = build_tech_payment_ledger(user)
@@ -1020,8 +1006,11 @@ def login():
         if user["role"] in {"student", "client"}:
             course = row_value(user, "course")
             learning_mode = row_value(user, "learning_mode")
+            session.pop("tech_payment_status", None)
+            session.pop("tech_payment_option", None)
+            session.pop("tech_payment_amount", None)
             if course or learning_mode:
-                if session.get("tech_payment_status") == "paid" or tech_application_fee_paid(user):
+                if tech_application_fee_paid(user):
                     return redirect(url_for("tech_skills_dashboard"))
                 return redirect(url_for("tech_payment"))
             return redirect(url_for("dashboard"))
