@@ -248,8 +248,8 @@ def test_tech_payment_page_shows_fee_options_before_application_fee_is_paid(clie
     response = client.get("/tech-payment")
 
     assert response.status_code == 200
-    assert b"Option 1 - Pay once" in response.data
-    assert b"Option 2 - Pay twice" in response.data
+    assert "Pay once (₦8,500)".encode("utf-8") in response.data
+    assert b"Pay twice" not in response.data
     assert b"Payment history" not in response.data
 
 
@@ -285,8 +285,8 @@ def test_tech_payment_page_uses_payment_history_after_application_fee_is_paid(cl
     assert response.status_code == 200
     assert b"Payment history" in response.data
     assert b"Application fee" in response.data
-    assert b"Option 1 - Pay once" not in response.data
-    assert b"Option 2 - Pay twice" not in response.data
+    assert "Pay once (₦8,500)".encode("utf-8") not in response.data
+    assert b"Pay twice" not in response.data
 
 
 def test_tech_payment_flow_has_review_checkout_and_success_actions(client):

@@ -523,7 +523,6 @@
         <nav class="side-nav" aria-label="Student navigation">
           <a class="active" href="/tech-skills-dashboard">Home</a>
           <a href="/tech-skillup">Programs</a>
-          <a href="/tech-payment">Payment</a>
           <a href="/tech-payment">Payment History</a>
           {% if course_payment_status and selected_mode and selected_mode.lower() in ['online', 'hybrid'] and selected_courses %}
             <a href="/start-course/{{ selected_courses[0]|urlencode }}">Start class</a>
@@ -616,7 +615,6 @@
               <p style="margin: 8px 0 0; color: var(--muted);">Application fee: {{ 'Paid' if user['payment_mode'] in ['single', 'split'] or session.get('tech_payment_status') == 'paid' else 'Pending' }}</p>
               <p style="margin: 8px 0 0; color: var(--muted);">Tuition: {{ 'Paid' if course_payment_status else 'Pending' }}</p>
             </div>
-            <a class="primary-btn" href="/tech-payment" style="margin-bottom: 10px;">Review payment</a>
             <a class="primary-btn" href="/tech-payment">Payment history</a>
           </article>
         </section>

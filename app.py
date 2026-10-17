@@ -940,8 +940,7 @@ def tech_payment():
         return redirect(url_for("tech_skills_dashboard"))
 
     payment_options = [
-        {"label": "Option 1 - Pay once (₦8,500)", "value": "single"},
-        {"label": "Option 2 - Pay twice (₦8,500 total, split into two instalments)", "value": "split"},
+        {"label": "Pay once (₦8,500)", "value": "single"},
     ]
     payment_summary = build_tech_payment_ledger(user)
     show_history = bool(tech_application_fee_paid(user) or session.get("tech_payment_status") == "paid")
