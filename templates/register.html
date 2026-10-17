@@ -187,6 +187,7 @@
           {% endwith %}
 
           <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="portal" value="{{ portal or 'institute' }}">
             <div class="field">
               <label for="full_name">Full name</label>
               <input id="full_name" name="full_name" type="text" required>

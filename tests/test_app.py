@@ -78,6 +78,15 @@ def test_educational_consultancy_page_has_services_and_booking_button(client):
     assert b"Book a Consultation" in response.data
 
 
+def test_research_registration_page_uses_research_branding(client):
+    response = client.get("/register?portal=research")
+
+    assert response.status_code == 200
+    assert b"IOS Research Institute" in response.data
+    assert b"Create a Research account" in response.data
+    assert b"Tech SkillUp" not in response.data
+
+
 def test_tech_skills_dashboard_has_course_selection_and_delivery_modes(client):
     email = f"student{uuid.uuid4().hex[:8]}@example.com"
 

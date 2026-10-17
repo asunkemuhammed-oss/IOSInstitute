@@ -1569,7 +1569,7 @@ def register():
             role_key=role,
         )
 
-    return render_template("register.html")
+    return render_template("register.html", portal=portal)
 
 
 with app.app_context():
