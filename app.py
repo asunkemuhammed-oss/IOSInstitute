@@ -1020,7 +1020,7 @@ def login():
         if user["role"] in {"student", "client"}:
             course = row_value(user, "course")
             learning_mode = row_value(user, "learning_mode")
-            if course and learning_mode:
+            if course or learning_mode:
                 if session.get("tech_payment_status") == "paid" or tech_application_fee_paid(user):
                     return redirect(url_for("tech_skills_dashboard"))
                 return redirect(url_for("tech_payment"))
@@ -1084,6 +1084,11 @@ def dashboard():
 
     if user["role"] == "admin":
         return redirect(url_for("admin_dashboard"))
+
+    if user["role"] in {"student", "client"} and (row_value(user, "course") or row_value(user, "learning_mode")):
+        if tech_application_fee_paid(user):
+            return redirect(url_for("tech_skills_dashboard"))
+        return redirect(url_for("tech_payment"))
 
     requests = []
     if user["role"] == "student":
