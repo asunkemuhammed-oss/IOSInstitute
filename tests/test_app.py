@@ -48,9 +48,9 @@ def test_research_institute_page_has_welcome_and_entry_actions(client):
     assert b"Data" in response.data
     assert b"Faculty" in response.data
     assert b"Department" in response.data
-    assert b"Course" in response.data
     assert b"Topic" in response.data
-    assert b"Year" in response.data
+    assert b"Faculty of Agriculture (formerly Agriculture and Forestry)" in response.data
+    assert b"Faculty of the Social Sciences" in response.data
     assert b"Effect of Public Health Expenditure on Economic Growth in Nigeria" in response.data
 
 
