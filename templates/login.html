@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% if admin_mode %}IOS Admin | Login{% elif portal == 'tech' %}IOS Tech SkillUp | Login{% else %}IOS Institute | Login{% endif %}</title>
+    <title>{% if admin_mode %}IOS Admin | Login{% elif portal == 'tech' %}IOS Tech SkillUp | Login{% elif portal == 'research' %}IOS Research Institute | Login{% else %}IOS Institute | Login{% endif %}</title>
     <style>
       :root {
         --stone: #f5f1ec;
@@ -205,13 +205,15 @@
                 IOS<small>Admin</small>
               {% elif portal == 'tech' %}
                 IOS<small>Tech SkillUp</small>
+              {% elif portal == 'research' %}
+                IOS<small>Research Institute</small>
               {% else %}
-                IOS<small>Tech SkillUp</small>
+                IOS<small>Institute</small>
               {% endif %}
             </div>
           </div>
 
-          <h1>{% if admin_mode %}Admin Login{% elif portal == 'tech' %}Tech SkillUp Login{% else %}User Login{% endif %}</h1>
+          <h1>{% if admin_mode %}Admin Login{% elif portal == 'tech' %}Tech SkillUp Login{% elif portal == 'research' %}Research Institute Login{% else %}User Login{% endif %}</h1>
 
           {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -220,6 +222,7 @@
           {% endwith %}
 
           <form method="post" class="form-wrap">
+            <input type="hidden" name="portal" value="{{ portal or 'institute' }}">
             {% if admin_mode %}
               <div class="flash" style="margin-top: -6px; margin-bottom: 0; background: rgba(18,63,55,0.05); color: var(--primary); border-color: rgba(18,63,55,0.12);">
                 Demo admin account: admin@iosinstitute.com / Admin@12345
@@ -227,6 +230,10 @@
             {% elif portal == 'tech' %}
               <div class="flash" style="margin-top: -6px; margin-bottom: 0; background: rgba(91,61,245,0.05); color: #291f64; border-color: rgba(91,61,245,0.12);">
                 Tech portal login for IOS Tech SkillUp students and learners.
+              </div>
+            {% elif portal == 'research' %}
+              <div class="flash" style="margin-top: -6px; margin-bottom: 0; background: rgba(18,63,55,0.05); color: var(--primary); border-color: rgba(18,63,55,0.12);">
+                Research Institute access is reserved for verified Research accounts only.
               </div>
             {% endif %}
 

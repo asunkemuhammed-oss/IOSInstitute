@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IOS Institute | Register</title>
+    <title>{% if portal == 'research' %}IOS Research Institute | Register{% else %}IOS Institute | Register{% endif %}</title>
     <style>
       :root {
         --stone: #f3f1ee;
@@ -175,10 +175,10 @@
             <div class="brand-mark">
               <img src="/static/images/team/REALLOGO.jpg" alt="IOS Institute logo">
             </div>
-            <div class="brand-text">IOS<small>Tech SkillUp</small></div>
+            <div class="brand-text">IOS<small>{% if portal == 'research' %}Research Institute{% else %}Tech SkillUp{% endif %}</small></div>
           </div>
 
-          <h1>Create an account</h1>
+          <h1>{% if portal == 'research' %}Create a Research account{% else %}Create an account{% endif %}</h1>
 
           {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -208,8 +208,12 @@
               <label for="role">Register as</label>
               <select id="role" name="role" required>
                 <option value="">Select an account type</option>
-                <option value="student">Student / Client – project or research assistance</option>
-                <option value="researcher">Researcher</option>
+                {% if portal == 'research' %}
+                  <option value="researcher" selected>Researcher</option>
+                {% else %}
+                  <option value="student">Student / Client – project or research assistance</option>
+                  <option value="researcher">Researcher</option>
+                {% endif %}
               </select>
             </div>
 
@@ -229,7 +233,7 @@
           </form>
 
           <p class="help">
-            Already have an account? <a href="/login">Sign in</a>
+            Already have an account? <a href="/login{% if portal == 'research' %}?portal=research{% endif %}">Sign in</a>
           </p>
         </div>
       </div>

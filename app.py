@@ -978,20 +978,27 @@ def educational_consultancy():
 def login():
     admin_mode = request.args.get("admin") == "1"
     tech_mode = request.args.get("portal") == "tech"
+    research_mode = request.args.get("portal") == "research"
+    portal_name = "tech" if tech_mode else "research" if research_mode else "institute"
     default_email = "admin@iosinstitute.com" if admin_mode else ""
 
     if request.method == "POST":
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
+        portal_name = request.form.get("portal", portal_name)
 
         if not email or not password:
             flash("Please enter your email and password.")
-            return render_template("login.html", prefill_email=default_email, admin_mode=admin_mode, portal="tech" if tech_mode else "institute")
+            return render_template("login.html", prefill_email=default_email, admin_mode=admin_mode, portal=portal_name)
 
         user = get_db().execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
         if not user or not check_password_hash(user["password"], password):
             flash("Invalid email or password")
-            return render_template("login.html", prefill_email=email, admin_mode=admin_mode, portal="tech" if tech_mode else "institute")
+            return render_template("login.html", prefill_email=email, admin_mode=admin_mode, portal=portal_name)
+
+        if portal_name == "research" and user["role"] != "researcher":
+            flash("This account is not registered for IOS Research Institute. Please use a Research account for this portal.")
+            return render_template("login.html", prefill_email=email, admin_mode=False, portal="research")
 
         session["user_id"] = user["id"]
         session["role"] = user["role"]
@@ -1015,7 +1022,7 @@ def login():
             return redirect(url_for("dashboard"))
         return redirect(url_for("register"))
 
-    return render_template("login.html", prefill_email=default_email, admin_mode=admin_mode, portal="tech" if tech_mode else "institute")
+    return render_template("login.html", prefill_email=default_email, admin_mode=admin_mode, portal=portal_name)
 
 
 @app.route("/tech-login")
@@ -1501,29 +1508,31 @@ def tech_register():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    portal = request.args.get("portal")
+
     if request.method == "POST":
         full_name = request.form.get("full_name", "").strip()
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
-        role = request.form.get("role", "")
+        role = request.form.get("role", "") or ("researcher" if portal == "research" else "")
 
         if not full_name or not email or not password:
             flash("Please complete all required fields.")
-            return render_template("register.html")
+            return render_template("register.html", portal=portal)
 
         if role not in VALID_ROLES:
             flash("Please select a valid role.")
-            return render_template("register.html")
+            return render_template("register.html", portal=portal)
 
         if role == "admin":
             flash("Admin access is restricted to internal staff. Please use the admin login credentials instead.")
-            return render_template("register.html")
+            return render_template("register.html", portal=portal)
 
         db = get_db()
         existing_user = db.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
         if existing_user:
             flash("An account with this email already exists.")
-            return render_template("register.html")
+            return render_template("register.html", portal=portal)
 
         try:
             db.execute(
@@ -1534,7 +1543,7 @@ def register():
         except sqlite3.IntegrityError:
             db.rollback()
             flash("An account with this email already exists. Please log in or use a different email.")
-            return render_template("register.html", form=request.form)
+            return render_template("register.html", form=request.form, portal=portal)
 
         if role == "researcher":
             user = db.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
