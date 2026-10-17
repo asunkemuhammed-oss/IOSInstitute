@@ -311,8 +311,8 @@
 
       .filter-grid {
         display: grid;
-        grid-template-columns: 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr 0.9fr;
-        gap: 18px;
+        grid-template-columns: 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8fr;
+        gap: 16px;
         align-items: end;
       }
 
@@ -320,10 +320,11 @@
         display: flex;
         flex-direction: column;
         gap: 8px;
+        min-width: 0;
       }
 
       .filter label {
-        font-size: 0.78rem;
+        font-size: 0.72rem;
         font-weight: 700;
         letter-spacing: 0.05em;
         text-transform: uppercase;
@@ -332,11 +333,22 @@
 
       .filter select,
       .filter input {
+        width: 100%;
         padding: 12px 10px;
         border: 1px solid var(--line);
         border-radius: 10px;
         background: rgba(255,255,255,0.8);
         color: var(--primary);
+        min-height: 46px;
+      }
+
+      .filter input[type="button"] {
+        padding-top: 13px;
+        padding-bottom: 13px;
+        font-size: 0.9rem;
+        letter-spacing: 0.04em;
+        font-weight: 800;
+        min-height: 46px;
       }
 
       .result-layout {
