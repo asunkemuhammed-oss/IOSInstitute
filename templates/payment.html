@@ -90,37 +90,45 @@
 
         <div class="fee-box">Amount due: {{ fee }}</div>
 
-        <div class="fee-box" style="margin-top: 16px; background: rgba(19,106,92,0.06); border-color: rgba(19,106,92,0.12);">
-          <div style="display: grid; gap: 12px;">
-            <span style="font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: #53657a;">Payment history</span>
-            <div style="display: flex; justify-content: space-between; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(10,61,54,0.08);">
-              <span>Application fee</span>
-              <strong>{{ payment_summary.application_fee.status }}</strong>
-              <span>{{ payment_summary.application_fee.amount }}</span>
-            </div>
-            {% if payment_ledger %}
-              {% for item in payment_ledger %}
-                <div style="display: flex; justify-content: space-between; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(10,61,54,0.08);">
-                  <span>{{ item.name }}</span>
-                  <strong>{{ item.status }}</strong>
-                  <span>{{ item.amount }}</span>
+        {% if show_history %}
+          <div class="fee-box" style="margin-top: 16px; background: rgba(19,106,92,0.06); border-color: rgba(19,106,92,0.12);">
+            <div style="display: grid; gap: 12px;">
+              <span style="font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: #53657a;">Payment history</span>
+              <div style="display: flex; justify-content: space-between; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(10,61,54,0.08);">
+                <span>Application fee</span>
+                <strong>{{ payment_summary.application_fee.status }}</strong>
+                <span>{{ payment_summary.application_fee.amount }}</span>
+              </div>
+              {% if payment_ledger %}
+                {% for item in payment_ledger %}
+                  <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(10,61,54,0.08);">
+                    <span>{{ item.name }}</span>
+                    <strong>{{ item.status }}</strong>
+                    <span>{{ item.amount }}</span>
+                    {% if item.status == 'Paid' %}
+                      <form method="post" action="/tech-remove-paid-course" style="margin: 0;">
+                        <input type="hidden" name="course" value="{{ item.name }}">
+                        <button type="submit" style="border: 1px solid rgba(10,61,54,0.12); background: #fff; color: var(--primary); border-radius: 8px; padding: 6px 10px; font-size: 0.72rem; font-weight: 700; cursor: pointer;">Remove</button>
+                      </form>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              {% else %}
+                <div style="display: flex; justify-content: space-between; gap: 12px;">
+                  <span>No course selected yet</span>
+                  <strong>Pending</strong>
+                  <span>₦0</span>
                 </div>
-              {% endfor %}
-            {% else %}
-              <div style="display: flex; justify-content: space-between; gap: 12px;">
-                <span>No course selected yet</span>
-                <strong>Pending</strong>
-                <span>₦0</span>
-              </div>
-            {% endif %}
-            {% if payment_summary.remaining_total %}
-              <div style="display: flex; justify-content: space-between; gap: 12px; font-weight: 800; color: var(--primary);">
-                <span>Outstanding</span>
-                <strong>{{ payment_summary.remaining_total }}</strong>
-              </div>
-            {% endif %}
+              {% endif %}
+              {% if payment_summary.remaining_total %}
+                <div style="display: flex; justify-content: space-between; gap: 12px; font-weight: 800; color: var(--primary);">
+                  <span>Outstanding</span>
+                  <strong>{{ payment_summary.remaining_total }}</strong>
+                </div>
+              {% endif %}
+            </div>
           </div>
-        </div>
+        {% endif %}
 
         {% if selected_courses %}
           <div class="fee-box" style="margin-top: 16px; background: rgba(19,106,92,0.06); border-color: rgba(19,106,92,0.12);">
@@ -140,33 +148,79 @@
           </div>
         {% endif %}
 
-        <form method="post">
-            <div style="margin-bottom: 8px; font-weight: 800; color: var(--primary);">Here are the payment plans:</div>
+        {% if payment_stage == 'success' %}
+          <div class="fee-box" style="margin-top: 20px; background: rgba(17,107,92,0.06); border-color: rgba(17,107,92,0.12);">
+            <div style="display: grid; gap: 10px;">
+              <span style="font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: #53657a;">Payment status</span>
+              <strong style="font-size: 1.5rem; color: var(--primary);">Payment successful</strong>
+              <p style="margin: 0;">Your application fee has been recorded successfully.</p>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="primary-btn" href="/tech-skills-dashboard">Start course</a>
+            <a class="secondary-btn" href="/tech-skills-dashboard">Go back</a>
+          </div>
+        {% elif payment_stage == 'checkout' %}
+          <form method="post">
+            <input type="hidden" name="payment_stage" value="success">
+            <input type="hidden" name="payment_option" value="{{ payment_option or 'single' }}">
+            <div style="margin-bottom: 8px; font-weight: 800; color: var(--primary);">Choose payment method</div>
             <div class="option-list">
-              {% for option in payment_options %}
-                {% if option is mapping %}
-                  <label class="option">
-                    <input type="radio" name="payment_option" value="{{ option.value }}" {% if loop.first %}checked{% endif %}>
-                    <span>{{ option.label }}</span>
-                  </label>
-                {% else %}
-                  <label class="option">
-                    <input type="radio" name="payment_option" value="{{ 'split' if 'twice' in option.lower() or 'split' in option.lower() else 'single' }}" checked>
-                    <span>{{ option }}</span>
-                  </label>
-                {% endif %}
-              {% endfor %}
+              <label class="option">
+                <input type="radio" name="card_method" value="Paystack" checked>
+                <span>Paystack</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="card_method" value="Mastercard">
+                <span>Mastercard</span>
+              </label>
+              <label class="option">
+                <input type="radio" name="card_method" value="Visa">
+                <span>Visa</span>
+              </label>
             </div>
-
             <div class="demo-note">
-              <strong>Paystack Demo:</strong> {{ demo_note }}
+              <strong>Secure checkout:</strong> {{ demo_note }}
             </div>
-
             <div class="actions">
-              <button class="primary-btn" type="submit">Pay with Paystack Demo</button>
-              <a class="secondary-btn" href="{% if portal == 'research' %}/dashboard{% else %}/tech-skills-dashboard{% endif %}">Go back</a>
+              <button class="primary-btn" type="submit">Complete payment</button>
+              <a class="secondary-btn" href="/tech-payment">Back</a>
             </div>
-        </form>
+          </form>
+        {% elif not show_history %}
+          <form method="post">
+              <input type="hidden" name="payment_stage" value="checkout">
+              <div style="margin-bottom: 8px; font-weight: 800; color: var(--primary);">Review your payment</div>
+              <div class="option-list">
+                {% for option in payment_options %}
+                  {% if option is mapping %}
+                    <label class="option">
+                      <input type="radio" name="payment_option" value="{{ option.value }}" {% if loop.first %}checked{% endif %}>
+                      <span>{{ option.label }}</span>
+                    </label>
+                  {% else %}
+                    <label class="option">
+                      <input type="radio" name="payment_option" value="{{ 'split' if 'twice' in option.lower() or 'split' in option.lower() else 'single' }}" checked>
+                      <span>{{ option }}</span>
+                    </label>
+                  {% endif %}
+                {% endfor %}
+              </div>
+
+              <div class="demo-note">
+                <strong>Paystack Demo:</strong> {{ demo_note }}
+              </div>
+
+              <div class="actions">
+                <button class="primary-btn" type="submit">Proceed to payment</button>
+                <a class="secondary-btn" href="{% if portal == 'research' %}/dashboard{% else %}/tech-skills-dashboard{% endif %}">Go back</a>
+              </div>
+          </form>
+        {% else %}
+          <div class="actions">
+            <a class="secondary-btn" href="/tech-skills-dashboard">Go back</a>
+          </div>
+        {% endif %}
       </div>
     </div>
   </body>

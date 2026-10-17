@@ -5,6 +5,8 @@ from email.message import EmailMessage
 from math import ceil
 from smtplib import SMTP
 
+from urllib.parse import unquote
+
 from flask import Flask, flash, g, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
@@ -249,10 +251,20 @@ def course_payment_summary(course_names):
     }
 
 
+def get_tech_paid_courses(user):
+    stored_paid = normalize_course_names(session.get("tech_course_paid_courses"))
+    if stored_paid:
+        return list(dict.fromkeys(stored_paid))
+    if session.get("tech_course_payment_status") in {"paid", "partial"}:
+        fallback_courses = normalize_course_names(session.get("selected_courses") or user["course"] or "")
+        if fallback_courses:
+            return list(dict.fromkeys(fallback_courses))
+    return []
+
+
 def build_tech_payment_ledger(user):
     selected_courses = normalize_course_names(session.get("selected_courses") or user["course"] or "")
-    paid_courses = normalize_course_names(session.get("tech_course_paid_courses"))
-    paid_status = session.get("tech_course_payment_status") == "paid"
+    paid_courses = get_tech_paid_courses(user)
     program_map = {program["name"]: program for program in skill_programs()}
 
     ledger = []
@@ -260,7 +272,7 @@ def build_tech_payment_ledger(user):
         program = program_map.get(course_name)
         if not program:
             continue
-        status = "Paid" if paid_status or course_name in paid_courses else "Pending"
+        status = "Paid" if course_name in paid_courses else "Pending"
         ledger.append({
             "name": course_name,
             "amount": program.get("fee", "₦0"),
@@ -286,6 +298,82 @@ def build_tech_payment_ledger(user):
         },
         "course_ledger": ledger,
         "remaining_total": f"₦{remaining_total:,}",
+    }
+
+
+def course_learning_pack(course_name):
+    default_schedule = "Tuesday · 5:00 PM - 7:00 PM"
+    default_live_link = "https://meet.google.com/ios-tech-class"
+    default_resources = [
+        "Class guide and slide deck",
+        "Downloadable session recording",
+        "Practical task sheet",
+        "Instructor Q&A notes",
+    ]
+    default_assignments = [
+        "Review the lesson replay and complete the workbook tasks",
+        "Submit one practical output before the next live session",
+        "Prepare questions for the instructor support session",
+    ]
+
+    program_map = {
+        "Data Analysis": {
+            "schedule": "Tuesday · 5:00 PM - 7:00 PM",
+            "meeting_label": "Google Meet",
+            "meeting_link": "https://meet.google.com/ios-data-analysis",
+            "resources": [
+                "Excel workbook and practice dataset",
+                "SQL practice exercises",
+                "Power BI dashboard template",
+                "Session recap and notes",
+            ],
+            "assignments": [
+                "Build a mini dashboard using the sample dataset",
+                "Submit one SQL analysis report",
+                "Upload your power BI insight slide",
+            ],
+        },
+        "Data Science": {
+            "schedule": "Wednesday · 6:00 PM - 8:00 PM",
+            "meeting_label": "Google Meet",
+            "meeting_link": "https://meet.google.com/ios-data-science",
+            "resources": [
+                "Python notebook starter pack",
+                "Machine learning cheat sheet",
+                "Research dataset library",
+                "Recorded class replay",
+            ],
+            "assignments": [
+                "Complete one model-building exercise",
+                "Submit your notebook summary",
+                "Prepare a short model evaluation report",
+            ],
+        },
+        "Front End Development": {
+            "schedule": "Thursday · 5:00 PM - 7:00 PM",
+            "meeting_label": "Google Meet",
+            "meeting_link": "https://meet.google.com/ios-front-end",
+            "resources": [
+                "UI design starter files",
+                "Responsive layout checklist",
+                "Code walkthrough notes",
+                "Recorded live coding session",
+            ],
+            "assignments": [
+                "Build a landing page mockup",
+                "Submit a responsive design task",
+                "Share your project link for review",
+            ],
+        },
+    }
+
+    config = program_map.get(course_name, {})
+    return {
+        "schedule": config.get("schedule", default_schedule),
+        "meeting_label": config.get("meeting_label", "Google Meet"),
+        "meeting_link": config.get("meeting_link", default_live_link),
+        "resources": config.get("resources", default_resources),
+        "assignments": config.get("assignments", default_assignments),
     }
 
 
@@ -372,7 +460,7 @@ def skill_programs():
             "schedule": "3 days/week · 2 hours/day",
             "start_date": "03 Jan 2027",
             "certificate": "Certificate + practical backend project",
-            "image": "https://images.unsplash.com/photo-1558494949cc5c8f9f3c9f4d5d1d3d4b?auto=format&fit=crop&w=900&q=80",
+            "image": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=900&q=80",
         },
         {
             "name": "Financial Analysis",
@@ -560,6 +648,43 @@ def tech_skillup():
     return render_template("tech_skillup.html", programs=skill_programs())
 
 
+@app.route("/start-course/<path:course_name>")
+def start_course(course_name):
+    user = current_user()
+    if not user:
+        return redirect(url_for("login"))
+
+    course_name = unquote(course_name).strip()
+    programs = skill_programs()
+    program = next((item for item in programs if item["name"] == course_name), None)
+    if not program:
+        return redirect(url_for("tech_skills_dashboard"))
+
+    selected_mode = (session.get("selected_mode") or user["learning_mode"] or "Online").strip()
+    learning_pack = course_learning_pack(course_name)
+    selected_schedule = session.get("selected_schedule") or learning_pack["schedule"]
+    if selected_mode.lower() not in {"online", "hybrid"}:
+        return redirect(url_for("tech_skills_dashboard"))
+
+    video_url = "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+    materials = learning_pack["resources"]
+    assignments = learning_pack["assignments"]
+
+    return render_template(
+        "course_start.html",
+        user=user,
+        program=program,
+        course_name=course_name,
+        selected_mode=selected_mode,
+        selected_schedule=selected_schedule,
+        video_url=video_url,
+        materials=materials,
+        assignments=assignments,
+        meeting_label=learning_pack["meeting_label"],
+        meeting_link=learning_pack["meeting_link"],
+    )
+
+
 @app.route("/tech-skills-dashboard", methods=["GET", "POST"])
 def tech_skills_dashboard():
     user = current_user()
@@ -641,22 +766,34 @@ def tech_course_payment():
             flash("Please select at least one course before making payment.")
             return redirect(url_for("tech_skills_dashboard"))
 
+        paid_courses = get_tech_paid_courses(user)
+        already_paid = [course_name for course_name in chosen_courses if course_name in paid_courses]
+        new_courses = [course_name for course_name in chosen_courses if course_name not in paid_courses]
+
+        if not new_courses:
+            course_list = ", ".join(already_paid)
+            flash(f"You have already paid for this course: {course_list}. You can only make payment for a new course.")
+            return redirect(url_for("tech_skills_dashboard"))
+
         payment_option = request.form.get("payment_option", "single")
-        summary = course_payment_summary(chosen_courses)
-        session["selected_courses"] = chosen_courses
-        session["selected_skill"] = chosen_courses[0]
-        session["tech_course_paid_courses"] = chosen_courses
-        session["tech_course_payment_status"] = "paid"
+        summary = course_payment_summary(new_courses)
+        existing_selected = normalize_course_names(session.get("selected_courses") or user["course"] or "")
+        all_selected_courses = list(dict.fromkeys(existing_selected + chosen_courses))
+
+        session["selected_courses"] = all_selected_courses
+        session["selected_skill"] = all_selected_courses[0]
+        session["tech_course_paid_courses"] = list(dict.fromkeys(paid_courses + new_courses))
+        session["tech_course_payment_status"] = "paid" if len(all_selected_courses) == len(session["tech_course_paid_courses"]) else "partial"
         session["tech_course_payment_option"] = payment_option
         session["tech_course_payment_total"] = summary["display"]
 
         get_db().execute(
             "UPDATE users SET course = ?, learning_mode = ? WHERE id = ?",
-            (", ".join(chosen_courses), session.get("selected_mode") or user["learning_mode"] or "Hybrid", user["id"]),
+            (", ".join(all_selected_courses), session.get("selected_mode") or user["learning_mode"] or "Hybrid", user["id"]),
         )
         get_db().commit()
 
-        flash(f"Paystack Demo: course payment of {summary['display']} was successfully received for {', '.join(chosen_courses)}.")
+        flash(f"Paystack Demo: course payment of {summary['display']} was successfully received for {', '.join(new_courses)}.")
         return redirect(url_for("tech_skills_dashboard"))
 
     payment_options = [
@@ -676,8 +813,42 @@ def tech_course_payment():
         total_amount=summary["display"],
         payment_ledger=payment_summary["course_ledger"],
         payment_summary=payment_summary,
+        show_history=False,
         demo_note="Demo checkout: this is a sample Paystack-style payment flow for tech course tuition.",
     )
+
+
+@app.route("/tech-remove-paid-course", methods=["POST"])
+def tech_remove_paid_course():
+    user = current_user()
+    if not user:
+        return redirect(url_for("login"))
+
+    course_name = request.form.get("course", "").strip()
+    if not course_name:
+        flash("No course was selected to remove.")
+        return redirect(url_for("tech_payment"))
+
+    selected_courses = normalize_course_names(session.get("selected_courses") or user["course"] or "")
+    paid_courses = normalize_course_names(session.get("tech_course_paid_courses"))
+
+    selected_courses = [course for course in selected_courses if course != course_name]
+    paid_courses = [course for course in paid_courses if course != course_name]
+
+    session["selected_courses"] = selected_courses
+    session["tech_course_paid_courses"] = paid_courses
+    session["tech_course_payment_status"] = "partial" if paid_courses else "pending"
+
+    if selected_courses:
+        session["selected_skill"] = selected_courses[0]
+        get_db().execute("UPDATE users SET course = ? WHERE id = ?", (", ".join(selected_courses), user["id"]))
+    else:
+        session["selected_skill"] = ""
+        get_db().execute("UPDATE users SET course = ? WHERE id = ?", ("", user["id"]))
+    get_db().commit()
+
+    flash(f"{course_name} was removed from your paid course list. You can pay for it again if needed.")
+    return redirect(url_for("tech_payment"))
 
 
 @app.route("/research-payment", methods=["GET", "POST"])
@@ -710,8 +881,62 @@ def tech_payment():
     if not user:
         return redirect(url_for("login"))
 
-    if request.method == "POST":
-        payment_option = request.form.get("payment_option", "single")
+    payment_stage = request.form.get("payment_stage")
+    payment_option = request.form.get("payment_option", "single")
+
+    if request.method == "POST" and payment_stage == "success":
+        if payment_option == "split":
+            session["tech_payment_status"] = "paid"
+            session["tech_payment_option"] = "split"
+            session["tech_payment_amount"] = "₦8,500 total (₦4,250 + ₦4,250)"
+            get_db().execute("UPDATE users SET payment_mode = ? WHERE id = ?", ("split", user["id"]))
+            get_db().commit()
+            flash("Payment successful! Your split plan is now active on your IOS Tech SkillUp dashboard.")
+        else:
+            session["tech_payment_status"] = "paid"
+            session["tech_payment_option"] = "single"
+            session["tech_payment_amount"] = "₦8,500"
+            get_db().execute("UPDATE users SET payment_mode = ? WHERE id = ?", ("single", user["id"]))
+            get_db().commit()
+            flash("Payment successful! Welcome to your IOS Tech SkillUp dashboard.")
+
+        payment_summary = build_tech_payment_ledger(user)
+        return render_template(
+            "payment.html",
+            portal="tech",
+            title="Payment successful",
+            description="Your application fee has been received. You can continue to your student dashboard and begin your course.",
+            fee="₦8,500",
+            payment_options=[],
+            payment_ledger=payment_summary["course_ledger"],
+            payment_summary=payment_summary,
+            show_history=True,
+            payment_stage="success",
+            payment_success=True,
+            demo_note="Demo checkout: this is a sample onboarding payment flow for the Tech Skills portal.",
+        )
+
+    if request.method == "POST" and payment_stage == "checkout":
+        payment_summary = build_tech_payment_ledger(user)
+        return render_template(
+            "payment.html",
+            portal="tech",
+            title="Secure payment checkout",
+            description="Choose your preferred card method and complete the application fee payment to continue your Tech SkillUp registration.",
+            fee="₦8,500",
+            payment_options=[
+                {"label": "Option 1 - Pay once (₦8,500)", "value": "single"},
+                {"label": "Option 2 - Pay twice (₦8,500 total, split into two instalments)", "value": "split"},
+            ],
+            payment_ledger=payment_summary["course_ledger"],
+            payment_summary=payment_summary,
+            show_history=False,
+            payment_stage="checkout",
+            payment_option=payment_option,
+            demo_note="Paystack, Mastercard, Visa and local card methods are supported in the demo checkout experience.",
+        )
+
+    if request.method == "POST" and payment_option:
         if payment_option == "split":
             session["tech_payment_status"] = "paid"
             session["tech_payment_option"] = "split"
@@ -733,15 +958,18 @@ def tech_payment():
         {"label": "Option 2 - Pay twice (₦8,500 total, split into two instalments)", "value": "split"},
     ]
     payment_summary = build_tech_payment_ledger(user)
+    show_history = bool(tech_application_fee_paid(user) or session.get("tech_payment_status") == "paid")
     return render_template(
         "payment.html",
         portal="tech",
         title="IOS Tech SkillUp",
-        description="After the application form, you will be redirected to your portal to pay the one-time application fee of ₦8,500. Once this is completed, you will have access to your dashboard and can continue with your tuition plan.",
+        description="Review your application fee and proceed to the secure payment step before continuing with your Tech enrolment.",
         fee="₦8,500",
         payment_options=payment_options,
         payment_ledger=payment_summary["course_ledger"],
         payment_summary=payment_summary,
+        show_history=show_history,
+        payment_stage="review",
         demo_note="Demo checkout: this is a sample onboarding payment flow for the Tech Skills portal.",
     )
 
@@ -793,9 +1021,9 @@ def login():
             course = row_value(user, "course")
             learning_mode = row_value(user, "learning_mode")
             if course and learning_mode:
-                if not tech_application_fee_paid(user):
-                    return redirect(url_for("tech_payment"))
-                return redirect(url_for("tech_skills_dashboard"))
+                if session.get("tech_payment_status") == "paid" or tech_application_fee_paid(user):
+                    return redirect(url_for("tech_skills_dashboard"))
+                return redirect(url_for("tech_payment"))
             return redirect(url_for("dashboard"))
         return redirect(url_for("register"))
 

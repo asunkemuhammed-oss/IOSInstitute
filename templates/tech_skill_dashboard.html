@@ -692,6 +692,19 @@
                 <button class="primary-btn" type="submit">Pay with Paystack Demo</button>
               </form>
             {% endif %}
+
+            {% if selected_mode and selected_mode.lower() in ['online', 'hybrid'] and selected_courses %}
+              <div class="mini-box" style="margin-top: 18px;">
+                <strong>Live classroom</strong>
+                <p>This online class runs at the same time as the physical class. If you miss the live lesson, you can download the recording and watch it later.</p>
+                {% for course_name in selected_courses %}
+                  <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 0; border-top: 1px solid rgba(31,45,61,0.08);">
+                    <span>{{ course_name }}</span>
+                    <a href="/start-course/{{ course_name|urlencode }}" class="primary-btn" style="width: auto; padding: 8px 12px; font-size: 0.75rem;">Start class</a>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
           </article>
         </section>
 

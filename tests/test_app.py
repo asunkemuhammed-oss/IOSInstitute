@@ -106,6 +106,37 @@ def test_tech_skills_dashboard_has_course_selection_and_delivery_modes(client):
     assert b"Data Analysis" in response.data
 
 
+def test_student_login_redirects_paid_tech_user_to_dashboard(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, payment_mode, course, learning_mode) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (
+                "Student User",
+                email,
+                generate_password_hash("SecurePass123", method="pbkdf2:sha256"),
+                "student",
+                "single",
+                "Data Analysis",
+                "Online",
+            ),
+        )
+        db.commit()
+
+    response = client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=False,
+    )
+
+    assert response.status_code == 302
+    assert response.headers["Location"].endswith("/tech-skills-dashboard")
+
+
 def test_tech_course_payment_requires_course_selection_and_totals_multi_course_fee(client):
     email = f"student{uuid.uuid4().hex[:8]}@example.com"
 
@@ -185,6 +216,261 @@ def test_tech_payment_page_lists_paid_and_pending_course_fees(client):
     assert b"Data Analysis" in response.data
     assert b"Digital Marketing" in response.data
     assert b"Pending" in response.data
+
+
+def test_tech_payment_page_shows_fee_options_before_application_fee_is_paid(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, payment_mode, course, learning_mode) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (
+                "Student User",
+                email,
+                generate_password_hash("SecurePass123", method="pbkdf2:sha256"),
+                "student",
+                "pending",
+                "Data Analysis",
+                "Online",
+            ),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=True,
+    )
+
+    response = client.get("/tech-payment")
+
+    assert response.status_code == 200
+    assert b"Option 1 - Pay once" in response.data
+    assert b"Option 2 - Pay twice" in response.data
+    assert b"Payment history" not in response.data
+
+
+def test_tech_payment_page_uses_payment_history_after_application_fee_is_paid(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, payment_mode, course, learning_mode) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (
+                "Student User",
+                email,
+                generate_password_hash("SecurePass123", method="pbkdf2:sha256"),
+                "student",
+                "single",
+                "Data Analysis",
+                "Online",
+            ),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=True,
+    )
+
+    response = client.get("/tech-payment")
+
+    assert response.status_code == 200
+    assert b"Payment history" in response.data
+    assert b"Application fee" in response.data
+    assert b"Option 1 - Pay once" not in response.data
+    assert b"Option 2 - Pay twice" not in response.data
+
+
+def test_tech_payment_flow_has_review_checkout_and_success_actions(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, payment_mode, course, learning_mode) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (
+                "Student User",
+                email,
+                generate_password_hash("SecurePass123", method="pbkdf2:sha256"),
+                "student",
+                "pending",
+                "Data Analysis",
+                "Online",
+            ),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=True,
+    )
+
+    response = client.get("/tech-payment")
+
+    assert response.status_code == 200
+    assert b"Proceed to payment" in response.data
+    assert b"Payment history" not in response.data
+
+    response = client.post(
+        "/tech-payment",
+        data={"payment_option": "single", "payment_stage": "checkout"},
+        follow_redirects=True,
+    )
+
+    assert response.status_code == 200
+    assert b"Paystack" in response.data
+    assert b"Mastercard" in response.data
+    assert b"Complete payment" in response.data
+
+    response = client.post(
+        "/tech-payment",
+        data={"payment_option": "single", "payment_stage": "success"},
+        follow_redirects=True,
+    )
+
+    assert response.status_code == 200
+    assert b"Payment successful" in response.data
+    assert b"Start course" in response.data
+
+
+def test_tech_online_course_has_start_class_learning_view(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, payment_mode, course, learning_mode) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (
+                "Student User",
+                email,
+                generate_password_hash("SecurePass123", method="pbkdf2:sha256"),
+                "student",
+                "single",
+                "Data Analysis",
+                "Online",
+            ),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=True,
+    )
+
+    with client.session_transaction() as session:
+        session["selected_courses"] = ["Data Analysis"]
+        session["selected_mode"] = "Online"
+
+    response = client.get("/start-course/Data%20Analysis")
+
+    assert response.status_code == 200
+    assert b"Start class" in response.data
+    assert b"Join live class" in response.data
+    assert b"Google Meet" in response.data
+    assert b"Video lesson" in response.data
+    assert b"Resources" in response.data
+    assert b"Assignments" in response.data
+
+
+def test_tech_course_payment_blocks_duplicate_paid_course(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, payment_mode, course, learning_mode) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (
+                "Student User",
+                email,
+                generate_password_hash("SecurePass123", method="pbkdf2:sha256"),
+                "student",
+                "single",
+                "Data Analysis",
+                "Online",
+            ),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=True,
+    )
+
+    with client.session_transaction() as session:
+        session["selected_courses"] = ["Data Analysis"]
+        session["tech_course_paid_courses"] = ["Data Analysis"]
+        session["tech_course_payment_status"] = "paid"
+
+    response = client.post(
+        "/tech-course-payment",
+        data={"course": ["Data Analysis"], "payment_option": "single"},
+        follow_redirects=True,
+    )
+
+    assert response.status_code == 200
+    assert b"already paid for this course" in response.data.lower()
+    assert b"Data Analysis" in response.data
+
+
+def test_tech_remove_paid_course_marks_it_pending(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, payment_mode, course, learning_mode) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (
+                "Student User",
+                email,
+                generate_password_hash("SecurePass123", method="pbkdf2:sha256"),
+                "student",
+                "single",
+                "Data Analysis, Digital Marketing",
+                "Online",
+            ),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123"},
+        follow_redirects=True,
+    )
+
+    with client.session_transaction() as session:
+        session["selected_courses"] = ["Data Analysis", "Digital Marketing"]
+        session["tech_course_paid_courses"] = ["Data Analysis", "Digital Marketing"]
+        session["tech_course_payment_status"] = "paid"
+
+    response = client.post(
+        "/tech-remove-paid-course",
+        data={"course": "Data Analysis"},
+        follow_redirects=True,
+    )
+
+    assert response.status_code == 200
+    with client.session_transaction() as session:
+        assert "Data Analysis" not in session["tech_course_paid_courses"]
+        assert session["tech_course_payment_status"] == "partial"
 
 
 def test_student_dashboard_has_research_library_and_modules(client):
