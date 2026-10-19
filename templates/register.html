@@ -210,7 +210,8 @@
               <select id="role" name="role" required>
                 <option value="">Select an account type</option>
                 {% if portal == 'research' %}
-                  <option value="researcher" selected>Researcher</option>
+                  <option value="student">Student / Client – project or research assistance</option>
+                  <option value="researcher">Researcher</option>
                 {% else %}
                   <option value="student">Student / Client – project or research assistance</option>
                   <option value="researcher">Researcher</option>
@@ -251,6 +252,7 @@
         researcherDocuments.style.display = show ? 'grid' : 'none';
       }
 
+      toggleResearcherDocuments();
       roleSelect.addEventListener('change', toggleResearcherDocuments);
     </script>
   </body>

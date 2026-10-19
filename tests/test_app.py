@@ -54,6 +54,41 @@ def test_research_institute_page_has_welcome_and_entry_actions(client):
     assert b"Effect of Public Health Expenditure on Economic Growth in Nigeria" in response.data
 
 
+def test_project_purchase_checkout_accepts_post_submission(client):
+    response = client.post(
+        "/project-purchase",
+        data={
+            "package": "complete",
+            "payment_stage": "checkout",
+            "payment_option": "single",
+        },
+        follow_redirects=False,
+    )
+
+    assert response.status_code == 200
+    assert b"Choose payment method" in response.data
+    assert b"Complete payment" in response.data
+    assert b"Secure checkout" in response.data
+    assert b'href="/research-institute"' in response.data
+
+
+def test_research_request_page_redirects_to_signup_after_submission(client):
+    response = client.post(
+        "/research-request",
+        data={
+            "research_type": "Undergraduate Project",
+            "topic": "Effect of study habits on academic performance",
+            "institution": "University of Lagos",
+            "department": "Business Administration",
+            "deadline": "2026-12-30",
+        },
+        follow_redirects=False,
+    )
+
+    assert response.status_code == 302
+    assert response.headers["Location"] == "/register?portal=research"
+
+
 def test_tech_skillup_page_has_programs_and_course_details(client):
     response = client.get("/tech-skillup")
 

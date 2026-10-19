@@ -82,7 +82,8 @@
       }
 
       .nav-dropdown:hover .dropdown-menu,
-      .nav-dropdown:focus-within .dropdown-menu {
+      .nav-dropdown:focus-within .dropdown-menu,
+      .nav-dropdown.open .dropdown-menu {
         display: block;
       }
 
@@ -134,14 +135,21 @@
       }
 
       .brand-mark {
-        width: 32px;
-        height: 32px;
-        border-radius: 10px;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
         background: linear-gradient(135deg, #1d5be8 0%, #10284a 100%);
-        color: white;
         display: grid;
         place-items: center;
-        font-size: 0.8rem;
+        overflow: hidden;
+        box-shadow: 0 10px 18px rgba(18, 63, 55, 0.12);
+      }
+
+      .brand-mark img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
       }
 
       .hero {
@@ -209,7 +217,15 @@
         margin-top: 28px;
       }
 
-      .primary, .secondary {
+      .cta-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 18px;
+        max-width: 420px;
+      }
+
+      .primary, .secondary, .ghost-link {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -232,12 +248,24 @@
         border: 1px solid var(--line);
       }
 
-      .primary:hover, .secondary:hover {
+      .primary:hover, .secondary:hover, .ghost-link:hover {
         transform: translateY(-1px);
       }
 
-      .primary, .secondary {
+      .primary, .secondary, .ghost-link {
         box-shadow: 0 10px 20px rgba(18, 63, 55, 0.12);
+      }
+
+      .ghost-link {
+        background: rgba(18, 63, 55, 0.04);
+        border: 1px solid rgba(18, 63, 55, 0.12);
+        color: var(--primary);
+      }
+
+      .whatsapp-link {
+        background: #25d366;
+        color: #fff;
+        border: 1px solid rgba(37, 211, 102, 0.4);
       }
 
       .image-wrap {
@@ -281,10 +309,147 @@
         line-height: 1.7;
       }
 
+      .research-library {
+        margin: 12px 0 32px;
+        background: rgba(255,255,255,0.82);
+        border: 1px solid rgba(18, 63, 55, 0.14);
+        border-radius: 18px;
+        padding: 22px 18px 18px;
+        box-shadow: 0 8px 24px rgba(18, 63, 55, 0.04);
+      }
+
+      .research-library-title {
+        margin: 0 0 22px;
+        font-size: clamp(2rem, 3vw, 3rem);
+        line-height: 1.1;
+        letter-spacing: -0.05em;
+      }
+
+      .library-filter-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) 170px;
+        gap: 16px;
+        align-items: end;
+      }
+
+      .library-field {
+        display: grid;
+        gap: 8px;
+      }
+
+      .library-field label {
+        font-weight: 700;
+        font-size: 0.74rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--primary);
+      }
+
+      .library-field select,
+      .library-search input {
+        min-height: 56px;
+        width: 100%;
+        padding: 14px 16px;
+        background: rgba(255,255,255,0.82);
+        border: 1px solid rgba(18, 63, 55, 0.18);
+        border-radius: 12px;
+        color: var(--primary);
+        font-size: 1.04rem;
+      }
+
+      .library-search {
+        margin-top: 18px;
+      }
+
+      .library-search input {
+        min-height: 52px;
+      }
+
+      .search-trigger {
+        min-height: 56px;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #123f37 0%, #1a5b4c 100%);
+        color: #fff;
+        font-size: 1.05rem;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .library-result {
+        margin-top: 24px;
+        border: 1px solid rgba(18, 63, 55, 0.08);
+        border-radius: 16px;
+        background: rgba(255,255,255,0.44);
+        padding: 20px;
+      }
+
+      .library-result-title {
+        margin: 0 0 18px;
+        font-size: clamp(1.8rem, 2.6vw, 2.8rem);
+        line-height: 1.2;
+        letter-spacing: -0.05em;
+      }
+
+      .library-result-body {
+        display: grid;
+        gap: 12px;
+        color: var(--primary);
+      }
+
+      .library-result-body p {
+        margin: 0;
+        font-size: 1.08rem;
+        line-height: 1.7;
+      }
+
+      .library-result-body strong {
+        font-size: 1.08rem;
+      }
+
+      .library-topic-list {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .library-topic-list a {
+        display: block;
+        color: var(--primary);
+        font-weight: 700;
+        line-height: 1.5;
+        padding: 8px 0;
+      }
+
+      .library-empty {
+        margin-top: 18px;
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(18, 63, 55, 0.08);
+        border: 1px solid rgba(18, 63, 55, 0.08);
+        color: var(--primary);
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+
       .research-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 22px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 26px;
         padding: 0 0 72px;
       }
 
@@ -293,113 +458,466 @@
         border: 1px solid var(--line);
         border-radius: 22px;
         padding: 22px 18px;
+        min-height: 100%;
       }
 
       .search-panel {
         margin: 12px 0 32px;
-        background: rgba(255,255,255,0.68);
-        border: 1px solid var(--line);
-        border-radius: 24px;
-        padding: 28px 24px 26px;
+        background: rgba(255,255,255,0.82);
+        border: 1px solid rgba(18, 63, 55, 0.14);
+        border-radius: 16px;
+        padding: 18px 18px 24px;
         min-height: 210px;
+        box-shadow: 0 8px 24px rgba(18, 63, 55, 0.04);
       }
 
-      .search-panel h3 {
-        margin: 0 0 18px;
-        color: var(--primary);
-      }
-
-      .filter-grid {
+      .library-layout {
         display: grid;
-        grid-template-columns: 1.2fr 1.2fr 1.2fr 1.2fr 1.2fr 0.8fr;
-        gap: 16px;
-        align-items: end;
+        grid-template-columns: minmax(0, 2.2fr) minmax(260px, 0.8fr);
+        gap: 26px;
+        align-items: start;
       }
 
-      .filter {
+      .library-main {
+        background: rgba(255,255,255,0.26);
+        border-radius: 12px;
+        padding: 0;
+      }
+
+      .library-main .page-title {
+        margin: 0 0 10px;
+        font-size: clamp(2.1rem, 3vw, 4rem);
+        line-height: 1.05;
+        letter-spacing: -0.06em;
+        color: var(--primary);
+        font-weight: 800;
+      }
+
+      .library-main .page-subtitle {
+        margin: 0 0 18px;
+        color: #2f4d49;
+        font-size: 1.02rem;
+        line-height: 1.7;
+      }
+
+      .library-filters {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin: 20px 0 18px;
+      }
+
+      .library-filters-hidden {
+        display: none !important;
+      }
+
+      .library-field {
         display: flex;
         flex-direction: column;
         gap: 8px;
-        min-width: 0;
       }
 
-      .filter label {
-        font-size: 0.72rem;
+      .library-field label {
+        font-size: 0.76rem;
         font-weight: 700;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
         color: var(--primary);
       }
 
-      .filter select,
-      .filter input {
+      .library-field select {
         width: 100%;
-        padding: 12px 10px;
-        border: 1px solid var(--line);
-        border-radius: 10px;
+        min-height: 46px;
+        padding: 11px 12px;
+        border: 1px solid rgba(18, 63, 55, 0.22);
+        border-radius: 8px;
         background: rgba(255,255,255,0.8);
         color: var(--primary);
-        min-height: 46px;
       }
 
-      .filter input[type="button"] {
-        padding-top: 13px;
-        padding-bottom: 13px;
-        font-size: 0.9rem;
-        letter-spacing: 0.04em;
-        font-weight: 800;
-        min-height: 46px;
-      }
-
-      .result-layout {
-        display: grid;
-        grid-template-columns: 0.9fr 1.1fr;
-        gap: 22px;
-        margin-top: 24px;
-      }
-
-      .topic-list,
-      .paper-preview {
-        background: rgba(255,255,255,0.68);
-        border: 1px solid var(--line);
-        border-radius: 20px;
-        padding: 20px 18px;
-      }
-
-      .topic-list h4,
-      .paper-preview h4 {
-        margin: 0 0 14px;
-        color: var(--primary);
-      }
-
-      .topic-list ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+      .library-main .search-bar {
         display: flex;
-        flex-direction: column;
-        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .library-main .search-input {
+        flex: 1 1 260px;
+        min-width: 0;
+        padding: 13px 16px;
+        border: 1px solid rgba(18, 63, 55, 0.25);
+        border-radius: 8px;
+        background: rgba(255,255,255,0.8);
+        color: var(--primary);
+        font-size: 1rem;
+      }
+
+      .library-main .search-btn {
+        min-width: 120px;
+        background: rgba(17, 101, 89, 0.08);
+        color: var(--primary);
+        border: 1px solid rgba(18, 63, 55, 0.2);
+        border-radius: 8px;
+        padding: 13px 18px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .topic-keywords {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 12px;
+        margin-bottom: 20px;
+        padding: 2px 0 0;
+      }
+
+      .topic-keywords span {
+        color: var(--primary);
+        font-weight: 700;
+        font-size: 1.05rem;
+        line-height: 1.4;
+      }
+
+      .topic-keywords .divider {
+        color: rgba(18, 63, 55, 0.7);
+      }
+
+      .topic-list {
+        background: rgba(255,255,255,0.08);
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+      }
+
+      .topic-list ol {
+        list-style: decimal;
+        padding-left: 34px;
+        margin: 0;
+        color: var(--primary);
       }
 
       .topic-list li {
-        padding: 10px 12px;
-        border-radius: 10px;
-        background: rgba(17,24,39,0.02);
+        padding: 14px 0 16px;
+        border-bottom: 1px solid rgba(18, 63, 55, 0.08);
         color: var(--primary);
+        font-size: clamp(1.15rem, 1.8vw, 1.8rem);
+        line-height: 1.35;
+        letter-spacing: -0.03em;
         font-weight: 700;
       }
 
-      .paper-preview p {
-        color: var(--muted);
-        line-height: 1.75;
-        margin: 0 0 12px;
+      .topic-list li:last-child {
+        border-bottom: 0;
       }
 
-      .chip-row {
+      .topic-list li:nth-child(even) {
+        background: rgba(18, 63, 55, 0.02);
+      }
+
+      .topic-list li a {
+        color: var(--primary);
+        text-decoration: none;
+      }
+
+      .topic-list li a:hover {
+        color: var(--primary-soft);
+      }
+
+      .project-detail-card {
+        margin-top: 26px;
+        background: rgba(255,255,255,0.92);
+        border: 1px solid rgba(18, 63, 55, 0.12);
+        border-radius: 22px;
+        box-shadow: 0 22px 58px rgba(18, 63, 55, 0.08);
+        display: none;
+        overflow: hidden;
+      }
+
+      .project-detail-card.visible {
+        display: block;
+      }
+
+      .detail-header {
         display: flex;
-        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 22px 26px;
+        background: linear-gradient(135deg, rgba(18, 63, 55, 0.98), rgba(29, 114, 95, 0.94));
+        color: #fff;
+      }
+
+      .detail-header .eyebrow {
+        margin: 0 0 7px;
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.78);
+      }
+
+      .detail-header h3 {
+        margin: 0;
+        font-size: clamp(1.2rem, 2vw, 1.8rem);
+        line-height: 1.3;
+      }
+
+      .detail-badge {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid rgba(255,255,255,0.34);
+        border-radius: 999px;
+        padding: 9px 14px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        background: rgba(255,255,255,0.09);
+        white-space: nowrap;
+      }
+
+      .detail-content {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 22px;
+        padding: 26px;
+      }
+
+      .detail-copy h4,
+      .detail-purchase h4 {
+        margin: 0 0 12px;
+        color: var(--primary);
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+
+      .detail-copy p {
+        margin: 0 0 18px;
+        color: var(--muted);
+        line-height: 1.85;
+        font-size: 0.98rem;
+      }
+
+      .detail-copy ul {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--primary);
+        line-height: 1.9;
+        font-size: 0.98rem;
+      }
+
+      .detail-purchase {
+        background: linear-gradient(180deg, #f8f3eb 0%, #f2efe9 100%);
+        border: 1px solid rgba(18, 63, 55, 0.1);
+        border-radius: 18px;
+        padding: 18px;
+      }
+
+      .purchase-option {
+        background: #ffffff;
+        border: 1px solid rgba(18, 63, 55, 0.08);
+        border-radius: 14px;
+        padding: 18px 16px;
+        margin-bottom: 14px;
+        box-shadow: 0 10px 22px rgba(18, 63, 55, 0.04);
+      }
+
+      .purchase-option:last-child {
+        margin-bottom: 0;
+      }
+
+      .purchase-option .option-tag {
+        display: inline-block;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--primary-soft);
+        margin-bottom: 10px;
+      }
+
+      .purchase-option h5 {
+        margin: 0 0 8px;
+        font-size: 1.05rem;
+        color: var(--primary);
+      }
+
+      .purchase-option .price {
+        margin: 0 0 8px;
+        font-weight: 800;
+        color: var(--primary);
+        font-size: 1.25rem;
+      }
+
+      .purchase-option .meta {
+        display: block;
+        color: var(--muted);
+        font-size: 0.8rem;
+        margin-bottom: 16px;
+      }
+
+      .purchase-option button,
+      .purchase-button {
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-soft));
+        color: #fff;
+        padding: 13px 16px;
+        font-weight: 800;
+        cursor: pointer;
+        letter-spacing: 0.03em;
+        box-shadow: 0 12px 26px rgba(18, 63, 55, 0.18);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        text-decoration: none;
+      }
+
+      .purchase-option button:hover,
+      .purchase-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 16px 28px rgba(18, 63, 55, 0.2);
+      }
+
+      @media (max-width: 820px) {
+        .detail-content {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .library-sidebar {
+        display: grid;
+        gap: 18px;
+      }
+
+      .sidebar-box {
+        background: rgba(255,255,255,0.8);
+        border: 1px solid rgba(18, 63, 55, 0.1);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .sidebar-box .head {
+        background: #a8bfa8;
+        color: var(--primary);
+        font-size: 2.15rem;
+        font-weight: 700;
+        line-height: 1;
+        padding: 16px 18px 14px;
+        border-bottom: 1px solid rgba(18, 63, 55, 0.1);
+      }
+
+      .sidebar-box .body {
+        padding: 14px 14px 18px;
+      }
+
+      .search-mini {
+        display: flex;
         gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .search-mini input {
+        flex: 1;
+        min-height: 42px;
+        border: 1px solid rgba(18, 63, 55, 0.18);
+        border-radius: 8px;
+        padding: 0 12px;
+        background: rgba(255,255,255,0.8);
+        color: var(--primary);
+      }
+
+      .search-mini button {
+        border: 1px solid rgba(18, 63, 55, 0.18);
+        background: rgba(17, 101, 89, 0.06);
+        color: var(--primary);
+        border-radius: 8px;
+        padding: 0 14px;
+        font-weight: 700;
+      }
+
+      .search-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 0.78rem;
+        color: rgba(18, 63, 55, 0.7);
+        margin: 10px 0 6px;
+      }
+
+      .search-meta a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      .research-visual-card {
+        position: relative;
         margin-top: 12px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(18, 63, 55, 0.12);
+        background: #dfeee7;
+      }
+
+      .research-visual-card img {
+        display: block;
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+      }
+
+      .research-visual-caption {
+        position: absolute;
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+        background: rgba(18, 63, 55, 0.72);
+        color: #fff;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        padding: 10px 12px;
+        border-radius: 8px;
+      }
+
+      .category-box {
+        background: rgba(255,255,255,0.8);
+        border: 1px solid rgba(18, 63, 55, 0.1);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .category-box .head {
+        background: #9bbd8a;
+        color: var(--primary);
+        font-weight: 800;
+        font-size: 1.2rem;
+        padding: 14px 16px;
+      }
+
+      .category-list {
+        list-style: none;
+        padding: 14px 16px 18px;
+        margin: 0;
+        display: grid;
+        gap: 10px;
+      }
+
+      .category-list li {
+        color: var(--primary);
+        line-height: 1.5;
+        font-size: 0.96rem;
+      }
+
+      .category-list li a {
+        color: inherit;
       }
 
       .research-card h3 {
@@ -435,6 +953,321 @@
         font-weight: 700;
       }
 
+      .publications-header {
+        margin: 18px 0 22px;
+        font-size: clamp(2.2rem, 4vw, 4rem);
+        line-height: 1.05;
+        letter-spacing: -0.06em;
+        color: var(--primary);
+        font-weight: 800;
+      }
+
+      .publications-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 28px 22px;
+        margin: 0 0 28px;
+      }
+
+      .publication-card {
+        background: rgba(255,255,255,0.54);
+        border: 1px solid rgba(18, 63, 55, 0.08);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 14px 28px rgba(18, 63, 55, 0.04);
+      }
+
+      .publication-image {
+        width: 100%;
+        height: 260px;
+        object-fit: cover;
+        display: block;
+        background: #dfeae7;
+      }
+
+      .publication-body {
+        padding: 18px 18px 20px;
+      }
+
+      .publication-title {
+        margin: 0 0 12px;
+        font-size: clamp(1.26rem, 2vw, 2.2rem);
+        line-height: 1.2;
+        letter-spacing: -0.05em;
+        color: var(--primary);
+      }
+
+      .publication-date {
+        margin: 0 0 18px;
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .publication-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 1.02rem;
+        font-weight: 800;
+        color: var(--primary);
+        text-decoration: none;
+      }
+
+      .publication-extra {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 0.28s ease, opacity 0.24s ease, margin 0.24s ease;
+        margin-top: 0;
+      }
+
+      .publication-extra.visible {
+        max-height: 260px;
+        opacity: 1;
+        margin-top: 16px;
+      }
+
+      .publication-extra p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.8;
+        font-size: 0.98rem;
+      }
+
+      .topic-page-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.8fr) minmax(260px, 0.72fr);
+        gap: 28px;
+        margin: 18px 0 30px;
+      }
+
+      .project-topics-panel {
+        background: rgba(255,255,255,0.32);
+        border-radius: 0;
+        padding: 0;
+      }
+
+      .project-topics-title {
+        margin: 0;
+        font-size: clamp(2.1rem, 3.2vw, 4rem);
+        line-height: 1.05;
+        letter-spacing: -0.06em;
+        color: var(--primary);
+        font-weight: 800;
+      }
+
+      .project-topics-subtitle {
+        margin: 14px 0 18px;
+        font-size: 1.08rem;
+        line-height: 1.6;
+        color: #2a4f4a;
+      }
+
+      .project-search-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .project-search-row input {
+        flex: 1;
+        min-height: 46px;
+        border: 1px solid rgba(18, 63, 55, 0.22);
+        border-radius: 8px 0 0 8px;
+        padding: 0 14px;
+        font-size: 1rem;
+        background: rgba(255,255,255,0.8);
+        color: var(--primary);
+      }
+
+      .project-search-row button {
+        min-width: 110px;
+        min-height: 46px;
+        border: 1px solid rgba(18, 63, 55, 0.22);
+        background: rgba(17, 101, 89, 0.06);
+        color: var(--primary);
+        border-radius: 0 8px 8px 0;
+        font-weight: 800;
+        text-transform: lowercase;
+        cursor: pointer;
+      }
+
+      .topic-tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 16px;
+        margin: 14px 0 16px;
+        color: var(--primary);
+        font-weight: 800;
+        line-height: 1.6;
+        font-size: 1.06rem;
+        letter-spacing: 0.01em;
+      }
+
+      .topic-tag-row .topic-tag {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .project-topic-list {
+        list-style: decimal;
+        padding-left: 30px;
+        margin: 0;
+      }
+
+      .project-topic-list li {
+        padding: 15px 0 16px;
+        border-bottom: 1px solid rgba(18, 63, 55, 0.09);
+        color: var(--primary);
+        font-weight: 700;
+        line-height: 1.5;
+        letter-spacing: -0.02em;
+        font-size: clamp(1.1rem, 1.8vw, 1.55rem);
+      }
+
+      .project-topic-list li:nth-child(even) {
+        background: rgba(18, 63, 55, 0.02);
+      }
+
+      .project-topic-list a {
+        color: var(--primary);
+        text-decoration: none;
+      }
+
+      .project-topic-list a:hover {
+        color: var(--primary-soft);
+      }
+
+      .project-sidebar {
+        display: grid;
+        gap: 18px;
+      }
+
+      .project-sidebar-box {
+        background: rgba(255,255,255,0.7);
+        border: 1px solid rgba(18, 63, 55, 0.12);
+        border-radius: 0;
+        overflow: hidden;
+      }
+
+      .sidebar-heading {
+        background: #b8d6a4;
+        color: var(--primary);
+        font-weight: 800;
+        font-size: 1.1rem;
+        padding: 14px 18px;
+      }
+
+      .sidebar-body {
+        padding: 14px 16px 18px;
+      }
+
+      .sidebar-search {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .sidebar-search input {
+        flex: 1;
+        min-height: 44px;
+        border: 1px solid rgba(18, 63, 55, 0.18);
+        border-radius: 8px;
+        padding: 0 12px;
+        font-size: 1rem;
+        background: rgba(255,255,255,0.8);
+        color: var(--primary);
+      }
+
+      .sidebar-search button {
+        min-height: 44px;
+        border: 1px solid rgba(18, 63, 55, 0.18);
+        border-radius: 8px;
+        padding: 0 12px;
+        background: rgba(17, 101, 89, 0.06);
+        color: var(--primary);
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .search-legend {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.84rem;
+        color: rgba(18, 63, 55, 0.75);
+        margin: 8px 0 14px;
+      }
+
+      .search-legend a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      .download-card {
+        background: #edf3f5;
+        min-height: 320px;
+        display: block;
+        position: relative;
+        overflow: hidden;
+        padding: 0;
+      }
+
+      .download-card::before,
+      .download-card::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.12);
+        pointer-events: none;
+      }
+
+      .download-card::before {
+        width: 320px;
+        height: 320px;
+        right: -90px;
+        top: -110px;
+      }
+
+      .download-card::after {
+        width: 220px;
+        height: 220px;
+        left: -40px;
+        bottom: -70px;
+      }
+
+      .download-card img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        filter: saturate(1.05) contrast(1.08);
+      }
+
+      .download-inner {
+        display: none;
+      }
+
+      .topics-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 10px;
+      }
+
+      .topics-list li {
+        color: var(--primary);
+        line-height: 1.5;
+        font-size: 0.98rem;
+      }
+
       @media (max-width: 760px) {
         .hero-inner, .info-grid, .research-grid {
           grid-template-columns: 1fr;
@@ -455,15 +1288,38 @@
     <nav class="nav">
       <div class="container nav-inner">
         <a href="/" class="brand" aria-label="IOS Research Institute home">
-          <span class="brand-mark">RI</span>
+          <span class="brand-mark"><img src="/static/images/team/REALLOGO.jpg" alt="IOS Research Institute logo"></span>
           <span>IOS RESEARCH INSTITUTE</span>
         </a>
 
         <div class="nav-links">
           <div class="nav-dropdown">
-            <a href="#research-library" class="nav-trigger">Project Topics <span aria-hidden="true">▾</span></a>
+            <a href="#" class="nav-trigger" aria-label="Project topics menu">Project Topics <span aria-hidden="true">▾</span></a>
             <div class="dropdown-menu">
               <ul>
+                <li><a href="#research-library">ACCOUNTANCY PROJECT MATERIALS</a></li>
+                <li><a href="#research-library">ACCOUNTING EDUCATION PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="#research-library">ADULT EDUCATION PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="#research-library">AGRICULTURAL ECONOMICS PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="#research-library">ACTUARIAL SCIENCE PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="#research-library">AGRICULTURE EXTENSION PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="#research-library">AGRONOMY PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="#research-library">ANATOMY PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="#research-library">ARCHITECTURE PROJECT TOPICS/MATERIALS</a></li>
+                <li><a href="#research-library">ARCHAEOLOGY PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="#research-library">AGRICULTURAL SCIENCE PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="#research-library">AGRICULTURAL ENGINEERING PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="#research-library">ANIMAL SCIENCE/ZOOLOGY PROJECT MATERIALS</a></li>
+                <li><a href="#research-library">AFRICAN LANGUAGES PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="#research-library">BANKING AND FINANCE PROJECT MATERIALS</a></li>
+                <li><a href="#research-library">BUSINESS ADMINISTRATION PROJECT TOPICS/MATERIALS</a></li>
+                <li><a href="#research-library">BUSINESS MANAGEMENT PROJECT TOPICS/MATERIALS</a></li>
+                <li><a href="#research-library">BUSINESS EDUCATION PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="#research-library">BIBLICAL AND THEOLOGY PROJECT MATERIALS</a></li>
+                <li><a href="#research-library">BIO-CHEMISTRY PROJECT TOPICS/MATERIALS</a></li>
+                <li><a href="#research-library">BIOLOGY PROJECT TOPICS/MATERIALS</a></li>
+                <li><a href="#research-library">BOTANY AND ECOLOGICAL STUDIES PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="#research-library">BUILDING TECHNOLOGY PROJECT TOPICS AND MATERIALS</a></li>
                 <li><a href="#research-library">COMPUTER SCIENCE PROJECT MATERIALS</a></li>
                 <li><a href="#research-library">CHEMISTRY EDUCATION PROJECT TOPICS AND MATERIALS</a></li>
                 <li><a href="#research-library">CHEMISTRY PROJECT TOPICS/MATERIALS</a></li>
@@ -558,6 +1414,7 @@
           <a href="#data">Data</a>
           <a href="#consultants">Consultants</a>
           <a href="#resources">Resources</a>
+          <a href="https://wa.me/2347086476413" target="_blank" rel="noopener noreferrer">AI/Plagiarism Checker &amp; Remover</a>
           <a href="#contact">Contact</a>
         </div>
       </div>
@@ -575,6 +1432,11 @@
           <div class="actions">
             <a href="/register?portal=research" class="primary">Sign Up</a>
             <a href="/login?portal=research" class="secondary">Login</a>
+          </div>
+
+          <div class="cta-stack">
+            <a href="/research-request" class="ghost-link">Connect with our researcher</a>
+            <a href="https://chat.whatsapp.com/KClRMWLTqa1G2HiUjU246c?s=cl&p=i&ilr=0" class="ghost-link whatsapp-link" target="_blank" rel="noopener noreferrer">Join our research class WhatsApp community</a>
           </div>
         </div>
 
@@ -600,252 +1462,355 @@
         </div>
       </div>
 
-      <div class="search-panel" id="research-library">
-        <h3>Research Library</h3>
-        <div class="filter-grid">
-          <div class="filter">
-            <label for="faculty">Faculty</label>
-            <select id="faculty">
-              <option>Faculty of Agriculture (formerly Agriculture and Forestry)</option>
-              <option>Faculty of Arts</option>
-              <option>Faculty of Basic Clinical Sciences (under the College of Medicine)</option>
-              <option>Faculty of Basic Medical Sciences (under the College of Medicine)</option>
-              <option>Faculty of Clinical Sciences (under the College of Medicine)</option>
-              <option>Faculty of Dentistry (under the College of Medicine)</option>
-              <option>Faculty of Economics</option>
-              <option>Faculty of Education</option>
-              <option>Faculty of Environmental Design and Management</option>
-              <option>Faculty of Law</option>
-              <option>Faculty of Multidisciplinary Studies</option>
-              <option>Faculty of Pharmacy</option>
-              <option>Faculty of Public Health (under the College of Medicine)</option>
-              <option>Faculty of Renewable Natural Resources</option>
-              <option>Faculty of Science</option>
-              <option>Faculty of Technology</option>
-              <option>Faculty of Veterinary Medicine</option>
-              <option>Faculty of the Social Sciences</option>
-            </select>
+      <div class="topic-page-layout" id="research-library">
+        <div class="project-topics-panel">
+          <h2 class="project-topics-title">Accounting Project Topics and Materials</h2>
+          <p class="project-topics-subtitle">Below are Accounting and Finance Project Topics with available Chapters 1-5. Click any topic to preview its contents.</p>
+
+          <div class="project-search-row">
+            <input type="text" placeholder="Enter Topic or Keyword" aria-label="Enter Topic or Keyword">
+            <button type="button">search</button>
           </div>
 
-          <div class="filter">
-            <label for="department">Department</label>
-            <select id="department">
-              <option>Accountancy</option>
-              <option>Economics</option>
-              <option>Business Administration</option>
-              <option>Banking and Finance</option>
-              <option>Marketing</option>
-              <option>Public Administration</option>
-              <option>Entrepreneurship</option>
-              <option>Human Resource Management</option>
-              <option>Insurance</option>
-              <option>Actuarial Science</option>
-              <option>Taxation</option>
-              <option>Cooperative Economics and Management</option>
-              <option>Political Science</option>
-              <option>International Relations</option>
-              <option>Sociology</option>
-              <option>Psychology</option>
-              <option>Criminology and Security Studies</option>
-              <option>Social Work</option>
-              <option>Development Studies</option>
-              <option>Mass Communication</option>
-              <option>Journalism</option>
-              <option>Public Relations</option>
-              <option>English and Literary Studies</option>
-              <option>Linguistics</option>
-              <option>History and International Studies</option>
-              <option>Philosophy</option>
-              <option>Religious Studies</option>
-              <option>Law</option>
-              <option>Education</option>
-              <option>Educational Management</option>
-              <option>Guidance and Counselling</option>
-              <option>Science Education</option>
-              <option>Mathematics Education</option>
-              <option>English Education</option>
-              <option>Computer Science Education</option>
-              <option>Agricultural Education</option>
-              <option>Business Education</option>
-              <option>Computer Science</option>
-              <option>Software Engineering</option>
-              <option>Information Technology</option>
-              <option>Cybersecurity</option>
-              <option>Data Science</option>
-              <option>Information Systems</option>
-              <option>Artificial Intelligence</option>
-              <option>Computer Engineering</option>
-              <option>Electrical and Electronic Engineering</option>
-              <option>Mechanical Engineering</option>
-              <option>Civil Engineering</option>
-              <option>Chemical Engineering</option>
-              <option>Petroleum Engineering</option>
-              <option>Agricultural Engineering</option>
-              <option>Mechatronics Engineering</option>
-              <option>Architecture</option>
-              <option>Building Technology</option>
-              <option>Estate Management</option>
-              <option>Quantity Surveying</option>
-              <option>Urban and Regional Planning</option>
-              <option>Surveying and Geoinformatics</option>
-              <option>Mathematics</option>
-              <option>Statistics</option>
-              <option>Physics</option>
-              <option>Chemistry</option>
-              <option>Biochemistry</option>
-              <option>Microbiology</option>
-              <option>Biology</option>
-              <option>Biotechnology</option>
-              <option>Geology</option>
-              <option>Environmental Science</option>
-              <option>Medical Laboratory Science</option>
-              <option>Medicine and Surgery</option>
-              <option>Nursing Science</option>
-              <option>Pharmacy</option>
-              <option>Dentistry</option>
-              <option>Physiotherapy</option>
-              <option>Public Health</option>
-              <option>Anatomy</option>
-              <option>Physiology</option>
-              <option>Radiography</option>
-              <option>Veterinary Medicine</option>
-            </select>
+          <div class="topic-tag-row">
+            <span class="topic-tag">TAXATION</span>
+            <span class="topic-tag">PUBLIC SECTOR ACCOUNT</span>
+            <span class="topic-tag">FINANCIAL ACCOUNT</span>
+            <span class="topic-tag">COST &amp; MANAGEMENT</span>
+            <span class="topic-tag">AUDITING</span>
+            <span class="topic-tag">FORENSIC</span>
+            <span class="topic-tag">INTERNATIONAL &amp; IFRS</span>
+            <span class="topic-tag">BUDGETS</span>
+            <span class="topic-tag">ELECTRONIC ACCOUNTING</span>
           </div>
 
-          <div class="filter">
-            <label for="topic">Topic</label>
-            <select id="topic">
-              <option>COMPUTER SCIENCE PROJECT MATERIALS</option>
-              <option>CHEMISTRY EDUCATION PROJECT TOPICS AND MATERIALS</option>
-              <option>CHEMISTRY PROJECT TOPICS/MATERIALS</option>
-              <option>COMMERCE PROJECT TOPICS AND MATERIALS</option>
-              <option>COMPUTER SCIENCE EDUCATION PROJECT TOPICS AND MATERIALS</option>
-              <option>CHILD/BASIC EDUCATION PROJECT TOPICS AND MATERIALS</option>
-              <option>CURRICULUM STUDIES AND EDUCATIONAL PLANNING PROJECT TOPICS AND MATERIALS</option>
-              <option>CIVIL ENGINEERING PROJECT TOPICS/MATERIALS</option>
-              <option>CO-OPERATIVE ECONOMICS PROJECT TOPICS AND MATERIALS</option>
-              <option>CROP SCIENCE PROJECT TOPICS AND MATERIALS</option>
-              <option>CHEMICAL ENGINEERING PROJECT TOPICS AND MATERIALS</option>
-              <option>CRIMINOLOGY PROJECT TOPICS AND MATERIALS</option>
-              <option>FOOD AND NUTRITION PROJECT TOPICS AND MATERIALS</option>
-              <option>FOOD SCIENCE AND TECHNOLOGY PROJECT TOPICS/MATERIALS</option>
-              <option>FINE AND APPLIED ARTS PROJECT TOPICS/MATERIALS</option>
-              <option>FISHERY AND AQUACULTURE PROJECT TOPICS AND MATERIALS</option>
-              <option>FORESTRY AND WILDLIFE PROJECT TOPICS AND MATERIALS</option>
-              <option>FRENCH PROJECT TOPICS AND MATERIALS</option>
-              <option>GENERAL EDUCATION PROJECT TOPICS/MATERIALS</option>
-              <option>GUIDANCE AND COUNSELING PROJECT TOPICS AND MATERIALS</option>
-              <option>GEOGRAPHY PROJECT TOPICS AND MATERIALS</option>
-              <option>GEOLOGY PROJECT TOPICS AND MATERIALS</option>
-              <option>GEOGRAPHY EDUCATION PROJECT TOPICS AND MATERIALS</option>
-              <option>HUMAN RESOURCE MANAGEMENT PROJECT TOPICS AND MATERIALS</option>
-              <option>HEALTH AND SEX EDUCATION PROJECT TOPICS AND MATERIALS</option>
-              <option>HOME ECONOMICS PROJECT TOPICS AND MATERIALS</option>
-              <option>HEALTH AND KINETICS PROJECT TOPICS AND MATERIALS</option>
-              <option>HEALTH INFORMATION PROJECT TOPICS AND MATERIALS</option>
-              <option>INFORMATION TECHNOLOGY PROJECT TOPICS</option>
-              <option>INDUSTRIAL CHEMISTRY PROJECT TOPICS/MATERIALS</option>
-              <option>INSURANCE PROJECT MATERIALS</option>
-              <option>INTEGRATED SCIENCE EDUCATION PROJECT TOPICS AND MATERIALS</option>
-              <option>INTERNATIONAL RELATIONS, HISTORY AND DIPLOMACY</option>
-              <option>ISLAMIC AND ARABIC STUDIES PROJECT TOPICS AND MATERIALS</option>
-              <option>INTERNATIONAL LAW AND DIPLOMACY PROJECT TOPICS AND MATERIALS</option>
-              <option>LAW PROJECT TOPICS AND MATERIALS</option>
-              <option>LIBRARY SCIENCE PROJECT TOPICS AND MATERIALS</option>
-              <option>MARKETING PROJECT MATERIALS</option>
-              <option>MASS COMMUNICATION/COMM. ARTS PROJECT MATERIALS</option>
-              <option>MATHEMATICS AND STATISTICS EDUCATION PROJECT TOPICS AND MATERIALS</option>
-              <option>MICRO-BIOLOGY PROJECT TOPICS/MATERIALS</option>
-              <option>MEDICINE AND SURGERY PROJECT TOPICS AND MATERIALS</option>
-              <option>MARINE AND TRANSPORT MANAGEMENT PROJECT TOPICS AND MATERIALS</option>
-              <option>MUSIC PROJECT TOPICS AND MATERIALS</option>
-              <option>MEDICAL BIOLOGY PROJECT TOPICS AND MATERIALS</option>
-              <option>MECHANICAL ENGINEERING PROJECT TOPICS AND MATERIALS</option>
-              <option>MARINE ENGINEERING PROJECT TOPICS</option>
-              <option>NURSING PROJECT TOPICS AND MATERIALS</option>
-              <option>NAUTICAL SCIENCE PROJECT TOPICS AND MATERIALS</option>
-              <option>OFFICE TECHNOLOGY PROJECT TOPICS AND MATERIALS</option>
-              <option>OIL AND GAS/PETROLEUM ENGINEERING PROJECT TOPICS</option>
-              <option>OCCUPATIONAL HEALTH AND SAFETY PROJECT TOPICS</option>
-              <option>PUBLIC ADMINISTARTION PROJECT TOPICS/MATERIALS</option>
-              <option>POLITICAL SCIENCE PROJECT TOPICS/MATERIALS</option>
-              <option>PSYCHOLOGY PROJECT TOPICS/MATERIALS</option>
-              <option>PHILOSOPHY PROJECT TOPICS/MATERIALS</option>
-              <option>PEACE STUDIES AND CONFLICT RESOLUTION PROJECT TOPICS</option>
-              <option>PUBLIC HEALTH PROJECT TOPICS AND MATERIALS</option>
-              <option>PHYSICS EDUCATION PROJECT TOPICS AND MATERIALS</option>
-              <option>PHYSICS PROJECT TOPICS/MATERIALS</option>
-              <option>PROJECT MANAGEMENT PROJECT MATERIALS</option>
-              <option>PERFORMING ARTS PROJECT TOPICS AND MATERIALS</option>
-              <option>PAEDIATRIC PROJECT TOPICS AND MATERIALS</option>
-              <option>PHARMACY PROJECT TOPICS AND MATERIALS</option>
-              <option>PHYSICAL SCIENCE PROJECT TOPICS AND MATERIALS</option>
-              <option>PHYSIOLOGY PROJECT TOPICS AND MATERIALS</option>
-              <option>PURCHASING AND SUPPLY PROJECT TOPICS AND MATERIALS</option>
-              <option>PRODUCTION AND OPERATIONS MGT. PROJECT MATERIALS</option>
-              <option>PETROLEUM ENGINEERING PROJECT TOPICS</option>
-              <option>QUANTITY AND SURVEYING PROJECT TOPICS/MATERIALS</option>
-              <option>RADIATION PROJECT TOPICS AND MATERIALS</option>
-              <option>RELIGIOUS AND CULTURAL STUDIES PROJECT TOPICS</option>
-              <option>SMES/ENTREPRENEURSHIP PROJECT TOPICS AND MATERIALS</option>
-              <option>SOCIAL STUDIES EDUCATION PROJECT TOPICS AND MATERIALS</option>
-              <option>SCIENCE LABORATORY AND TECHNOLOGY PROJECT MATERIALS</option>
-              <option>SOIL SCIENCE PROJECT TOPICS AND MATERIALS</option>
-              <option>SOCIOLOGY PROJECT TOPICS AND MATERIALS</option>
-              <option>SPORTS PROJECT TOPICS AND MATERIALS</option>
-              <option>STATISTICS PROJECT TOPICS/MATERIALS</option>
-              <option>SECURITY AND STRATEGIC STUDIES PROJECT TOPICS AND MATERIALS</option>
-              <option>THEATRE ARTS PROJECT TOPICS AND MATERIALS</option>
-              <option>TOURISM AND HOSPITALITY MANAGEMENT PROJECT TOPICS</option>
-              <option>TRANSPORTATION AND LOGISTICS MANAGEMENT PROJECT TOPICS</option>
-              <option>URBAN AND REGIONAL PLANNING PROJECT TOPICS AND MATERIALS</option>
-              <option>VOCATIONAL AND TECHNICAL EDUCATION PROJECT TOPICS AND MATERIALS</option>
-              <option>VETERINARY PROJECT TOPICS AND MATERIALS</option>
-              <option>ZOOLOGY PROJECT TOPICS AND MATERIALS</option>
-            </select>
-          </div>
-
-          <div class="filter">
-            <label>&nbsp;</label>
-            <input type="button" value="Search" style="padding: 12px 10px; border: none; background: var(--primary); color: white; border-radius: 10px; font-weight: 700; cursor: pointer;" />
-          </div>
+          <ol class="project-topic-list">
+            <li><a href="#" data-topic="The role of accounting standards in promoting sustainable development in Nigeria">THE ROLE OF ACCOUNTING STANDARDS IN PROMOTING SUSTAINABLE DEVELOPMENT IN NIGERIA (A CASE STUDY OF INSTITUTE OF CHARTERED ACCOUNTANTS OF NIGERIA, UYO)</a></li>
+            <li><a href="#" data-topic="The use of accounting information to measure and manage sustainability performance in Nigeria">THE USE OF ACCOUNTING INFORMATION TO MEASURE AND MANAGE SUSTAINABILITY PERFORMANCE IN NIGERIA (A CASE STUDY OF TIMEWISE TECHNOLOGY)</a></li>
+            <li><a href="#" data-topic="The future of financial reporting in the digital age">THE FUTURE OF FINANCIAL REPORTING IN THE DIGITAL AGE (A CASE STUDY OF SPARKLE NIGERIA)</a></li>
+            <li><a href="#" data-topic="The use of accounting information for corporate social responsibility reporting in Nigeria">THE USE OF ACCOUNTING INFORMATION FOR CORPORATE SOCIAL RESPONSIBILITY REPORTING IN NIGERIA (A CASE STUDY OF INSTITUTE OF CHARTERED ACCOUNTANTS OF NIGERIA, UYO)</a></li>
+            <li><a href="#" data-topic="Analysis of the use of machine learning to improve financial forecasting in Nigerian banks">ANALYSIS OF THE USE OF MACHINE LEARNING TO IMPROVE FINANCIAL FORECASTING IN NIGERIAN BANKS (A CASE STUDY OF INSTITUTE OF CHARTERED ACCOUNTANTS OF NIGERIA)</a></li>
+          </ol>
         </div>
 
-        <div class="result-layout">
-          <div class="paper-preview">
-            <h4>Effect of Public Health Expenditure on Economic Growth in Nigeria</h4>
-            <p><strong>Abstract:</strong> Preview</p>
-            <p><strong>Table of Contents:</strong> Preview</p>
-            <p><strong>Keywords:</strong> Health expenditure, economic growth, Nigeria</p>
-            <p><strong>Available Support:</strong> Research Consultation / Data Analysis / Methodology Guidance</p>
-            <div class="chip-row">
+        <aside class="project-sidebar">
+          <div class="project-sidebar-box">
+            <div class="sidebar-heading">Search</div>
+            <div class="sidebar-body">
+              <div class="sidebar-search">
+                <input type="text" placeholder="search" aria-label="Search topics">
+                <button type="button">search</button>
+              </div>
+              <div class="search-legend">
+                <span>search engine by freefind</span>
+                <a href="#">advanced</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-sidebar-box">
+            <div class="download-card">
+              <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80" alt="Research and academic study imagery" />
+            </div>
+          </div>
+
+          <div class="project-sidebar-box">
+            <div class="sidebar-heading">Categories</div>
+            <div class="sidebar-body">
+              <ul class="topics-list">
+                <li>Business Administration Projects</li>
+                <li>Accounting and Finance Projects</li>
+                <li>Economics Research Projects</li>
+                <li>Insurance Research Project Materials</li>
+              </ul>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="research-library" id="library-preview-block" style="margin-top: 24px; margin-bottom: 28px;">
+        <h2 class="research-library-title">Research Library</h2>
+
+        <div class="library-filter-row">
+          <div class="library-field">
+            <label for="facultySelect">Faculty</label>
+            <select id="facultySelect">
+              <option>Faculty of Agriculture (formerly Agriculture and Forestry)</option>
+              <option>Faculty of Arts</option>
+              <option>Faculty of Education</option>
+              <option>Faculty of Science</option>
+              <option selected>Faculty of the Social Sciences</option>
+              <option>Faculty of Technology</option>
+              <option>Faculty of Law</option>
+            </select>
+          </div>
+
+          <div class="library-field">
+            <label for="departmentSelect">Department</label>
+            <select id="departmentSelect">
+              <option>Accountancy</option>
+              <option>Business Administration</option>
+              <option selected>Economics</option>
+              <option>Computer Science</option>
+              <option>Marketing</option>
+              <option>Public Administration</option>
+              <option>Education</option>
+            </select>
+          </div>
+
+          <div class="library-field">
+            <label for="topicSelect">Topic</label>
+            <select id="topicSelect">
+              <option value="ECONOMICS PROJECT TOPICS AND MATERIALS">Economics Project Topics and Materials</option>
+              <option value="ACCOUNTANCY PROJECT MATERIALS">Accountancy Project Materials</option>
+              <option value="BUSINESS ADMINISTRATION PROJECT TOPICS/MATERIALS">Business Administration Project Topics and Materials</option>
+              <option value="COMPUTER SCIENCE PROJECT MATERIALS">Computer Science Project Materials</option>
+              <option value="EDUCATION PROJECT TOPICS AND MATERIALS">Education Project Topics and Materials</option>
+              <option value="NOT_AVAILABLE">No topic available</option>
+            </select>
+          </div>
+
+          <button type="button" class="search-trigger" id="librarySearchBtn">Search</button>
+        </div>
+
+        <div class="library-search">
+          <input id="topicSearchInput" type="text" placeholder="Search for a topic..." aria-label="Search for a topic">
+        </div>
+
+        <div class="library-result">
+          <h3 class="library-result-title" id="libraryResultTitle">Effect of Public Health Expenditure on Economic Growth in Nigeria</h3>
+          <div class="library-result-body">
+            <p><strong>Abstract:</strong> <span id="libraryResultAbstract">Preview</span></p>
+            <p><strong>Table of Contents:</strong> <span id="libraryResultContents">Preview</span></p>
+            <p><strong>Keywords:</strong> <span id="libraryResultKeywords">Health expenditure, economic growth, Nigeria</span></p>
+            <p><strong>Available Support:</strong> <span id="libraryResultSupport">Research Consultation / Data Analysis / Methodology Guidance</span></p>
+            <div class="chip-row" id="libraryResultTags">
               <span class="pill">Research Consultation</span>
               <span class="pill">Data Analysis</span>
               <span class="pill">Methodology Guidance</span>
+            </div>
+            <div class="library-topic-list" id="libraryTopicList"></div>
+          </div>
+        </div>
+
+        <div class="project-detail-card visible" id="projectDetailCard">
+          <div class="detail-header">
+            <div>
+              <p class="eyebrow">Project preview</p>
+              <h3 id="projectDetailTitle">Effect of Public Health Expenditure on Economic Growth in Nigeria</h3>
+            </div>
+            <span class="detail-badge" id="projectDetailBadge">Economics</span>
+          </div>
+          <div class="detail-content">
+            <div class="detail-copy">
+              <h4>Abstract</h4>
+              <p id="projectDetailAbstract">This study examines how public spending on health influences economic growth and living standards in Nigeria.</p>
+              <h4>Table of contents</h4>
+              <ul id="projectDetailContents">
+                <li>Chapter One: Introduction</li>
+                <li>Chapter Two: Literature Review</li>
+                <li>Chapter Three: Research Methodology</li>
+                <li>Chapter Four: Data Analysis</li>
+                <li>Chapter Five: Summary, Conclusion and Recommendation</li>
+              </ul>
+            </div>
+            <div class="detail-purchase">
+              <h4>Choose package</h4>
+              <div class="purchase-option">
+                <span class="option-tag">Option 1</span>
+                <h5>Get complete project</h5>
+                <p class="price">₦3,000</p>
+                <span class="meta">Nigeria / complete project</span>
+                <a class="purchase-button" href="/project-purchase?package=complete">Get complete project</a>
+              </div>
+              <div class="purchase-option">
+                <span class="option-tag">Option 2</span>
+                <h5>Get complete project with editing</h5>
+                <p class="price">₦15,000</p>
+                <span class="meta">Nigeria / complete project + editing</span>
+                <a class="purchase-button" href="/project-purchase?package=edited">Get edited project</a>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="research-grid">
-        <div class="research-card" id="publications">
-          <h3>Publications</h3>
-          <p>Discover research outputs, reports, and institutional publications that support learning, insight, and evidence-based decisions.</p>
-          <div class="pill-row">
-            <span class="pill">Journal</span>
-            <span class="pill">Reports</span>
-            <span class="pill">Summaries</span>
-          </div>
-        </div>
+      <div id="publications">
+        <h2 class="publications-header">Category: Publications</h2>
+        <div class="publications-grid">
+          <article class="publication-card">
+            <img class="publication-image" src="https://images.unsplash.com/photo-1516321165247-4aa89a48be28?auto=format&fit=crop&w=1200&q=80" alt="Kingsgate Young Scholars Journal">
+            <div class="publication-body">
+              <h3 class="publication-title">Kingsgate Young Scholars Journal Volume I</h3>
+              <p class="publication-date">June 8, 2026</p>
+              <a href="#" class="publication-link" data-expanded="false">Read More <span aria-hidden="true">›</span></a>
+              <div class="publication-extra">
+                <p>Volume I brings together emerging scholarship, practical policy reflections, and academic discourse designed to inspire new thinking across research, education, and development. It highlights fresh voices, evidence-led perspectives, and the kind of intellectual work that strengthens student and institutional growth.</p>
+              </div>
+            </div>
+          </article>
 
+          <article class="publication-card">
+            <img class="publication-image" src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=80" alt="Monetary Policy Effectiveness in Nigeria">
+            <div class="publication-body">
+              <h3 class="publication-title">Monetary Policy Effectiveness in Nigeria: Transmission Channels, Constraints, and Recent Developments</h3>
+              <p class="publication-date">May 21, 2026</p>
+              <a href="#" class="publication-link" data-expanded="false">Read More <span aria-hidden="true">›</span></a>
+              <div class="publication-extra">
+                <p>This publication investigates how monetary policy decisions move through the Nigerian economy, from interest-rate channels to credit access and inflation control. It explores the key constraints facing policy transmission and suggests practical reforms for stronger macroeconomic stability.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="publication-card">
+            <img class="publication-image" src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80" alt="Harnessing Fiscal and Monetary Policy Coordination">
+            <div class="publication-body">
+              <h3 class="publication-title">Harnessing Fiscal and Monetary Policy Coordination for Macroeconomic Stabilization in Nigeria</h3>
+              <p class="publication-date">December 24, 2025</p>
+              <a href="#" class="publication-link" data-expanded="false">Read More <span aria-hidden="true">›</span></a>
+              <div class="publication-extra">
+                <p>The paper highlights the importance of coordinated fiscal and monetary strategies in reducing inflation, improving market confidence, and supporting sustainable economic growth. It also assesses how better policy alignment can strengthen long-term development across key sectors of the Nigerian economy.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="publication-card">
+            <img class="publication-image" src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80" alt="Monetary Policy Strategies and Sustainable Growth">
+            <div class="publication-body">
+              <h3 class="publication-title">Monetary Policy Strategies and Sustainable Growth: Assessing Target Variables in Nigeria</h3>
+              <p class="publication-date">December 22, 2025</p>
+              <a href="#" class="publication-link" data-expanded="false">Read More <span aria-hidden="true">›</span></a>
+              <div class="publication-extra">
+                <p>This article examines the relationship between policy targets, inflation control, exchange-rate management, and sustainable growth in Nigeria. It provides a practical review of the variables that shape macroeconomic performance and how policy frameworks can be refined for stronger results.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="publication-card">
+            <img class="publication-image" src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1200&q=80" alt="Unlocking the Tax Revenue Potential of the Shadow Economy">
+            <div class="publication-body">
+              <h3 class="publication-title">Unlocking the Tax Revenue Potential of the Shadow Economy in Nigeria: Issues and Policy Options</h3>
+              <p class="publication-date">December 16, 2025</p>
+              <a href="#" class="publication-link" data-expanded="false">Read More <span aria-hidden="true">›</span></a>
+              <div class="publication-extra">
+                <p>The publication analyzes the size and complications of the shadow economy and why it remains difficult for tax authorities to capture. It presents policy directions for broadening the tax base, strengthening compliance, and improving domestic revenue mobilization in a practical and evidence-based way.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="publication-card">
+            <img class="publication-image" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80" alt="Listing Africa's Giants">
+            <div class="publication-body">
+              <h3 class="publication-title">Listing Africa's Giants: Can Initial Public Offers Unlock Deeper African Capital Markets?</h3>
+              <p class="publication-date">October 12, 2026</p>
+              <a href="#" class="publication-link" data-expanded="false">Read More <span aria-hidden="true">›</span></a>
+              <div class="publication-extra">
+                <p>The study explores how public listings and initial public offerings can deepen African capital markets, improve liquidity, and attract new investment. It discusses the opportunities, bottlenecks, and policy conditions needed for stronger capital-market development across the continent.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="research-grid">
         <div class="research-card" id="data">
           <h3>Data</h3>
-          <p>Access relevant datasets, research indicators, and materials to support analysis, interpretation, and evidence-driven conclusions.</p>
-          <ul>
-            <li>Economic indicators</li>
-            <li>Survey data</li>
-            <li>Research datasets</li>
-          </ul>
+          <p>Access reliable global and national data sources for research, analysis, and evidence-based reporting.</p>
+
+          <div class="data-source-block" style="margin-top: 18px;">
+            <h4 style="margin: 0 0 12px; color: var(--primary);">Global open data sources</h4>
+            <ol style="margin: 0 0 18px 20px; padding-left: 16px; line-height: 1.8; color: var(--primary);">
+              <li><a href="https://data.un.org/" target="_blank" rel="noopener noreferrer">UN Data</a></li>
+              <li><a href="https://data.worldbank.org/" target="_blank" rel="noopener noreferrer">World Bank Open Data</a></li>
+              <li><a href="https://www.gapminder.org/data/" target="_blank" rel="noopener noreferrer">Gapminder</a></li>
+              <li><a href="https://registry.opendata.aws/" target="_blank" rel="noopener noreferrer">Registry of Open Data on AWS</a></li>
+              <li><a href="https://www.kaggle.com/datasets" target="_blank" rel="noopener noreferrer">Kaggle Datasets</a></li>
+              <li><a href="https://opendata.cern.ch/" target="_blank" rel="noopener noreferrer">CERN Open Data</a></li>
+              <li><a href="https://ourworldindata.org/" target="_blank" rel="noopener noreferrer">Our World in Data</a></li>
+              <li><a href="https://data.europa.eu/" target="_blank" rel="noopener noreferrer">EU Open Data Portal</a></li>
+              <li><a href="https://huggingface.co/datasets" target="_blank" rel="noopener noreferrer">Hugging Face Datasets</a></li>
+            </ol>
+
+            <h4 style="margin: 0 0 12px; color: var(--primary);">Nigeria</h4>
+            <ol style="margin: 0 0 18px 20px; padding-left: 16px; line-height: 1.8; color: var(--primary);">
+              <li><a href="https://nigerianstat.gov.ng" target="_blank" rel="noopener noreferrer">National Bureau of Statistics (NBS)</a></li>
+              <li><a href="https://microdata.nigerianstat.gov.ng" target="_blank" rel="noopener noreferrer">NBS National Data Archive (Microdata)</a></li>
+              <li><a href="https://statistics.cbn.gov.ng" target="_blank" rel="noopener noreferrer">Central Bank of Nigeria (CBN) Statistics Database</a></li>
+              <li><a href="https://www.cbn.gov.ng" target="_blank" rel="noopener noreferrer">CBN Statistical Bulletin</a></li>
+              <li><a href="https://nigeriadata.gov.ng" target="_blank" rel="noopener noreferrer">Nigeria Integrated Data Sharing Portal</a></li>
+              <li><a href="https://nationalpopulation.gov.ng" target="_blank" rel="noopener noreferrer">National Population Commission (NPC)</a></li>
+              <li><a href="https://dhsprogram.com/data" target="_blank" rel="noopener noreferrer">Nigeria Demographic and Health Survey (DHS)</a></li>
+              <li><a href="https://agriculture.gov.ng" target="_blank" rel="noopener noreferrer">Federal Ministry of Agriculture and Food Security</a></li>
+              <li><a href="https://dmo.gov.ng" target="_blank" rel="noopener noreferrer">Debt Management Office (DMO)</a></li>
+              <li><a href="https://ngxgroup.com" target="_blank" rel="noopener noreferrer">Nigerian Exchange Group (NGX)</a></li>
+            </ol>
+
+            <h4 style="margin: 0 0 12px; color: var(--primary);">Australia</h4>
+            <ol style="margin: 0 0 18px 20px; padding-left: 16px; line-height: 1.8; color: var(--primary);">
+              <li><a href="https://www.dataplace.gov.au/" target="_blank" rel="noopener noreferrer">Dataplace — Australian Government data</a></li>
+              <li><a href="https://data.gov.au/" target="_blank" rel="noopener noreferrer">Data.gov.au — Australian Government data</a></li>
+            </ol>
+
+            <h4 style="margin: 0 0 12px; color: var(--primary);">Austria</h4>
+            <ol style="margin: 0 0 18px 20px; padding-left: 16px; line-height: 1.8; color: var(--primary);">
+              <li><a href="https://www.data.gv.at/" target="_blank" rel="noopener noreferrer">Central Austria Data Catalog</a></li>
+            </ol>
+
+            <h4 style="margin: 0 0 12px; color: var(--primary);">Brazil</h4>
+            <ol style="margin: 0 0 18px 20px; padding-left: 16px; line-height: 1.8; color: var(--primary);">
+              <li><a href="https://dados.gov.br/" target="_blank" rel="noopener noreferrer">Open Data Portal Brazil</a></li>
+            </ol>
+
+            <h4 style="margin: 0 0 12px; color: var(--primary);">Canada</h4>
+            <ol style="margin: 0 0 18px 20px; padding-left: 16px; line-height: 1.8; color: var(--primary);">
+              <li><a href="https://open.canada.ca/data/en" target="_blank" rel="noopener noreferrer">Government of Canada Open Data</a></li>
+              <li><a href="https://open.ottawa.ca/" target="_blank" rel="noopener noreferrer">Open Ottawa</a></li>
+            </ol>
+
+            <h4 style="margin: 0 0 12px; color: var(--primary);">France</h4>
+            <ol style="margin: 0 0 18px 20px; padding-left: 16px; line-height: 1.8; color: var(--primary);">
+              <li><a href="https://www.data.gouv.fr/" target="_blank" rel="noopener noreferrer">French Public Data Catalog</a></li>
+            </ol>
+
+            <h4 style="margin: 0 0 12px; color: var(--primary);">Germany</h4>
+            <ol style="margin: 0 0 18px 20px; padding-left: 16px; line-height: 1.8; color: var(--primary);">
+              <li><a href="https://www.govdata.de/" target="_blank" rel="noopener noreferrer">German Open Government Data</a></li>
+            </ol>
+
+            <h4 style="margin: 0 0 12px; color: var(--primary);">India</h4>
+            <ol style="margin: 0 0 18px 20px; padding-left: 16px; line-height: 1.8; color: var(--primary);">
+              <li><a href="https://www.data.gov.in/" target="_blank" rel="noopener noreferrer">Open Government Data India</a></li>
+            </ol>
+
+            <h4 style="margin: 0 0 12px; color: var(--primary);">Indonesia</h4>
+            <ol style="margin: 0 0 18px 20px; padding-left: 16px; line-height: 1.8; color: var(--primary);">
+              <li><a href="https://data.go.id/" target="_blank" rel="noopener noreferrer">Indonesian Public Data Portal</a></li>
+            </ol>
+
+            <h4 style="margin: 0 0 12px; color: var(--primary);">Switzerland</h4>
+            <ol style="margin: 0 0 18px 20px; padding-left: 16px; line-height: 1.8; color: var(--primary);">
+              <li><a href="https://opendata.swiss/" target="_blank" rel="noopener noreferrer">Swiss Open Government Data</a></li>
+              <li><a href="https://opentransportdata.swiss/" target="_blank" rel="noopener noreferrer">Swiss Public Transport Data</a></li>
+              <li><a href="https://data.sbb.ch/" target="_blank" rel="noopener noreferrer">SBB Open Data — Swiss Federal Railways</a></li>
+            </ol>
+
+            <h4 style="margin: 0 0 12px; color: var(--primary);">United Kingdom (UK)</h4>
+            <ol style="margin: 0 0 18px 20px; padding-left: 16px; line-height: 1.8; color: var(--primary);">
+              <li><a href="https://www.data.gov.uk/" target="_blank" rel="noopener noreferrer">UK Open Data</a></li>
+            </ol>
+
+            <h4 style="margin: 0 0 12px; color: var(--primary);">United States of America (USA)</h4>
+            <ol style="margin: 0 0 18px 20px; padding-left: 16px; line-height: 1.8; color: var(--primary);">
+              <li><a href="https://data.gov/" target="_blank" rel="noopener noreferrer">Data.gov — US Government Open Data</a></li>
+              <li><a href="https://data.austintexas.gov/" target="_blank" rel="noopener noreferrer">Austin Open Data Portal</a></li>
+              <li><a href="https://data.cityofchicago.org/" target="_blank" rel="noopener noreferrer">Chicago Data Portal</a></li>
+              <li><a href="https://www.nyc.gov/opendata" target="_blank" rel="noopener noreferrer">New York City Open Data</a></li>
+            </ol>
+          </div>
+
+          <p style="margin-top: 18px; font-weight: 700; color: var(--primary);">
+            CONTACT IOS RESEARCH INSTITUTE FOR AVAILABLE DATA; 07086476413
+          </p>
         </div>
 
         <div class="research-card" id="consultants">
@@ -855,9 +1820,323 @@
             <span class="pill">Economics</span>
             <span class="pill">Public Health</span>
             <span class="pill">Policy</span>
+            <span class="pill">Data Analysis</span>
           </div>
+
+          <ul style="margin: 18px 0 0; padding-left: 18px; line-height: 1.8; color: var(--primary);">
+            <li>Inflation and household welfare</li>
+            <li>Health financing and economic growth</li>
+            <li>SME performance and productivity</li>
+            <li>Public policy and governance reform</li>
+          </ul>
         </div>
       </div>
+
+      <div class="research-card" id="resources" style="margin-top: 12px; margin-bottom: 28px;">
+        <h3>Resources</h3>
+        <p>Access toolkits, research guidance, consultation support, and academic resources designed to strengthen practical research outcomes.</p>
+      </div>
+
+      <div class="research-card" id="contact" style="margin-bottom: 28px;">
+        <h3>Contact</h3>
+        <p>For research support, project guidance, and institutional enquiries, reach out through the IOS Research support channels.</p>
+      </div>
     </main>
+
+    <script>
+      const topicLibrary = {
+        "ECONOMICS PROJECT TOPICS AND MATERIALS": {
+          faculty: "Faculty of the Social Sciences",
+          department: "Economics",
+          topics: [
+            {
+              title: "Effect of Public Health Expenditure on Economic Growth in Nigeria",
+              abstract: "This study examines how public spending on health influences economic growth and living standards in Nigeria.",
+              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
+              keywords: ["Health expenditure", "economic growth", "Nigeria"],
+              support: ["Research Consultation", "Data Analysis", "Methodology Guidance"]
+            },
+            {
+              title: "Inflation and its effect on household purchasing power in Nigeria",
+              abstract: "The study evaluates the relationship between inflation, cost of living, and consumer welfare in selected households.",
+              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
+              keywords: ["Inflation", "purchasing power", "households"],
+              support: ["Research Consultation", "Data Analysis"]
+            },
+            {
+              title: "Unemployment and poverty nexus in emerging economies",
+              abstract: "This project investigates the impact of unemployment on poverty levels and social wellbeing in selected communities.",
+              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
+              keywords: ["Unemployment", "poverty", "economic welfare"],
+              support: ["Methodology Guidance", "Data Analysis"]
+            }
+          ]
+        },
+        "ACCOUNTANCY PROJECT MATERIALS": {
+          faculty: "Faculty of the Social Sciences",
+          department: "Accountancy",
+          topics: [
+            {
+              title: "The role of accounting standards in promoting sustainable development in Nigeria",
+              abstract: "This study reviews the contribution of accounting standards and financial discipline to sustainable business growth.",
+              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
+              keywords: ["Accounting standards", "sustainability", "Nigeria"],
+              support: ["Research Consultation", "Data Analysis"]
+            },
+            {
+              title: "The use of accounting information for corporate social responsibility reporting in Nigeria",
+              abstract: "This project explores how accounting information supports transparency and social responsibility reporting in organizations.",
+              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
+              keywords: ["Accounting", "CSR", "reporting"],
+              support: ["Methodology Guidance", "Research Consultation"]
+            }
+          ]
+        },
+        "BUSINESS ADMINISTRATION PROJECT TOPICS/MATERIALS": {
+          faculty: "Faculty of the Social Sciences",
+          department: "Business Administration",
+          topics: [
+            {
+              title: "Effect of leadership style on employee performance in selected organizations",
+              abstract: "This project assesses the relationship between leadership style and employee productivity in organizational settings.",
+              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
+              keywords: ["Leadership", "employee performance", "organizations"],
+              support: ["Research Consultation", "Data Analysis"]
+            },
+            {
+              title: "Strategic management and business growth in SMEs in Nigeria",
+              abstract: "The study explores how strategic management practices influence growth and sustainability among SMEs.",
+              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
+              keywords: ["Strategic management", "SMEs", "growth"],
+              support: ["Methodology Guidance", "Research Consultation"]
+            }
+          ]
+        },
+        "COMPUTER SCIENCE PROJECT MATERIALS": {
+          faculty: "Faculty of Technology",
+          department: "Computer Science",
+          topics: [
+            {
+              title: "Design and implementation of an online examination management system",
+              abstract: "This project focuses on the design and development of a digital system for examination processing and result management.",
+              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: System Design and Implementation | Chapter Five: Summary, Conclusion and Recommendation",
+              keywords: ["Examination system", "digital administration", "technology"],
+              support: ["Research Consultation", "Methodology Guidance"]
+            }
+          ]
+        },
+        "EDUCATION PROJECT TOPICS AND MATERIALS": {
+          faculty: "Faculty of Education",
+          department: "Education",
+          topics: [
+            {
+              title: "Impact of teacher quality on student academic performance in secondary schools",
+              abstract: "This project evaluates how teacher quality influences academic outcomes among secondary school students.",
+              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
+              keywords: ["Teacher quality", "student performance", "secondary school"],
+              support: ["Research Consultation", "Data Analysis"]
+            }
+          ]
+        },
+        "NOT_AVAILABLE": {
+          faculty: "Faculty of Agriculture (formerly Agriculture and Forestry)",
+          department: "General",
+          topics: []
+        }
+      };
+
+      const categorySelect = document.getElementById('topicSelect');
+      const facultySelect = document.getElementById('facultySelect');
+      const departmentSelect = document.getElementById('departmentSelect');
+      const searchInput = document.getElementById('topicSearchInput');
+      const searchButton = document.getElementById('librarySearchBtn');
+
+      function getSelectedCategory() {
+        const raw = categorySelect ? categorySelect.value : 'ECONOMICS PROJECT TOPICS AND MATERIALS';
+        return raw === 'NOT_AVAILABLE' ? 'NOT_AVAILABLE' : raw;
+      }
+
+      function renderTopicList(items) {
+        const listNode = document.getElementById('libraryTopicList');
+        if (!listNode) return;
+
+        if (!items.length) {
+          listNode.innerHTML = '<div class="library-empty">No topic available</div>';
+          return;
+        }
+
+        listNode.innerHTML = items.map((item) => `<a href="javascript:void(0)" data-topic="${item.title}">${item.title}</a>`).join('');
+
+        listNode.querySelectorAll('a').forEach((link) => {
+          link.addEventListener('click', function (event) {
+            event.preventDefault();
+            const selectedTopic = this.dataset.topic;
+            openProjectDetail(selectedTopic);
+          });
+        });
+      }
+
+      function normalizeTitle(value) {
+        return String(value || '').toLowerCase().replace(/\s+/g, ' ').trim();
+      }
+
+      function findTopicByTitle(topicText) {
+        const target = normalizeTitle(topicText);
+        const categoryName = getSelectedCategory();
+        const category = topicLibrary[categoryName] || { department: 'Project', topics: [] };
+
+        return category.topics.find((item) => normalizeTitle(item.title) === target)
+          || Object.values(topicLibrary).flatMap((entry) => entry.topics || []).find((item) => normalizeTitle(item.title) === target)
+          || null;
+      }
+
+      function renderLibrary() {
+        const categoryName = getSelectedCategory();
+        const category = topicLibrary[categoryName] || { faculty: facultySelect.value, department: departmentSelect.value, topics: [] };
+        const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
+        const filteredItems = category.topics.filter((item) => {
+          if (!query) return true;
+          const haystack = [item.title, item.abstract, ...(item.keywords || [])].join(' ').toLowerCase();
+          return haystack.includes(query);
+        });
+
+        const titleNode = document.getElementById('libraryResultTitle');
+        const abstractNode = document.getElementById('libraryResultAbstract');
+        const contentsNode = document.getElementById('libraryResultContents');
+        const keywordsNode = document.getElementById('libraryResultKeywords');
+        const supportNode = document.getElementById('libraryResultSupport');
+        const tagsNode = document.getElementById('libraryResultTags');
+        const detailNode = document.getElementById('projectDetailTitle');
+        const detailBadge = document.getElementById('projectDetailBadge');
+        const detailAbstract = document.getElementById('projectDetailAbstract');
+        const detailContents = document.getElementById('projectDetailContents');
+
+        if (!filteredItems.length) {
+          if (titleNode) titleNode.textContent = 'No topic available';
+          if (abstractNode) abstractNode.textContent = 'There are no topics available for this selection yet.';
+          if (contentsNode) contentsNode.textContent = 'No content available yet';
+          if (keywordsNode) keywordsNode.textContent = 'Please check back later or contact the research team.';
+          if (supportNode) supportNode.textContent = 'Support not yet assigned';
+          if (tagsNode) tagsNode.innerHTML = '<span class="pill">No topic available</span>';
+          if (detailNode) detailNode.textContent = 'No topic available';
+          if (detailBadge) detailBadge.textContent = 'Unavailable';
+          if (detailAbstract) detailAbstract.textContent = 'There are no topics available for this selection yet.';
+          if (detailContents) detailContents.innerHTML = '<li>No content available yet</li>';
+          const detailCard = document.getElementById('projectDetailCard');
+          if (detailCard) detailCard.classList.add('visible');
+          renderTopicList([]);
+          return;
+        }
+
+        const firstItem = filteredItems[0];
+        if (titleNode) titleNode.textContent = firstItem.title;
+        if (abstractNode) abstractNode.textContent = firstItem.abstract;
+        if (contentsNode) contentsNode.textContent = firstItem.contents;
+        if (keywordsNode) keywordsNode.textContent = firstItem.keywords.join(', ');
+        if (supportNode) supportNode.textContent = firstItem.support.join(' / ');
+        if (tagsNode) tagsNode.innerHTML = (firstItem.support || []).map((item) => `<span class="pill">${item}</span>`).join('');
+
+        if (detailNode) detailNode.textContent = firstItem.title;
+        if (detailBadge) detailBadge.textContent = category.department || 'Project';
+        if (detailAbstract) detailAbstract.textContent = firstItem.abstract;
+        if (detailContents) detailContents.innerHTML = firstItem.contents.split('|').map((item) => `<li>${item.trim()}</li>`).join('');
+
+        renderTopicList(filteredItems);
+      }
+
+      function openProjectDetail(topicText) {
+        const titleNode = document.getElementById('libraryResultTitle');
+        const abstractNode = document.getElementById('libraryResultAbstract');
+        const contentsNode = document.getElementById('libraryResultContents');
+        const keywordsNode = document.getElementById('libraryResultKeywords');
+        const supportNode = document.getElementById('libraryResultSupport');
+        const tagsNode = document.getElementById('libraryResultTags');
+        const detailNode = document.getElementById('projectDetailTitle');
+        const detailBadge = document.getElementById('projectDetailBadge');
+        const detailAbstract = document.getElementById('projectDetailAbstract');
+        const detailContents = document.getElementById('projectDetailContents');
+
+        const categoryName = getSelectedCategory();
+        const category = topicLibrary[categoryName] || { department: 'Project', topics: [] };
+        const found = findTopicByTitle(topicText) || category.topics.find((item) => item.title === topicText) || null;
+
+        if (!found) {
+          if (titleNode) titleNode.textContent = topicText;
+          if (abstractNode) abstractNode.textContent = 'This topic is currently selected for review. Additional details will appear as material is uploaded.';
+          if (contentsNode) contentsNode.textContent = 'Preview available after upload';
+          if (keywordsNode) keywordsNode.textContent = 'Topic has been selected';
+          if (supportNode) supportNode.textContent = 'Support available on request';
+          if (tagsNode) tagsNode.innerHTML = '<span class="pill">Research Consultation</span>';
+          if (detailNode) detailNode.textContent = topicText;
+          if (detailBadge) detailBadge.textContent = category.department || 'Project';
+          if (detailAbstract) detailAbstract.textContent = 'This topic is currently selected for review. Additional details will appear as material is uploaded.';
+          if (detailContents) detailContents.innerHTML = '<li>Preview available after upload</li>';
+          return;
+        }
+
+        if (titleNode) titleNode.textContent = found.title;
+        if (abstractNode) abstractNode.textContent = found.abstract;
+        if (contentsNode) contentsNode.textContent = found.contents;
+        if (keywordsNode) keywordsNode.textContent = found.keywords.join(', ');
+        if (supportNode) supportNode.textContent = found.support.join(' / ');
+        if (tagsNode) tagsNode.innerHTML = (found.support || []).map((item) => `<span class="pill">${item}</span>`).join('');
+
+        if (detailNode) detailNode.textContent = found.title;
+        if (detailBadge) detailBadge.textContent = category.department || 'Project';
+        if (detailAbstract) detailAbstract.textContent = found.abstract;
+        if (detailContents) detailContents.innerHTML = found.contents.split('|').map((item) => `<li>${item.trim()}</li>`).join('');
+
+        const detailCard = document.getElementById('projectDetailCard');
+        if (detailCard) detailCard.classList.add('visible');
+      }
+
+      document.querySelectorAll('.project-topic-list a').forEach((link) => {
+        link.addEventListener('click', function (event) {
+          event.preventDefault();
+          const selectedTopic = this.dataset.topic || this.textContent.trim();
+          openProjectDetail(selectedTopic);
+        });
+      });
+
+      if (searchButton) {
+        searchButton.addEventListener('click', renderLibrary);
+      }
+
+      if (searchInput) {
+        searchInput.addEventListener('input', renderLibrary);
+      }
+
+      if (categorySelect) {
+        categorySelect.addEventListener('change', renderLibrary);
+      }
+
+      if (facultySelect) {
+        facultySelect.addEventListener('change', function () {
+          if (this.value === 'Faculty of the Social Sciences') {
+            departmentSelect.value = 'Economics';
+          }
+          renderLibrary();
+        });
+      }
+
+      if (departmentSelect) {
+        departmentSelect.addEventListener('change', renderLibrary);
+      }
+
+      renderLibrary();
+
+      document.querySelectorAll('.publication-link').forEach((link) => {
+        link.addEventListener('click', function (event) {
+          event.preventDefault();
+          const extra = this.parentElement.querySelector('.publication-extra');
+          const isExpanded = this.dataset.expanded === 'true';
+          this.dataset.expanded = String(!isExpanded);
+          this.innerHTML = isExpanded ? 'Read More <span aria-hidden="true">›</span>' : 'Read Less <span aria-hidden="true">‹</span>';
+          if (extra) {
+            extra.classList.toggle('visible', !isExpanded);
+          }
+        });
+      });
+    </script>
   </body>
 </html>

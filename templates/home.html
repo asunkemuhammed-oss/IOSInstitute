@@ -250,35 +250,63 @@
         max-width: 560px;
       }
 
-      .search-row {
-        display: flex;
+      .service-dropdown {
+        position: relative;
         margin-top: 26px;
         width: min(100%, 520px);
-        background: rgba(255,255,255,0.88);
+      }
+
+      .service-trigger {
+        width: 100%;
         border: 1px solid rgba(17,24,39,0.06);
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 12px 24px rgba(21, 51, 90, 0.08);
-      }
-
-      .search-row input {
-        flex: 1;
-        border: none;
-        background: transparent;
+        background: rgba(255,255,255,0.88);
+        color: var(--ios-dark);
         padding: 16px 18px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         font-size: 0.96rem;
-        color: var(--text);
+        font-weight: 700;
+        box-shadow: 0 12px 24px rgba(21, 51, 90, 0.08);
+        cursor: pointer;
       }
 
-      .search-row button {
-        border: none;
-        background: linear-gradient(135deg, #123f37 0%, #1d725f 100%);
-        color: #fff;
-        padding: 0 22px;
-        font-size: 0.82rem;
-        font-weight: 700;
+      .service-trigger span:last-child {
+        font-size: 1rem;
+      }
+
+      .service-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        width: 100%;
+        background: rgba(255,255,255,0.98);
+        border: 1px solid rgba(17,24,39,0.08);
+        border-radius: 14px;
+        box-shadow: 0 18px 30px rgba(17,24,39,0.12);
+        padding: 8px 0;
+        display: none;
+        z-index: 20;
+      }
+
+      .service-dropdown:hover .service-menu,
+      .service-dropdown:focus-within .service-menu {
+        display: block;
+      }
+
+      .service-menu a {
+        display: block;
+        padding: 12px 16px;
+        color: var(--ios-dark);
+        font-size: 0.72rem;
+        font-weight: 800;
         letter-spacing: 0.08em;
         text-transform: uppercase;
+      }
+
+      .service-menu a:hover {
+        background: rgba(18, 63, 55, 0.04);
       }
 
       .hero-actions {
@@ -916,10 +944,169 @@
         font-size: 1.05rem;
       }
 
-      footer {
-        padding: 26px 0 42px;
-        color: var(--muted);
+      .ios-footer {
+        position: relative;
+        background: linear-gradient(180deg, #143b35 0%, #0d2d2a 100%);
+        color: #f7f5f0;
+        padding: 32px 0 18px;
+        border-top: 1px solid rgba(255,255,255,0.12);
+        box-shadow: 0 -18px 40px rgba(8, 20, 18, 0.18);
+      }
+
+      .ios-footer-grid {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1.2fr 1.2fr;
+        gap: 42px;
+        align-items: start;
+      }
+
+      .footer-brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .footer-brand-mark {
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+        overflow: hidden;
+        background: rgba(255,255,255,0.10);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12), 0 10px 25px rgba(0,0,0,0.18);
+      }
+
+      .footer-brand-mark img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .footer-brand-text {
+        font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+        font-weight: 800;
+        letter-spacing: -0.06em;
+        line-height: 0.95;
+        color: #fff;
+      }
+
+      .footer-brand-text small {
+        display: block;
+        font-size: 0.7rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.72);
+        margin-top: 7px;
+      }
+
+      .footer-copy {
+        margin: 0;
+        color: rgba(255,255,255,0.82);
+        font-size: 1rem;
+        line-height: 1.8;
+        max-width: 430px;
+      }
+
+      .footer-title {
+        margin: 0 0 18px;
+        color: #fff;
+        font-size: 1.08rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .footer-links,
+      .footer-services,
+      .footer-contacts {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 12px;
+      }
+
+      .footer-links a,
+      .footer-services a,
+      .footer-contacts a,
+      .footer-contacts span {
+        color: rgba(255,255,255,0.86);
+        font-size: 0.98rem;
+        line-height: 1.7;
+        transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+      }
+
+      .footer-links a,
+      .footer-services a,
+      .footer-contacts a {
+        display: inline-block;
+        text-decoration: none;
+      }
+
+      .footer-links a:hover,
+      .footer-services a:hover,
+      .footer-contacts a:hover {
+        color: #f6d181;
+        transform: translateX(2px);
+      }
+
+      .footer-heading {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .footer-heading::after {
+        content: "";
+        display: block;
+        width: 46px;
+        height: 2px;
+        background: linear-gradient(90deg, rgba(246,209,129,0.95), rgba(246,209,129,0.1));
+        border-radius: 999px;
+      }
+
+      .footer-bottom {
+        margin-top: 26px;
+        color: rgba(255,255,255,0.8);
+        border-top: 1px solid rgba(255,255,255,0.14);
+        padding-top: 18px;
         text-align: center;
+        font-size: 0.93rem;
+        letter-spacing: 0.02em;
+      }
+
+      footer {
+        padding: 0;
+      }
+
+      @media (max-width: 900px) {
+        .ios-footer-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 30px 24px;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .ios-footer {
+          padding-top: 28px;
+        }
+
+        .ios-footer-grid {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+
+        .footer-brand {
+          align-items: flex-start;
+        }
+
+        .footer-copy {
+          max-width: 100%;
+        }
       }
 
       @media (max-width: 900px) {
@@ -981,12 +1168,11 @@
           font-size: 2.8rem;
         }
 
-        .search-row {
-          flex-direction: column;
-          border-radius: 14px;
+        .service-dropdown {
+          width: 100%;
         }
 
-        .search-row button {
+        .service-trigger {
           min-height: 52px;
         }
       }
@@ -1029,13 +1215,19 @@
                 collaboration, and measurable opportunity.
               </p>
 
-              <div class="search-row">
-                <input type="text" placeholder="What do you want to learn today?" aria-label="Course search">
-                <button type="button">Search</button>
+              <div class="service-dropdown">
+                <button class="service-trigger" type="button" aria-label="Explore our services">
+                  <span>Explore our services</span>
+                  <span>▾</span>
+                </button>
+                <div class="service-menu">
+                  <a href="/research-institute">IOS RESEARCH</a>
+                  <a href="/tech-skillup">IOS TECH</a>
+                  <a href="/educational-consultancy">IOS EDUCATIONAL CONSULT</a>
+                </div>
               </div>
 
               <div class="hero-actions">
-                <a class="primary-btn" href="/register">Explore Courses</a>
                 <a class="secondary-btn" href="#about">Watch Overview</a>
               </div>
 
@@ -1151,8 +1343,6 @@
                 <p>Get guidance on study planning, career direction, and institutional support with a direct consultation booking.</p>
                 <div class="portal-actions">
                   <a class="primary" href="/educational-consultancy">Book now</a>
-                  <a class="secondary" href="/login">Login</a>
-                  <a class="ghost" href="/register">Sign up</a>
                 </div>
               </div>
 
@@ -1384,21 +1574,58 @@
 
       <section id="contact">
         <div class="container">
-          <div class="contact-box">
-            <div>
-              <h2>Contact us</h2>
-              <p>Location: Remote</p>
-              <p>University of Ibadan</p>
-              <p>The Polytechnic, Ibadan</p>
+          <div class="ios-footer">
+            <div class="ios-footer-grid">
+              <div>
+                <div class="footer-brand">
+                  <div class="footer-brand-mark">
+                    <img src="/static/images/team/REALLOGO.jpg" alt="IOS logo">
+                  </div>
+                  <div class="footer-brand-text">IOS<small>Institute of Scholars</small></div>
+                </div>
+                <p class="footer-copy">At IOS, we believe in the transformative power of technology, research, and mentorship to help people grow, innovate, and lead with confidence.</p>
+              </div>
+
+              <div>
+                <div class="footer-heading">
+                  <h3 class="footer-title">Quick Links</h3>
+                </div>
+                <ul class="footer-links">
+                  <li><a href="#home">Home</a></li>
+                  <li><a href="#about">About Us</a></li>
+                  <li><a href="#testimonials">Testimonials</a></li>
+                  <li><a href="#contact">Contact Us</a></li>
+                </ul>
+              </div>
+
+              <div>
+                <div class="footer-heading">
+                  <h3 class="footer-title">Our Services</h3>
+                </div>
+                <ul class="footer-services">
+                  <li><a href="/research-institute">IOS Research Institute</a></li>
+                  <li><a href="/tech-skillup">IOS Tech Skill Up</a></li>
+                  <li><a href="/educational-consultancy">IOS Educational Consultancy</a></li>
+                </ul>
+              </div>
+
+              <div>
+                <div class="footer-heading">
+                  <h3 class="footer-title">Contact Us</h3>
+                </div>
+                <ul class="footer-contacts">
+                  <li><a href="tel:+2347086476413">07086476413</a></li>
+                  <li><a href="tel:+2348062639824">08062639824</a></li>
+                  <li><a href="tel:+2347083201575">07083201575</a></li>
+                  <li><a href="mailto:institutesofscholars@gmail.com">institutesofscholars@gmail.com</a></li>
+                </ul>
+              </div>
             </div>
-            <a href="mailto:ioseduconsult@gmail.com">ioseduconsult@gmail.com</a>
+
+            <div class="footer-bottom">© 2026 IOS Institute. All rights reserved.</div>
           </div>
         </div>
       </section>
     </main>
-
-    <footer>
-      <div class="container">© 2026 IOSInstitute. All rights reserved.</div>
-    </footer>
   </body>
 </html>

@@ -643,6 +643,25 @@ def research_institute():
     return render_template("research_institute.html")
 
 
+@app.route("/research-request", methods=["GET", "POST"])
+def research_request():
+    if request.method == "POST":
+        research_type = request.form.get("research_type", "").strip()
+        topic = request.form.get("topic", "").strip()
+        institution = request.form.get("institution", "").strip()
+        department = request.form.get("department", "").strip()
+        deadline = request.form.get("deadline", "").strip()
+
+        if not research_type or not topic or not institution or not department:
+            flash("Please complete the required research request fields.")
+            return render_template("research_request.html", form=request.form)
+
+        flash("Your research request has been received. Please sign up to continue.")
+        return redirect(url_for("register", portal="research"))
+
+    return render_template("research_request.html", form={})
+
+
 @app.route("/tech-skillup")
 def tech_skillup():
     return render_template("tech_skillup.html", programs=skill_programs())
@@ -872,6 +891,64 @@ def research_payment():
         fee="₦25,000",
         payment_options=["One-time payment (₦25,000)"],
         demo_note="Demo checkout: this is a sample payment flow for onboarding and project support.",
+    )
+
+
+@app.route("/project-purchase", methods=["GET", "POST"])
+def project_purchase():
+    package = request.args.get("package", request.form.get("package", "complete")).lower()
+    package = "edited" if package == "edited" else "complete"
+
+    if package == "edited":
+        title = "Get complete project with editing"
+        description = "This package includes the complete project plus professional editing and formatting support."
+        fee = "Nigeria: ₦15,000 | Other countries: $90"
+        payment_options = [
+            "Nigeria: ₦15,000",
+            "Other countries: $90",
+        ]
+    else:
+        title = "Get complete project"
+        description = "This package includes the complete project document ready for use and submission."
+        fee = "Nigeria: ₦3,000 | Other countries: $30"
+        payment_options = [
+            "Nigeria: ₦3,000",
+            "Other countries: $30",
+        ]
+
+    payment_stage = request.form.get("payment_stage")
+    payment_option = request.form.get("payment_option", package)
+
+    if request.method == "POST" and payment_stage == "success":
+        session["project_purchase_status"] = "paid"
+        session["project_purchase_package"] = package
+        session["project_purchase_amount"] = fee
+        flash(f"{title} was successfully added to your purchase record.")
+        return redirect(url_for("research_institute"))
+
+    if request.method == "POST" and payment_stage == "checkout":
+        return render_template(
+            "payment.html",
+            portal="research",
+            title=title,
+            description=description,
+            fee=fee,
+            payment_options=payment_options,
+            payment_stage="checkout",
+            payment_option=payment_option,
+            demo_note="Demo checkout: this is a sample purchase flow for the selected project package.",
+        )
+
+    return render_template(
+        "payment.html",
+        portal="research",
+        title=title,
+        description=description,
+        fee=fee,
+        payment_options=payment_options,
+        payment_stage="review",
+        payment_option=payment_option,
+        demo_note="Demo checkout: this is a sample purchase flow for the selected project package.",
     )
 
 

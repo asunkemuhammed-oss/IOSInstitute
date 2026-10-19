@@ -157,8 +157,8 @@
             </div>
           </div>
           <div class="actions">
-            <a class="primary-btn" href="/tech-skills-dashboard">Start course</a>
-            <a class="secondary-btn" href="/tech-skills-dashboard">Go back</a>
+            <a class="primary-btn" href="{% if portal == 'research' %}/research-institute{% else %}/tech-skills-dashboard{% endif %}">Start course</a>
+            <a class="secondary-btn" href="{% if portal == 'research' %}/research-institute{% else %}/tech-skills-dashboard{% endif %}">Go back</a>
           </div>
         {% elif payment_stage == 'checkout' %}
           <form method="post">
@@ -184,7 +184,7 @@
             </div>
             <div class="actions">
               <button class="primary-btn" type="submit">Complete payment</button>
-              <a class="secondary-btn" href="/tech-payment">Back</a>
+              <a class="secondary-btn" href="{% if portal == 'research' %}/research-institute{% else %}/tech-payment{% endif %}">Back</a>
             </div>
           </form>
         {% elif not show_history %}
@@ -213,12 +213,12 @@
 
               <div class="actions">
                 <button class="primary-btn" type="submit">Proceed to payment</button>
-                <a class="secondary-btn" href="{% if portal == 'research' %}/dashboard{% else %}/tech-skills-dashboard{% endif %}">Go back</a>
+                <a class="secondary-btn" href="{% if portal == 'research' %}/research-institute{% else %}/tech-skills-dashboard{% endif %}">Go back</a>
               </div>
           </form>
         {% else %}
           <div class="actions">
-            <a class="secondary-btn" href="/tech-skills-dashboard">Go back</a>
+            <a class="secondary-btn" href="{% if portal == 'research' %}/research-institute{% else %}/tech-skills-dashboard{% endif %}">Go back</a>
           </div>
         {% endif %}
       </div>
