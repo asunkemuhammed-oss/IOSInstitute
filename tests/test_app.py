@@ -46,12 +46,12 @@ def test_research_institute_page_has_welcome_and_entry_actions(client):
     assert b"Access research resources" in response.data
     assert b"Publications" in response.data
     assert b"Data" in response.data
-    assert b"Faculty" in response.data
-    assert b"Department" in response.data
-    assert b"Topic" in response.data
-    assert b"Faculty of Agriculture (formerly Agriculture and Forestry)" in response.data
-    assert b"Faculty of the Social Sciences" in response.data
+    assert b"Topic category" in response.data
+    assert b"Search for a topic" in response.data
+    assert b"ECONOMICS PROJECT TOPICS AND MATERIALS" in response.data
     assert b"Effect of Public Health Expenditure on Economic Growth in Nigeria" in response.data
+    assert b"Faculty" not in response.data
+    assert b"Department" not in response.data
 
 
 def test_project_purchase_checkout_accepts_post_submission(client):
@@ -121,6 +121,137 @@ def test_research_registration_page_uses_research_branding(client):
     assert b"IOS Research Institute" in response.data
     assert b"Create a Research account" in response.data
     assert b"Tech SkillUp" not in response.data
+
+
+def test_research_registration_allows_student_and_researcher_roles(client):
+    response = client.get("/register?portal=research")
+
+    assert response.status_code == 200
+    assert b"Student / Client" in response.data
+    assert b"Researcher" in response.data
+
+
+def test_student_login_on_research_portal_redirects_to_research_institute_not_tech_dashboard(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+            ("Student User", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student"),
+        )
+        db.commit()
+
+    response = client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123", "portal": "research"},
+        follow_redirects=False,
+    )
+
+    assert response.status_code == 302
+    assert response.headers["Location"] == "/research-student-dashboard"
+
+
+def test_student_research_dashboard_is_accessible_for_research_portal_student(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+            ("Student Research User", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student"),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123", "portal": "research"},
+        follow_redirects=False,
+    )
+
+    response = client.get("/research-student-dashboard")
+
+    assert response.status_code == 200
+    assert b"Student Research Dashboard" in response.data
+    assert b"Research Library" in response.data
+    assert b"Project Queue" in response.data
+
+
+def test_researcher_logout_redirects_to_research_login(client):
+    email = f"researcher{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+            ("Researcher User", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "researcher"),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123", "portal": "research"},
+        follow_redirects=False,
+    )
+
+    response = client.get("/logout", follow_redirects=False)
+
+    assert response.status_code == 302
+    assert response.headers["Location"] == "/login?portal=research"
+
+
+def test_student_logout_from_research_portal_redirects_to_research_login(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+            ("Student Research User", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student"),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123", "portal": "research"},
+        follow_redirects=False,
+    )
+
+    response = client.get("/logout", follow_redirects=False)
+
+    assert response.status_code == 302
+    assert response.headers["Location"] == "/login?portal=research"
+
+
+def test_admin_dashboard_redirects_to_admin_login_when_not_logged_in(client):
+    response = client.get("/admin-dashboard", follow_redirects=False)
+
+    assert response.status_code == 302
+    assert response.headers["Location"] == "/login?admin=1"
+
+
+def test_tech_register_page_uses_tech_specific_login_link(client):
+    response = client.get("/tech-register")
+
+    assert response.status_code == 200
+    assert b'/login?portal=tech' in response.data
+    assert b'/login"' not in response.data.replace(b'/login?portal=tech', b'')
+
+
+def test_tech_skillup_page_uses_tech_specific_login_link(client):
+    response = client.get("/tech-skillup")
+
+    assert response.status_code == 200
+    assert b'/login?portal=tech' in response.data
+    assert b"/login\"" not in response.data.replace(b'/login?portal=tech', b'')
 
 
 def test_tech_skills_dashboard_has_course_selection_and_delivery_modes(client):

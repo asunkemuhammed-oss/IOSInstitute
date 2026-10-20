@@ -640,7 +640,30 @@ def index():
 
 @app.route("/research-institute")
 def research_institute():
+    user = current_user()
+    if user and user["role"] in {"student", "client"}:
+        return redirect(url_for("research_student_dashboard"))
     return render_template("research_institute.html")
+
+
+@app.route("/research-student-dashboard")
+def research_student_dashboard():
+    user = current_user()
+    if not user or user["role"] not in {"student", "client"}:
+        return redirect(url_for("login", portal="research"))
+
+    queue = [
+        {"id": 1, "topic": "Impact of renewable energy financing on industrial growth", "status": "In review", "student": user["name"]},
+        {"id": 2, "topic": "Public health expenditure and economic growth in Nigeria", "status": "Ready for review", "student": user["name"]},
+        {"id": 3, "topic": "Digital inclusion and education outcomes in urban schools", "status": "Awaiting data", "student": user["name"]},
+    ]
+
+    return render_template(
+        "research_student_dashboard.html",
+        user=user,
+        queue=queue,
+        title="Student Research Dashboard",
+    )
 
 
 @app.route("/research-request", methods=["GET", "POST"])
@@ -1073,20 +1096,24 @@ def login():
             flash("Invalid email or password")
             return render_template("login.html", prefill_email=email, admin_mode=admin_mode, portal=portal_name)
 
-        if portal_name == "research" and user["role"] != "researcher":
-            flash("This account is not registered for IOS Research Institute. Please use a Research account for this portal.")
-            return render_template("login.html", prefill_email=email, admin_mode=False, portal="research")
-
         session["user_id"] = user["id"]
         session["role"] = user["role"]
+        session["portal"] = "research" if portal_name == "research" else "tech" if portal_name == "tech" else "institute"
+
         if user["role"] == "admin":
             return redirect(url_for("admin_dashboard"))
+
         if user["role"] == "researcher":
             status = row_value(user, "researcher_assessment_status", "not_started") or "not_started"
             if status in {"not_started", ""}:
                 return redirect(url_for("researcher_assessment"))
             return redirect(url_for("researcher_dashboard"))
+
         if user["role"] in {"student", "client"}:
+            if portal_name == "research":
+                session["portal"] = "research"
+                return redirect(url_for("research_student_dashboard"))
+
             course = row_value(user, "course")
             learning_mode = row_value(user, "learning_mode")
             session.pop("tech_payment_status", None)
@@ -1128,7 +1155,16 @@ def forgot_password():
 
 @app.route("/logout")
 def logout():
+    user_role = session.get("role")
+    portal = session.get("portal")
     session.clear()
+
+    if user_role == "researcher":
+        return redirect(url_for("login", portal="research"))
+    if user_role in {"student", "client"}:
+        if portal == "research":
+            return redirect(url_for("login", portal="research"))
+        return redirect(url_for("login", portal="tech"))
     return redirect(url_for("login"))
 
 
@@ -1156,6 +1192,9 @@ def dashboard():
 
     if user["role"] == "admin":
         return redirect(url_for("admin_dashboard"))
+
+    if user["role"] in {"student", "client"} and session.get("portal") == "research":
+        return redirect(url_for("research_student_dashboard"))
 
     if user["role"] in {"student", "client"} and (row_value(user, "course") or row_value(user, "learning_mode")):
         if tech_application_fee_paid(user):
@@ -1436,7 +1475,7 @@ def admin_dashboard_data(active_view="overview", search_query="", page=1):
 def admin_dashboard():
     user = current_user()
     if not user or user["role"] != "admin":
-        return redirect(url_for("login"))
+        return redirect(url_for("login", admin=1))
 
     active_view = request.args.get("view", "overview") or "overview"
     search_query = (request.args.get("q", "") or "").strip().lower()
@@ -1455,7 +1494,7 @@ def admin_dashboard():
 
     context = admin_dashboard_data(active_view=active_view, search_query=search_query, page=page)
     if context is None:
-        return redirect(url_for("login"))
+        return redirect(url_for("login", admin=1))
     return render_template("admin_dashboard.html", **context)
 
 
@@ -1463,12 +1502,12 @@ def admin_dashboard():
 def admin_students():
     user = current_user()
     if not user or user["role"] != "admin":
-        return redirect(url_for("login"))
+        return redirect(url_for("login", admin=1))
     if request.method == "POST":
         return redirect(url_for("admin_students", q=request.args.get("q", "")))
     context = admin_dashboard_data(active_view="students", search_query=request.args.get("q", ""), page=request.args.get("page", 1, type=int) or 1)
     if context is None:
-        return redirect(url_for("login"))
+        return redirect(url_for("login", admin=1))
     return render_template("admin_dashboard.html", **context)
 
 
@@ -1476,7 +1515,7 @@ def admin_students():
 def admin_research():
     user = current_user()
     if not user or user["role"] != "admin":
-        return redirect(url_for("login"))
+        return redirect(url_for("login", admin=1))
     if request.method == "POST":
         request_id = request.form.get("request_id")
         status = request.form.get("status", "submitted")
@@ -1489,7 +1528,7 @@ def admin_research():
             flash("Request status updated successfully.")
     context = admin_dashboard_data(active_view="research", search_query=request.args.get("q", ""), page=request.args.get("page", 1, type=int) or 1)
     if context is None:
-        return redirect(url_for("login"))
+        return redirect(url_for("login", admin=1))
     return render_template("admin_dashboard.html", **context)
 
 
@@ -1497,10 +1536,10 @@ def admin_research():
 def admin_tech():
     user = current_user()
     if not user or user["role"] != "admin":
-        return redirect(url_for("login"))
+        return redirect(url_for("login", admin=1))
     context = admin_dashboard_data(active_view="tech", search_query=request.args.get("q", ""), page=request.args.get("page", 1, type=int) or 1)
     if context is None:
-        return redirect(url_for("login"))
+        return redirect(url_for("login", admin=1))
     return render_template("admin_dashboard.html", **context)
 
 
@@ -1508,10 +1547,10 @@ def admin_tech():
 def admin_courses():
     user = current_user()
     if not user or user["role"] != "admin":
-        return redirect(url_for("login"))
+        return redirect(url_for("login", admin=1))
     context = admin_dashboard_data(active_view="courses", search_query=request.args.get("q", ""), page=request.args.get("page", 1, type=int) or 1)
     if context is None:
-        return redirect(url_for("login"))
+        return redirect(url_for("login", admin=1))
     return render_template("admin_dashboard.html", **context)
 
 
@@ -1519,10 +1558,10 @@ def admin_courses():
 def admin_settings():
     user = current_user()
     if not user or user["role"] != "admin":
-        return redirect(url_for("login"))
+        return redirect(url_for("login", admin=1))
     context = admin_dashboard_data(active_view="settings", search_query=request.args.get("q", ""), page=request.args.get("page", 1, type=int) or 1)
     if context is None:
-        return redirect(url_for("login"))
+        return redirect(url_for("login", admin=1))
     return render_template("admin_dashboard.html", **context)
 
 
@@ -1591,7 +1630,10 @@ def register():
         full_name = request.form.get("full_name", "").strip()
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
-        role = request.form.get("role", "") or ("researcher" if portal == "research" else "")
+        role = request.form.get("role", "")
+
+        if portal == "research":
+            role = request.form.get("role", "student") or "student"
 
         if not full_name or not email or not password:
             flash("Please complete all required fields.")
@@ -1626,6 +1668,7 @@ def register():
             user = db.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
             session["user_id"] = user["id"]
             session["role"] = role
+            session["portal"] = "research" if portal == "research" else "institute"
 
             cv_file = request.files.get("cv_file")
             portfolio_file = request.files.get("portfolio_file")

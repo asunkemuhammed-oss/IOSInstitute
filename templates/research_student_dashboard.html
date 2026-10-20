@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IOS Research Institute | Student Research Dashboard</title>
+    <style>
+      :root {
+        --bg: #f4f1ec;
+        --panel: rgba(255,255,255,0.55);
+        --line: rgba(18,63,55,0.12);
+        --primary: #123f37;
+        --primary-soft: #2b7a6d;
+        --text: #1c2a2b;
+        --muted: #58666c;
+        --green: #dfeec5;
+        --green-deep: #9bb66c;
+        --highlight: #f0e4ba;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(180deg, #eef5f2 0%, #f9f8f5 100%);
+        color: var(--text);
+      }
+      .container { width: min(1200px, calc(100% - 28px)); margin: 0 auto; }
+      .topbar {
+        background: linear-gradient(90deg, rgba(18,63,55,0.96) 0%, rgba(29,114,95,0.92) 100%);
+        padding: 18px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.12);
+      }
+      .header-inner {
+        display: flex; justify-content: space-between; align-items: center; gap: 18px;
+      }
+      .brand {
+        display: flex; align-items: center; gap: 12px;
+      }
+      .brand-mark {
+        width: 42px; height: 42px; border-radius: 12px; overflow: hidden;
+        display: flex; align-items: center; justify-content: center;
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.18);
+      }
+      .brand-mark img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .brand-name { font-size: 1.65rem; letter-spacing: -0.05em; color: #fff; font-weight: 800; }
+      .nav { display: flex; gap: 18px; flex-wrap: wrap; align-items: center; }
+      .nav a {
+        text-decoration: none; color: #fff; font-weight: 700; font-size: 1rem;
+      }
+      .nav .logout {
+        background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.2);
+        padding: 10px 18px; border-radius: 999px; color: #fff;
+      }
+      .page { padding: 28px 0 60px; }
+      .panel {
+        background: rgba(255,255,255,0.5);
+        border: 1px solid var(--line);
+        border-radius: 26px;
+        padding: 28px;
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(2.5rem, 3vw, 4rem);
+        letter-spacing: -0.06em;
+        color: var(--primary);
+      }
+      .welcome {
+        margin: 0 0 26px;
+        color: var(--muted);
+        font-size: 1.05rem;
+      }
+      .notice {
+        background: rgba(217, 165, 61, 0.12);
+        border: 1px solid rgba(217, 165, 61, 0.4);
+        color: #7b5d16;
+        padding: 14px 16px;
+        border-radius: 14px;
+        font-weight: 700;
+        margin-bottom: 22px;
+      }
+      .stats-grid {
+        display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-bottom: 26px;
+      }
+      .stat-card {
+        background: rgba(255,255,255,0.6);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px 16px;
+      }
+      .stat-label {
+        display: block; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.72rem; margin-bottom: 10px;
+      }
+      .stat-value {
+        color: var(--primary); font-weight: 800; font-size: clamp(2rem, 2vw, 2.5rem); letter-spacing: -0.06em;
+      }
+      .content-grid { display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 20px; }
+      .card {
+        background: rgba(255,255,255,0.6);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px 18px 16px;
+      }
+      .card h2 {
+        margin: 0 0 16px; color: var(--primary); font-size: 1.8rem; letter-spacing: -0.04em;
+      }
+      .queue-list { display: grid; gap: 12px; }
+      .queue-item {
+        display: flex; justify-content: space-between; align-items: center; gap: 12px;
+        border: 1px solid var(--line); border-radius: 12px; background: rgba(18,63,55,0.02); padding: 14px 16px;
+      }
+      .queue-item strong { display: block; color: var(--primary); font-size: 1.08rem; line-height: 1.5; }
+      .queue-item small { color: var(--muted); }
+      .status {
+        display: inline-flex; align-items: center; justify-content: center;
+        padding: 7px 10px; border-radius: 999px; background: rgba(99, 155, 80, 0.12);
+        color: var(--primary); font-size: 0.7rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.08em; white-space: nowrap;
+      }
+      .tags {
+        display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;
+      }
+      .tag {
+        background: rgba(18,63,55,0.05); border: 1px solid var(--line); border-radius: 999px;
+        padding: 7px 10px; font-size: 0.75rem; font-weight: 700; color: var(--primary);
+      }
+      @media (max-width: 760px) {
+        .header-inner { flex-direction: column; align-items: flex-start; }
+        .stats-grid, .content-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container header-inner">
+        <div class="brand">
+          <div class="brand-mark">
+            <img src="/static/images/team/REALLOGO.jpg" alt="IOS logo">
+          </div>
+          <div class="brand-name">IOS Research Institute</div>
+        </div>
+        <nav class="nav">
+          <a href="/research-student-dashboard">Dashboard</a>
+          <a href="/research-institute">Research Library</a>
+          <a href="/research-request">Request Support</a>
+          <a href="/profile">Profile</a>
+          <a class="logout" href="/logout">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <div class="container panel">
+        <h1>Student Research Dashboard</h1>
+        <p class="welcome">Welcome, {{ user["name"] }}. Manage your project topics, research support, and payment requests from your personal research space.</p>
+
+        <div class="notice">Assessment status: <strong>Submitted</strong></div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-label">Assigned</span>
+            <div class="stat-value">12</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">In Review</span>
+            <div class="stat-value">7</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Completed</span>
+            <div class="stat-value">28</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Open Messages</span>
+            <div class="stat-value">5</div>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <div class="card">
+            <h2>Project Queue</h2>
+            <div class="queue-list">
+              {% for item in queue %}
+                <div class="queue-item">
+                  <div>
+                    <strong>{{ item["topic"] }}</strong>
+                    <small>Student: {{ item["student"] }}</small>
+                  </div>
+                  <span class="status">{{ item["status"] }}</span>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Research Library</h2>
+            <div class="tags">
+              <span class="tag">Economics</span>
+              <span class="tag">Accountancy</span>
+              <span class="tag">Education</span>
+              <span class="tag">Business</span>
+              <span class="tag">Computer Science</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

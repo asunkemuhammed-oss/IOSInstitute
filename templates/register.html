@@ -209,13 +209,8 @@
               <label for="role">Register as</label>
               <select id="role" name="role" required>
                 <option value="">Select an account type</option>
-                {% if portal == 'research' %}
-                  <option value="student">Student / Client – project or research assistance</option>
-                  <option value="researcher">Researcher</option>
-                {% else %}
-                  <option value="student">Student / Client – project or research assistance</option>
-                  <option value="researcher">Researcher</option>
-                {% endif %}
+                <option value="student">Student / Client – project or research assistance</option>
+                <option value="researcher">Researcher</option>
               </select>
             </div>
 

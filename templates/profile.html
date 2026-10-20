@@ -52,7 +52,7 @@
     </style>
   </head>
   <body>
-    {% set dashboard_url = '/tech-skills-dashboard' if user['role'] in ['student', 'client'] and (user['course'] or user['learning_mode'] or session.get('selected_skill') or session.get('selected_mode')) else '/dashboard' %}
+    {% set dashboard_url = '/research-student-dashboard' if user['role'] in ['student', 'client'] and session.get('portal') == 'research' else '/tech-skills-dashboard' if user['role'] in ['student', 'client'] and (user['course'] or user['learning_mode'] or session.get('selected_skill') or session.get('selected_mode')) else '/dashboard' %}
 
     <header class="topbar">
       <div class="container header-inner">
