@@ -36,6 +36,43 @@ def role_label(role):
     return ROLE_LABELS.get(role, role.replace("_", " ").title())
 
 
+RESEARCH_PROJECTS = {
+    "effect-of-public-health-expenditure-on-economic-growth-in-nigeria": {
+        "title": "Effect of Public Health Expenditure on Economic Growth in Nigeria",
+        "abstract": "This study examines the relationship between public health expenditure and economic growth in Nigeria. It investigates how government spending on health infrastructure, medical services, and preventive care influences labor productivity, household welfare, and overall macroeconomic performance. The study uses secondary data and empirical analysis to evaluate the contribution of health financing to national development and recommends stronger policy alignment between the health sector and economic planning.",
+        "what_we_did": [
+            "Reviewed relevant literature on health financing and economic performance in developing countries.",
+            "Analyzed the relationship between health expenditure and GDP growth using policy and statistical evidence.",
+            "Identified gaps in budget allocation, service delivery, and public health outcomes for Nigeria.",
+            "Developed a practical policy recommendation for improving health investment efficiency.",
+        ],
+        "fee": "Nigeria: ₦3,000 | Other countries: $30",
+    },
+    "the-role-of-accounting-standards-in-promoting-sustainable-development-in-nigeria": {
+        "title": "The Role of Accounting Standards in Promoting Sustainable Development in Nigeria",
+        "abstract": "The study evaluates how accounting standards influence sustainable development in Nigeria by promoting transparent reporting, efficient resource use, and stronger accountability in both public and private institutions. It analyzes the practical role of financial reporting frameworks in guiding decision-making and supporting long-term economic planning.",
+        "what_we_did": [
+            "Assessed the relevance of accounting standards to sustainable development goals.",
+            "Reviewed reporting frameworks and their influence on accountability and disclosure.",
+            "Discussed how financial transparency strengthens governance and investment confidence.",
+            "Presented recommendations for better implementation in Nigerian institutions.",
+        ],
+        "fee": "Nigeria: ₦3,000 | Other countries: $30",
+    },
+    "impact-of-teacher-quality-on-student-academic-performance-in-secondary-schools": {
+        "title": "Impact of Teacher Quality on Student Academic Performance in Secondary Schools",
+        "abstract": "This paper explores how teacher quality affects student achievement in Nigerian secondary schools. It focuses on teacher competence, training, and instructional delivery as determinants of academic success. The study emphasizes the contribution of effective teaching to school outcomes and learner progress.",
+        "what_we_did": [
+            "Reviewed teacher quality indicators and factors affecting classroom performance.",
+            "Discussed the influence of qualification, training, and teaching methodology on student outcomes.",
+            "Linked teacher effectiveness to academic motivation and learning achievement.",
+            "Proposed strategies for improving teaching quality and school performance.",
+        ],
+        "fee": "Nigeria: ₦3,000 | Other countries: $30",
+    },
+}
+
+
 def get_db():
     if "db" not in g:
         conn = sqlite3.connect(app.config["DATABASE"])
@@ -646,6 +683,26 @@ def research_institute():
     return render_template("research_institute.html")
 
 
+@app.route("/research-topic/<slug>")
+def research_topic(slug):
+    project = RESEARCH_PROJECTS.get(slug)
+    if not project:
+        project = {
+            "title": slug.replace("-", " ").title(),
+            "abstract": "This project topic focuses on a critical research problem and explores the relationship between key variables, data sources, and practical recommendations. The full project includes a detailed introduction, literature review, methodology, data analysis, findings, and conclusion.",
+            "what_we_did": [
+                "Developed a problem statement and research objectives.",
+                "Reviewed relevant literature and indicators relevant to the topic.",
+                "Mapped the research design and methodology for a focused academic investigation.",
+                "Prepared a practical conclusion and policy recommendations.",
+            ],
+            "fee": "Nigeria: ₦3,000 | Other countries: $30",
+        }
+    project["slug"] = slug
+    project["unlock_url"] = url_for("project_purchase", package="complete", topic=slug)
+    return render_template("research_topic_detail.html", project=project)
+
+
 @app.route("/research-student-dashboard")
 def research_student_dashboard():
     user = current_user()
@@ -921,6 +978,8 @@ def research_payment():
 def project_purchase():
     package = request.args.get("package", request.form.get("package", "complete")).lower()
     package = "edited" if package == "edited" else "complete"
+    topic_slug = request.args.get("topic") or request.form.get("topic") or ""
+    selected_topic = RESEARCH_PROJECTS.get(topic_slug, {}).get("title") or (topic_slug.replace("-", " ").title() if topic_slug else "selected project")
 
     if package == "edited":
         title = "Get complete project with editing"
@@ -946,7 +1005,10 @@ def project_purchase():
         session["project_purchase_status"] = "paid"
         session["project_purchase_package"] = package
         session["project_purchase_amount"] = fee
+        session["project_purchase_topic"] = selected_topic
         flash(f"{title} was successfully added to your purchase record.")
+        if topic_slug:
+            return redirect(url_for("research_topic", slug=topic_slug))
         return redirect(url_for("research_institute"))
 
     if request.method == "POST" and payment_stage == "checkout":
@@ -1072,6 +1134,64 @@ def educational_consultancy():
         "Institutional services",
     ]
     return render_template("educational_consultancy.html", services=services)
+
+
+@app.route("/products")
+def products_page():
+    products = [
+        {
+            "title": "Student Admission Support",
+            "description": "End-to-end guidance for school applications, course choices, admission follow-ups, and school placement planning.",
+            "image": "/static/images/GRAPHICS.jpg",
+            "tag": "Admissions",
+        },
+        {
+            "title": "Exam Success Pack",
+            "description": "Structured revision plans, mock preparation support, and study guidance that simplify exam preparation.",
+            "image": "/static/images/CYBERjpg",
+            "tag": "Exams",
+        },
+        {
+            "title": "Career & Scholarship Guidance",
+            "description": "Professional mentoring for scholarships, internships, career choices, and future-ready learning pathways.",
+            "image": "/static/images/DIGITAL.jpg",
+            "tag": "Career",
+        },
+        {
+            "title": "School Application Help",
+            "description": "Clear guidance for application documents, school listing, and selection support for the right academic path.",
+            "image": "/static/images/ios-logo.svg",
+            "tag": "Applications",
+        },
+        {
+            "title": "Past Question Vault",
+            "description": "Targeted revision resources for students preparing for JAMB, WAEC, NECO, BECE, and entrance exams.",
+            "image": "/static/images/team/REALLOGO.jpg",
+            "tag": "Revision",
+        },
+        {
+            "title": "Student Development Support",
+            "description": "Mentorship and growth support that helps students build confidence, discipline, and long-term academic goals.",
+            "image": "/static/images/team/LOGOIOS.jpg",
+            "tag": "Growth",
+        },
+    ]
+    return render_template("products.html", products=products)
+
+
+@app.route("/about")
+def about_page():
+    mission_points = [
+        "Help students make clear academic and career decisions.",
+        "Support families with trusted guidance on schools, courses, and entry requirements.",
+        "Connect learners with opportunities that match their goals and potential.",
+    ]
+    team_members = [
+        {"name": "Academic Advisory Team", "image": "/static/images/team/IOS EDUCATIONAL.jpg", "role": "Admissions & counselling"},
+        {"name": "Research & Mentorship Team", "image": "/static/images/team/IOS RESEARCH.jpg", "role": "Student development"},
+        {"name": "Tech & Career Team", "image": "/static/images/team/IOS TECH.jpg", "role": "Career and digital support"},
+    ]
+    return render_template("about.html", mission_points=mission_points, team_members=team_members)
 
 
 @app.route("/login", methods=["GET", "POST"])

@@ -319,13 +319,249 @@
       }
 
       .research-library-title {
-        margin: 0 0 18px;
-        font-size: clamp(2.2rem, 2.6vw, 3.1rem);
-        line-height: 1.08;
-        letter-spacing: -0.05em;
+        margin: 0;
+        font-size: clamp(2.2rem, 2.8vw, 3.6rem);
+        line-height: 0.95;
+        letter-spacing: -0.06em;
         color: var(--primary);
         font-weight: 900;
-        max-width: 680px;
+        max-width: 620px;
+      }
+
+      .library-header-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1.6fr) minmax(270px, 0.8fr);
+        gap: 22px;
+        align-items: start;
+      }
+
+      .library-header-panel {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .library-header-search {
+        width: 100%;
+        max-width: 420px;
+        background: #b7d78d;
+        border: 1px solid rgba(18, 63, 55, 0.12);
+        border-radius: 14px;
+        padding: 12px 14px 16px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+      }
+
+      .library-header-search .small-label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--primary);
+        font-weight: 700;
+      }
+
+      .library-header-search .search-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px;
+      }
+
+      .library-header-search input {
+        width: 100%;
+        min-height: 42px;
+        padding: 10px 12px;
+        border: 1px solid rgba(18, 63, 55, 0.18);
+        border-radius: 8px;
+        background: rgba(255,255,255,0.88);
+        color: var(--primary);
+        font-size: 0.95rem;
+      }
+
+      .library-header-search button,
+      .search-trigger {
+        min-height: 42px;
+        border: 1px solid rgba(18, 63, 55, 0.18);
+        border-radius: 8px;
+        background: rgba(7, 85, 74, 0.9);
+        color: #fff;
+        font-weight: 700;
+        cursor: pointer;
+        padding: 0 16px;
+      }
+
+      .exact-topic-layout {
+        background: #f3f3f3;
+        border: 1px solid rgba(18, 63, 55, 0.12);
+        border-radius: 12px;
+        padding: 18px 18px 12px;
+      }
+
+      .exact-topic-layout .exact-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.8fr) minmax(240px, 0.75fr);
+        gap: 22px;
+        align-items: start;
+      }
+
+      .exact-main {
+        padding-right: 8px;
+      }
+
+      .exact-main h2 {
+        margin: 0;
+        font-size: clamp(2.7rem, 4vw, 4.2rem);
+        line-height: 0.9;
+        letter-spacing: -0.06em;
+        font-weight: 900;
+        color: #1a1a1a;
+      }
+
+      .exact-main .helper-text {
+        margin: 12px 0 10px;
+        color: #2d2d2d;
+        font-size: 0.78rem;
+        line-height: 1.5;
+      }
+
+      .sr-only {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+      }
+
+      .exact-main .topic-search-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 100px;
+        gap: 8px;
+        margin: 0 0 12px;
+      }
+
+      .exact-main .topic-search-row input {
+        height: 34px;
+        border: 1px solid rgba(18, 63, 55, 0.18);
+        border-radius: 6px;
+        padding: 0 12px;
+        background: #ffffff;
+        color: var(--primary);
+        font-size: 0.9rem;
+      }
+
+      .exact-main .topic-search-row button {
+        height: 34px;
+        border: 1px solid rgba(18, 63, 55, 0.16);
+        border-radius: 6px;
+        background: #c9d88b;
+        color: var(--primary);
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .exact-topic-list {
+        margin-top: 12px;
+        display: grid;
+        gap: 2px;
+      }
+
+      .exact-topic-list a {
+        display: block;
+        color: #0d1b1a;
+        font-weight: 700;
+        font-size: clamp(1.05rem, 1.6vw, 1.55rem);
+        line-height: 1.4;
+        letter-spacing: -0.02em;
+        padding: 5px 0;
+        text-transform: uppercase;
+      }
+
+      .exact-side {
+        display: grid;
+        gap: 14px;
+      }
+
+      .exact-search-box {
+        background: #bfd78d;
+        border: 1px solid rgba(18, 63, 55, 0.14);
+        border-radius: 10px;
+        padding: 12px 12px 10px;
+      }
+
+      .exact-search-box .label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--primary);
+        font-weight: 700;
+      }
+
+      .exact-search-box .search-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 76px;
+        gap: 8px;
+      }
+
+      .exact-search-box input {
+        height: 34px;
+        border: 1px solid rgba(18, 63, 55, 0.18);
+        border-radius: 6px;
+        padding: 0 10px;
+        background: rgba(255,255,255,0.9);
+        color: var(--primary);
+        font-size: 0.85rem;
+      }
+
+      .exact-search-box button {
+        height: 34px;
+        border: 1px solid rgba(18, 63, 55, 0.16);
+        border-radius: 6px;
+        background: rgba(18, 63, 55, 0.9);
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .exact-side-image {
+        height: 212px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid rgba(18, 63, 55, 0.12);
+        background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80') center/cover no-repeat;
+      }
+
+      .exact-categories {
+        background: rgba(223, 232, 197, 0.8);
+        border: 1px solid rgba(18, 63, 55, 0.12);
+        border-radius: 10px;
+        padding: 14px 12px 10px;
+      }
+
+      .exact-categories h4 {
+        margin: 0 0 10px;
+        color: #1a1a1a;
+        font-size: 1.05rem;
+        font-weight: 700;
+      }
+
+      .exact-categories ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 5px;
+      }
+
+      .exact-categories li {
+        color: #1a1a1a;
+        font-size: 0.82rem;
+        line-height: 1.5;
       }
 
       .library-filter-row {
@@ -410,15 +646,20 @@
 
       .library-result-shell {
         display: grid;
-        grid-template-columns: minmax(0, 2.1fr) minmax(220px, 0.72fr);
+        grid-template-columns: minmax(0, 1.8fr) minmax(220px, 0.75fr);
         gap: 28px;
         align-items: start;
       }
 
+      .library-main-column {
+        display: grid;
+        gap: 14px;
+      }
+
       .library-result-title {
-        margin: 0 0 14px;
-        font-size: clamp(2.2rem, 3vw, 3.3rem);
-        line-height: 1.1;
+        margin: 0;
+        font-size: clamp(1.9rem, 2.8vw, 3rem);
+        line-height: 1.08;
         letter-spacing: -0.05em;
       }
 
@@ -441,18 +682,18 @@
       .library-topic-list {
         display: grid;
         gap: 10px;
-        margin-top: 18px;
+        margin-top: 8px;
       }
 
       .library-topic-list a {
         display: block;
         color: var(--primary);
         font-weight: 800;
-        line-height: 1.55;
+        line-height: 1.5;
         padding: 6px 0;
         text-transform: none;
         letter-spacing: -0.02em;
-        font-size: clamp(1.05rem, 1.6vw, 1.45rem);
+        font-size: clamp(1.02rem, 1.5vw, 1.32rem);
       }
 
       .library-aside {
@@ -1056,85 +1297,93 @@
         font-weight: 700;
       }
 
-      .publications-header {
-        margin: 18px 0 22px;
-        font-size: clamp(2.2rem, 4vw, 4rem);
-        line-height: 1.05;
-        letter-spacing: -0.06em;
-        color: var(--primary);
-        font-weight: 800;
+      .publication-section {
+        margin: 12px 0 36px;
+        padding: 0;
       }
 
-      .publications-grid {
+      .publication-heading {
+        margin: 0 0 26px;
+        font-size: clamp(2.5rem, 3vw, 4rem);
+        line-height: 1;
+        letter-spacing: -0.06em;
+        color: var(--primary);
+        font-weight: 900;
+      }
+
+      .publication-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 28px 22px;
-        margin: 0 0 28px;
+        gap: 28px 28px;
+        align-items: start;
       }
 
       .publication-card {
-        background: rgba(255,255,255,0.54);
-        border: 1px solid rgba(18, 63, 55, 0.08);
-        border-radius: 18px;
-        overflow: hidden;
-        box-shadow: 0 14px 28px rgba(18, 63, 55, 0.04);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: rgba(255,255,255,0.12);
       }
 
       .publication-image {
         width: 100%;
         height: 260px;
-        object-fit: cover;
-        display: block;
-        background: #dfeae7;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid rgba(18, 63, 55, 0.08);
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        box-shadow: 0 12px 28px rgba(18, 63, 55, 0.06);
       }
 
-      .publication-body {
-        padding: 18px 18px 20px;
-      }
-
-      .publication-title {
-        margin: 0 0 12px;
-        font-size: clamp(1.26rem, 2vw, 2.2rem);
-        line-height: 1.2;
-        letter-spacing: -0.05em;
+      .publication-image .journal-badge {
+        position: absolute;
+        left: 14px;
+        bottom: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 110px;
+        min-height: 32px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #f7c94a 0%, #f1b62f 100%);
         color: var(--primary);
+        font-size: 0.7rem;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0 12px;
       }
 
-      .publication-date {
-        margin: 0 0 18px;
-        color: var(--muted);
-        font-size: 0.96rem;
+      .publication-card h4 {
+        margin: 0;
+        font-size: clamp(1.5rem, 1.8vw, 2.2rem);
+        line-height: 1.2;
+        letter-spacing: -0.04em;
+        color: var(--primary);
+        font-weight: 800;
+      }
+
+      .publication-meta {
+        margin: 0;
+        color: rgba(18, 63, 55, 0.72);
+        font-size: 0.92rem;
+        line-height: 1.7;
       }
 
       .publication-link {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        font-size: 1.02rem;
-        font-weight: 800;
+        gap: 8px;
         color: var(--primary);
+        font-weight: 800;
+        font-size: 1rem;
         text-decoration: none;
       }
 
-      .publication-extra {
-        max-height: 0;
-        overflow: hidden;
-        opacity: 0;
-        transition: max-height 0.28s ease, opacity 0.24s ease, margin 0.24s ease;
-        margin-top: 0;
-      }
-
-      .publication-extra.visible {
-        max-height: 260px;
-        opacity: 1;
-        margin-top: 16px;
-      }
-
-      .publication-extra p {
-        margin: 0;
-        color: var(--muted);
-        line-height: 1.8;
-        font-size: 0.98rem;
+      .publication-link:hover {
+        opacity: 0.8;
       }
 
       .topic-page-layout {
@@ -1400,10 +1649,10 @@
             <a href="#" class="nav-trigger" aria-label="Project topics menu">Project Topics <span aria-hidden="true">▾</span></a>
             <div class="dropdown-menu">
               <ul>
-                <li><a href="#research-library">ACCOUNTANCY PROJECT MATERIALS</a></li>
-                <li><a href="#research-library">ACCOUNTING EDUCATION PROJECT TOPICS AND MATERIALS</a></li>
-                <li><a href="#research-library">ADULT EDUCATION PROJECT TOPICS AND MATERIALS</a></li>
-                <li><a href="#research-library">AGRICULTURAL ECONOMICS PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="/research-institute?topic=ACCOUNTANCY%20PROJECT%20MATERIALS">ACCOUNTANCY PROJECT MATERIALS</a></li>
+                <li><a href="/research-institute?topic=ACCOUNTING%20EDUCATION%20PROJECT%20TOPICS%20AND%20MATERIALS">ACCOUNTING EDUCATION PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="/research-institute?topic=ADULT%20EDUCATION%20PROJECT%20TOPICS%20AND%20MATERIALS">ADULT EDUCATION PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="/research-institute?topic=AGRICULTURAL%20ECONOMICS%20PROJECT%20TOPICS%20AND%20MATERIALS">AGRICULTURAL ECONOMICS PROJECT TOPICS AND MATERIALS</a></li>
                 <li><a href="#research-library">ACTUARIAL SCIENCE PROJECT TOPICS AND MATERIALS</a></li>
                 <li><a href="#research-library">AGRICULTURE EXTENSION PROJECT TOPICS AND MATERIALS</a></li>
                 <li><a href="#research-library">AGRONOMY PROJECT TOPICS AND MATERIALS</a></li>
@@ -1435,8 +1684,8 @@
                 <li><a href="#research-library">CROP SCIENCE PROJECT TOPICS AND MATERIALS</a></li>
                 <li><a href="#research-library">CHEMICAL ENGINEERING PROJECT TOPICS AND MATERIALS</a></li>
                 <li><a href="#research-library">CRIMINOLOGY PROJECT TOPICS AND MATERIALS</a></li>
-                <li><a href="#research-library">ECONOMICS PROJECT TOPICS/MATERIALS</a></li>
-                <li><a href="#research-library">EDUCATION PROJECT TOPICS/MATERIALS</a></li>
+                <li><a href="/research-institute?topic=ECONOMICS%20PROJECT%20TOPICS%20AND%20MATERIALS">ECONOMICS PROJECT TOPICS AND MATERIALS</a></li>
+                <li><a href="/research-institute?topic=EDUCATION%20PROJECT%20TOPICS%20AND%20MATERIALS">EDUCATION PROJECT TOPICS AND MATERIALS</a></li>
                 <li><a href="#research-library">ENGLISH/LINGUISTIC PROJECT TOPICS/MATERIALS</a></li>
                 <li><a href="#research-library">ENGLISH EDUCATION PROJECT TOPICS AND MATERIALS</a></li>
                 <li><a href="#research-library">EDUCATIONAL MANAGEMENT PROJECT TOPICS</a></li>
@@ -1574,186 +1823,120 @@
         </div>
       </div>
 
-      <div class="research-library" id="library-preview-block" style="margin-top: 24px; margin-bottom: 28px;">
-        <h2 class="research-library-title" id="researchLibraryTitle">Project Topics and Materials</h2>
+      <div class="research-library exact-topic-layout" id="research-library" data-library-anchor="library-topic-block" style="margin-top: 24px; margin-bottom: 28px;">
+        <div class="exact-grid">
+          <div class="exact-main">
+            <h2 id="topicPageTitle">Accounting Project Topics and Materials</h2>
+            <p id="selectedTopicLabel" class="selected-topic-label" aria-live="polite">Selected topic: Accounting Project Topics and Materials</p>
 
-        <div class="library-filter-row">
-          <div class="library-field library-field-wide">
-            <label for="topicSelect">Topic category</label>
-            <select id="topicSelect">
-              <option value="ECONOMICS PROJECT TOPICS AND MATERIALS">ECONOMICS PROJECT TOPICS AND MATERIALS</option>
-              <option value="ECONOMICS PROJECT TOPICS/MATERIALS">ECONOMICS PROJECT TOPICS/MATERIALS</option>
-              <option value="ACCOUNTANCY PROJECT MATERIALS">ACCOUNTANCY PROJECT MATERIALS</option>
-              <option value="BUSINESS ADMINISTRATION PROJECT TOPICS/MATERIALS">BUSINESS ADMINISTRATION PROJECT TOPICS/MATERIALS</option>
-              <option value="COMPUTER SCIENCE PROJECT MATERIALS">COMPUTER SCIENCE PROJECT MATERIALS</option>
-              <option value="EDUCATION PROJECT TOPICS AND MATERIALS">EDUCATION PROJECT TOPICS AND MATERIALS</option>
-              <option value="EDUCATION PROJECT TOPICS/MATERIALS">EDUCATION PROJECT TOPICS/MATERIALS</option>
-              <option value="ENGLISH/LINGUISTIC PROJECT TOPICS/MATERIALS">ENGLISH/LINGUISTIC PROJECT TOPICS/MATERIALS</option>
-              <option value="ENGLISH EDUCATION PROJECT TOPICS AND MATERIALS">ENGLISH EDUCATION PROJECT TOPICS AND MATERIALS</option>
-              <option value="EDUCATIONAL MANAGEMENT PROJECT TOPICS">EDUCATIONAL MANAGEMENT PROJECT TOPICS</option>
-              <option value="ECONOMICS EDUCATION PROJECT TOPICS AND MATERIALS">ECONOMICS EDUCATION PROJECT TOPICS AND MATERIALS</option>
-              <option value="ELECTRICAL AND ELECTRONICS ENGINEERING PROJECT TOPICS/MATERIALS">ELECTRICAL AND ELECTRONICS ENGINEERING PROJECT TOPICS/MATERIALS</option>
-              <option value="ENVIRONMENTAL SCIENCE PROJECT TOPICS AND MATERIALS">ENVIRONMENTAL SCIENCE PROJECT TOPICS AND MATERIALS</option>
-              <option value="ESTATE MANAGEMENT PROJECT TOPICS AND MATERIALS">ESTATE MANAGEMENT PROJECT TOPICS AND MATERIALS</option>
-              <option value="ENTREPRENEURSHIP PROJECT TOPICS AND MATERIALS">ENTREPRENEURSHIP PROJECT TOPICS AND MATERIALS</option>
-              <option value="NOT_AVAILABLE">NO TOPIC AVAILABLE</option>
-            </select>
+            <div class="sr-only">Topic category</div>
+            <div class="library-field library-field-wide" style="margin-top: 18px; margin-bottom: 18px;">
+              <label for="topicSelect" class="sr-only">Topic category</label>
+              <select id="topicSelect" aria-label="Topic category">
+                <option value="ACCOUNTING PROJECT TOPICS AND MATERIALS">ACCOUNTING PROJECT TOPICS AND MATERIALS</option>
+                <option value="ECONOMICS PROJECT TOPICS AND MATERIALS">ECONOMICS PROJECT TOPICS AND MATERIALS</option>
+                <option value="ACCOUNTANCY PROJECT MATERIALS">ACCOUNTANCY PROJECT MATERIALS</option>
+                <option value="BUSINESS ADMINISTRATION PROJECT TOPICS/MATERIALS">BUSINESS ADMINISTRATION PROJECT TOPICS/MATERIALS</option>
+                <option value="COMPUTER SCIENCE PROJECT MATERIALS">COMPUTER SCIENCE PROJECT MATERIALS</option>
+                <option value="EDUCATION PROJECT TOPICS AND MATERIALS">EDUCATION PROJECT TOPICS AND MATERIALS</option>
+                <option value="NOT_AVAILABLE">NO TOPIC AVAILABLE</option>
+              </select>
+            </div>
+
+            <div class="sr-only">Search for a topic</div>
+            <div class="topic-search-row" style="margin-bottom: 18px;">
+              <input id="topicSearchInput" type="text" placeholder="Enter Topic or Keyword" aria-label="Search for a topic">
+              <button type="button" id="librarySearchBtn">search</button>
+            </div>
+
+            <div class="exact-topic-list" id="libraryTopicList" style="margin-top: 12px;"></div>
           </div>
 
-          <button type="button" class="search-trigger" id="librarySearchBtn">Search</button>
-        </div>
-
-
-        <div class="library-result">
-          <div class="library-result-shell">
-            <div>
-              <h3 class="library-result-title" id="libraryResultTitle">Effect of Public Health Expenditure on Economic Growth in Nigeria</h3>
-              <div class="library-result-body">
-                <p><strong>Abstract:</strong> <span id="libraryResultAbstract">Preview</span></p>
-                <p><strong>Table of Contents:</strong> <span id="libraryResultContents">Preview</span></p>
-                <p><strong>Keywords:</strong> <span id="libraryResultKeywords">Health expenditure, economic growth, Nigeria</span></p>
-                <p><strong>Available Support:</strong> <span id="libraryResultSupport">Research Consultation / Data Analysis / Methodology Guidance</span></p>
-                <div class="chip-row" id="libraryResultTags">
-                  <span class="pill">Research Consultation</span>
-                  <span class="pill">Data Analysis</span>
-                  <span class="pill">Methodology Guidance</span>
-                </div>
-                <div class="library-topic-list" id="libraryTopicList"></div>
+          <aside class="exact-side">
+            <div class="exact-search-box">
+              <span class="label">Search</span>
+              <div class="search-row">
+                <input type="text" placeholder="Search for a topic..." aria-label="Search for a topic">
+                <button type="button">search</button>
               </div>
             </div>
 
-            <aside class="library-aside">
-              <div class="library-search-box">
-                <span class="small-label">Search</span>
-                <input id="topicSearchInput" type="text" placeholder="Search for a topic..." aria-label="Search for a topic">
-              </div>
+            <div class="exact-side-image" aria-label="Research topic image"></div>
 
-              <div class="library-aside-card">
-                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80" alt="Research project topic illustration">
-                <div class="aside-body">
-                  <h4>Categories</h4>
-                  <p>Economics / Accountancy / Entrepreneurship / Education / Computer Science</p>
-                </div>
-              </div>
-            </aside>
-          </div>
-        </div>
-
-        <div class="project-detail-card" id="projectDetailCard">
-          <div class="detail-header">
-            <div>
-              <p class="eyebrow">Project preview</p>
-              <h3 id="projectDetailTitle">Effect of Public Health Expenditure on Economic Growth in Nigeria</h3>
-            </div>
-            <span class="detail-badge" id="projectDetailBadge">Economics</span>
-          </div>
-          <div class="detail-content">
-            <div class="detail-copy">
-              <h4>Abstract</h4>
-              <p id="projectDetailAbstract">This study examines how public spending on health influences economic growth and living standards in Nigeria.</p>
-              <h4>Table of contents</h4>
-              <ul id="projectDetailContents">
-                <li>Chapter One: Introduction</li>
-                <li>Chapter Two: Literature Review</li>
-                <li>Chapter Three: Research Methodology</li>
-                <li>Chapter Four: Data Analysis</li>
-                <li>Chapter Five: Summary, Conclusion and Recommendation</li>
+            <div class="exact-categories">
+              <h4>Categories</h4>
+              <ul>
+                <li>Business Administration Projects</li>
+                <li>Accounting and Finance Projects</li>
+                <li>Economics Research Projects</li>
+                <li>Insurance Research Project Materials</li>
               </ul>
             </div>
-            <div class="detail-purchase">
-              <h4>Choose package</h4>
-              <div class="purchase-option">
-                <span class="option-tag">Option 1</span>
-                <h5>Get complete project</h5>
-                <p class="price">#3000 / $30</p>
-                <span class="meta">Nigeria / complete project</span>
-                <a class="purchase-button" href="/project-purchase?package=complete">Get complete project</a>
-              </div>
-              <div class="purchase-option">
-                <span class="option-tag">Option 2</span>
-                <h5>Get complete project with editing</h5>
-                <p class="price">#15,000 / $90</p>
-                <span class="meta">Nigeria / complete project + editing</span>
-                <a class="purchase-button" href="/project-purchase?package=edited">Get edited project</a>
-              </div>
+          </aside>
+        </div>
+      </div>
+
             </div>
           </div>
         </div>
       </div>
 
-      <div id="publications">
-        <h2 class="publications-header">Category: Publications</h2>
-        <div class="publications-grid">
+      <div class="publication-section" id="publications">
+        <h2 class="publication-heading">Category: Publications</h2>
+
+        <div class="publication-grid">
           <article class="publication-card">
-            <img class="publication-image" src="https://images.unsplash.com/photo-1516321165247-4aa89a48be28?auto=format&fit=crop&w=1200&q=80" alt="Kingsgate Young Scholars Journal">
-            <div class="publication-body">
-              <h3 class="publication-title">Kingsgate Young Scholars Journal Volume I</h3>
-              <p class="publication-date">June 8, 2026</p>
-              <a href="#" class="publication-link" data-expanded="false">Read More <span aria-hidden="true">›</span></a>
-              <div class="publication-extra">
-                <p>Volume I brings together emerging scholarship, practical policy reflections, and academic discourse designed to inspire new thinking across research, education, and development. It highlights fresh voices, evidence-led perspectives, and the kind of intellectual work that strengthens student and institutional growth.</p>
-              </div>
+            <div class="publication-image" style="background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80');">
+              <span class="journal-badge">Volume I</span>
             </div>
+            <h4>Kingsgate Young Scholars Journal Volume I</h4>
+            <p class="publication-meta">June 8, 2026</p>
+            <a class="publication-link" href="#">Read More <span aria-hidden="true">›</span></a>
           </article>
 
           <article class="publication-card">
-            <img class="publication-image" src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=80" alt="Monetary Policy Effectiveness in Nigeria">
-            <div class="publication-body">
-              <h3 class="publication-title">Monetary Policy Effectiveness in Nigeria: Transmission Channels, Constraints, and Recent Developments</h3>
-              <p class="publication-date">May 21, 2026</p>
-              <a href="#" class="publication-link" data-expanded="false">Read More <span aria-hidden="true">›</span></a>
-              <div class="publication-extra">
-                <p>This publication investigates how monetary policy decisions move through the Nigerian economy, from interest-rate channels to credit access and inflation control. It explores the key constraints facing policy transmission and suggests practical reforms for stronger macroeconomic stability.</p>
-              </div>
+            <div class="publication-image" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80');">
+              <span class="journal-badge">Policy</span>
             </div>
+            <h4>Monetary Policy Effectiveness in Nigeria: Transmission Channels, Constraints, and Recent Developments</h4>
+            <p class="publication-meta">May 21, 2026</p>
+            <a class="publication-link" href="#">Read More <span aria-hidden="true">›</span></a>
           </article>
 
           <article class="publication-card">
-            <img class="publication-image" src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80" alt="Harnessing Fiscal and Monetary Policy Coordination">
-            <div class="publication-body">
-              <h3 class="publication-title">Harnessing Fiscal and Monetary Policy Coordination for Macroeconomic Stabilization in Nigeria</h3>
-              <p class="publication-date">December 24, 2025</p>
-              <a href="#" class="publication-link" data-expanded="false">Read More <span aria-hidden="true">›</span></a>
-              <div class="publication-extra">
-                <p>The paper highlights the importance of coordinated fiscal and monetary strategies in reducing inflation, improving market confidence, and supporting sustainable economic growth. It also assesses how better policy alignment can strengthen long-term development across key sectors of the Nigerian economy.</p>
-              </div>
+            <div class="publication-image" style="background-image: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80');">
+              <span class="journal-badge">Macro</span>
             </div>
+            <h4>Harnessing Fiscal and Monetary Policy Coordination for Macroeconomic Stabilization in Nigeria</h4>
+            <p class="publication-meta">December 24, 2025</p>
+            <a class="publication-link" href="#">Read More <span aria-hidden="true">›</span></a>
           </article>
 
           <article class="publication-card">
-            <img class="publication-image" src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80" alt="Monetary Policy Strategies and Sustainable Growth">
-            <div class="publication-body">
-              <h3 class="publication-title">Monetary Policy Strategies and Sustainable Growth: Assessing Target Variables in Nigeria</h3>
-              <p class="publication-date">December 22, 2025</p>
-              <a href="#" class="publication-link" data-expanded="false">Read More <span aria-hidden="true">›</span></a>
-              <div class="publication-extra">
-                <p>This article examines the relationship between policy targets, inflation control, exchange-rate management, and sustainable growth in Nigeria. It provides a practical review of the variables that shape macroeconomic performance and how policy frameworks can be refined for stronger results.</p>
-              </div>
+            <div class="publication-image" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80');">
+              <span class="journal-badge">Data</span>
             </div>
+            <h4>Monetary Policy Strategies and Sustainable Growth: Assessing Target Variables in Nigeria</h4>
+            <p class="publication-meta">December 22, 2025</p>
+            <a class="publication-link" href="#">Read More <span aria-hidden="true">›</span></a>
           </article>
 
           <article class="publication-card">
-            <img class="publication-image" src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1200&q=80" alt="Unlocking the Tax Revenue Potential of the Shadow Economy">
-            <div class="publication-body">
-              <h3 class="publication-title">Unlocking the Tax Revenue Potential of the Shadow Economy in Nigeria: Issues and Policy Options</h3>
-              <p class="publication-date">December 16, 2025</p>
-              <a href="#" class="publication-link" data-expanded="false">Read More <span aria-hidden="true">›</span></a>
-              <div class="publication-extra">
-                <p>The publication analyzes the size and complications of the shadow economy and why it remains difficult for tax authorities to capture. It presents policy directions for broadening the tax base, strengthening compliance, and improving domestic revenue mobilization in a practical and evidence-based way.</p>
-              </div>
+            <div class="publication-image" style="background-image: url('https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1200&q=80');">
+              <span class="journal-badge">Tax</span>
             </div>
+            <h4>Unlocking the Tax Revenue Potential of the Shadow Economy in Nigeria: Issues and Policy Options</h4>
+            <p class="publication-meta">December 16, 2025</p>
+            <a class="publication-link" href="#">Read More <span aria-hidden="true">›</span></a>
           </article>
 
           <article class="publication-card">
-            <img class="publication-image" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80" alt="Listing Africa's Giants">
-            <div class="publication-body">
-              <h3 class="publication-title">Listing Africa's Giants: Can Initial Public Offers Unlock Deeper African Capital Markets?</h3>
-              <p class="publication-date">October 12, 2026</p>
-              <a href="#" class="publication-link" data-expanded="false">Read More <span aria-hidden="true">›</span></a>
-              <div class="publication-extra">
-                <p>The study explores how public listings and initial public offerings can deepen African capital markets, improve liquidity, and attract new investment. It discusses the opportunities, bottlenecks, and policy conditions needed for stronger capital-market development across the continent.</p>
-              </div>
+            <div class="publication-image" style="background-image: url('https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80');">
+              <span class="journal-badge">Urban</span>
             </div>
+            <h4>Can We Build Communities That Feed Themselves? Rethinking Housing, Farming and Land Use in Nigeria</h4>
+            <p class="publication-meta">September 2, 2026</p>
+            <a class="publication-link" href="#">Read More <span aria-hidden="true">›</span></a>
           </article>
         </div>
       </div>
@@ -1891,257 +2074,109 @@
 
     <script>
       const topicLibrary = {
+        "ACCOUNTING PROJECT TOPICS AND MATERIALS": {
+          topics: [
+            "THE ROLE OF ACCOUNTING STANDARDS IN PROMOTING SUSTAINABLE DEVELOPMENT IN NIGERIA (A CASE STUDY OF INSTITUTE OF CHARTERED ACCOUNTANTS OF NIGERIA, UYO)",
+            "THE USE OF ACCOUNTING INFORMATION TO MEASURE AND MANAGE SUSTAINABILITY PERFORMANCE IN NIGERIA (A CASE STUDY OF TIMEWISE TECHNOLOGY)",
+            "THE FUTURE OF FINANCIAL REPORTING IN THE DIGITAL AGE (A CASE STUDY OF SPARKLE NIGERIA)",
+            "THE USE OF ACCOUNTING INFORMATION FOR CORPORATE SOCIAL RESPONSIBILITY REPORTING IN NIGERIA (A CASE STUDY OF INSTITUTE OF CHARTERED ACCOUNTANTS OF NIGERIA, UYO)",
+            "ANALYSIS OF THE USE OF MACHINE LEARNING TO IMPROVE FINANCIAL FORECASTING IN NIGERIAN BANKS (A CASE STUDY OF INSTITUTE OF CHARTERED ACCOUNTANTS OF NIGERIA)"
+          ]
+        },
         "ECONOMICS PROJECT TOPICS AND MATERIALS": {
           topics: [
-            {
-              title: "Effect of Public Health Expenditure on Economic Growth in Nigeria",
-              abstract: "This study examines how public spending on health influences economic growth and living standards in Nigeria.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Health expenditure", "economic growth", "Nigeria"],
-              support: ["Research Consultation", "Data Analysis", "Methodology Guidance"]
-            },
-            {
-              title: "Inflation and its effect on household purchasing power in Nigeria",
-              abstract: "The study evaluates the relationship between inflation, cost of living, and consumer welfare in selected households.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Inflation", "purchasing power", "households"],
-              support: ["Research Consultation", "Data Analysis"]
-            },
-            {
-              title: "Unemployment and poverty nexus in emerging economies",
-              abstract: "This project investigates the impact of unemployment on poverty levels and social wellbeing in selected communities.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Unemployment", "poverty", "economic welfare"],
-              support: ["Methodology Guidance", "Data Analysis"]
-            }
+            "Effect of Public Health Expenditure on Economic Growth in Nigeria",
+            "Inflation and its effect on household purchasing power in Nigeria",
+            "Unemployment and poverty nexus in emerging economies"
           ]
         },
         "ACCOUNTANCY PROJECT MATERIALS": {
           topics: [
-            {
-              title: "The role of accounting standards in promoting sustainable development in Nigeria",
-              abstract: "This study reviews the contribution of accounting standards and financial discipline to sustainable business growth.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Accounting standards", "sustainability", "Nigeria"],
-              support: ["Research Consultation", "Data Analysis"]
-            },
-            {
-              title: "The use of accounting information for corporate social responsibility reporting in Nigeria",
-              abstract: "This project explores how accounting information supports transparency and social responsibility reporting in organizations.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Accounting", "CSR", "reporting"],
-              support: ["Methodology Guidance", "Research Consultation"]
-            }
+            "THE ROLE OF ACCOUNTING STANDARDS IN PROMOTING SUSTAINABLE DEVELOPMENT IN NIGERIA"
           ]
         },
         "BUSINESS ADMINISTRATION PROJECT TOPICS/MATERIALS": {
           topics: [
-            {
-              title: "Effect of leadership style on employee performance in selected organizations",
-              abstract: "This project assesses the relationship between leadership style and employee productivity in organizational settings.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Leadership", "employee performance", "organizations"],
-              support: ["Research Consultation", "Data Analysis"]
-            },
-            {
-              title: "Strategic management and business growth in SMEs in Nigeria",
-              abstract: "The study explores how strategic management practices influence growth and sustainability among SMEs.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Strategic management", "SMEs", "growth"],
-              support: ["Methodology Guidance", "Research Consultation"]
-            }
+            "EFFECT OF LEADERSHIP STYLE ON EMPLOYEE PERFORMANCE IN SELECTED ORGANIZATIONS"
           ]
         },
         "COMPUTER SCIENCE PROJECT MATERIALS": {
           topics: [
-            {
-              title: "Design and implementation of an online examination management system",
-              abstract: "This project focuses on the design and development of a digital system for examination processing and result management.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: System Design and Implementation | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Examination system", "digital administration", "technology"],
-              support: ["Research Consultation", "Methodology Guidance"]
-            }
+            "DESIGN AND IMPLEMENTATION OF AN ONLINE EXAMINATION MANAGEMENT SYSTEM"
           ]
         },
         "EDUCATION PROJECT TOPICS AND MATERIALS": {
           topics: [
-            {
-              title: "Impact of teacher quality on student academic performance in secondary schools",
-              abstract: "This project evaluates how teacher quality influences academic outcomes among secondary school students.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Teacher quality", "student performance", "secondary school"],
-              support: ["Research Consultation", "Data Analysis"]
-            }
+            "IMPACT OF TEACHER QUALITY ON STUDENT ACADEMIC PERFORMANCE IN SECONDARY SCHOOLS"
           ]
         },
-        "ECONOMICS PROJECT TOPICS/MATERIALS": {
-          topics: [
-            {
-              title: "Impact of exchange rate volatility on trade balance in Nigeria",
-              abstract: "This study evaluates how exchange-rate fluctuations affect international trade and economic stability in Nigeria.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Exchange rate", "trade balance", "Nigeria"],
-              support: ["Research Consultation", "Data Analysis"]
-            }
-          ]
-        },
-        "EDUCATION PROJECT TOPICS/MATERIALS": {
-          topics: [
-            {
-              title: "Influence of classroom environment on students' learning outcome",
-              abstract: "This project examines how classroom conditions, teacher support, and instructional materials affect learning outcomes.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Classroom environment", "learning outcome", "education"],
-              support: ["Research Consultation", "Data Analysis"]
-            }
-          ]
-        },
-        "ENGLISH/LINGUISTIC PROJECT TOPICS/MATERIALS": {
-          topics: [
-            {
-              title: "Language attitude and academic performance among secondary school students",
-              abstract: "This study explores the relationship between language preference, language attitude, and students' academic performance.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Language attitude", "academic performance", "linguistics"],
-              support: ["Research Consultation", "Data Analysis"]
-            }
-          ]
-        },
-        "ENGLISH EDUCATION PROJECT TOPICS AND MATERIALS": {
-          topics: [
-            {
-              title: "Effect of literature-based instruction on students' writing proficiency",
-              abstract: "This project examines how literature-based teaching approaches improve learners' writing skills and communication ability.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["English education", "writing proficiency", "literature"],
-              support: ["Research Consultation", "Data Analysis"]
-            }
-          ]
-        },
-        "EDUCATIONAL MANAGEMENT PROJECT TOPICS": {
-          topics: [
-            {
-              title: "Administrative style and staff productivity in selected secondary schools",
-              abstract: "This project investigates how administrative leadership and school management style affect staff motivation and productivity.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Educational management", "productivity", "secondary schools"],
-              support: ["Research Consultation", "Data Analysis"]
-            }
-          ]
-        },
-        "ECONOMICS EDUCATION PROJECT TOPICS AND MATERIALS": {
-          topics: [
-            {
-              title: "Effect of economics instructional materials on students' academic performance",
-              abstract: "This study assesses how economics teaching resources and instructional tools affect learner achievement and engagement.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Economics education", "instructional materials", "performance"],
-              support: ["Research Consultation", "Data Analysis"]
-            }
-          ]
-        },
-        "ELECTRICAL AND ELECTRONICS ENGINEERING PROJECT TOPICS/MATERIALS": {
-          topics: [
-            {
-              title: "Design and performance evaluation of an automated power monitoring system",
-              abstract: "This project focuses on the design and testing of a low-cost power monitoring system for energy efficiency and control.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: System Design and Testing | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Power monitoring", "electrical engineering", "system design"],
-              support: ["Research Consultation", "Methodology Guidance"]
-            }
-          ]
-        },
-        "ENVIRONMENTAL SCIENCE PROJECT TOPICS AND MATERIALS": {
-          topics: [
-            {
-              title: "Assessment of solid waste management practices in urban communities",
-              abstract: "This project evaluates current solid waste management practices and identifies environmental hazards in urban settings.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Waste management", "environmental science", "urban communities"],
-              support: ["Research Consultation", "Data Analysis"]
-            }
-          ]
-        },
-        "ESTATE MANAGEMENT PROJECT TOPICS AND MATERIALS": {
-          topics: [
-            {
-              title: "Impact of real estate valuation practices on property investment decisions",
-              abstract: "This study assesses how valuation methods affect property investment and market confidence among investors.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Estate management", "property valuation", "investment"],
-              support: ["Research Consultation", "Data Analysis"]
-            }
-          ]
-        },
-        "ENTREPRENEURSHIP PROJECT TOPICS AND MATERIALS": {
-          topics: [
-            {
-              title: "Effect of entrepreneurial training on small business survival in Nigeria",
-              abstract: "This project assesses the role of entrepreneurship education and training in improving the survival and performance of small businesses.",
-              contents: "Chapter One: Introduction | Chapter Two: Literature Review | Chapter Three: Research Methodology | Chapter Four: Data Analysis | Chapter Five: Summary, Conclusion and Recommendation",
-              keywords: ["Entrepreneurship", "SMEs", "training"],
-              support: ["Research Consultation", "Data Analysis"]
-            }
-          ]
-        },
-        "NOT_AVAILABLE": {
-          topics: []
-        }
+        "NOT_AVAILABLE": { topics: [] }
       };
 
       const categorySelect = document.getElementById('topicSelect');
       const searchInput = document.getElementById('topicSearchInput');
       const searchButton = document.getElementById('librarySearchBtn');
+      const titleNode = document.getElementById('topicPageTitle');
+      const selectedTopicLabel = document.getElementById('selectedTopicLabel');
 
-      function selectTopicCategoryFromLink(link) {
-        const rawText = (link ? link.textContent : '').trim();
-        if (!rawText) return false;
-
-        const normalizedText = rawText.toUpperCase();
-        const options = categorySelect ? Array.from(categorySelect.options) : [];
-        const match = options.find((option) => {
-          const optionText = (option.textContent || '').trim().toUpperCase();
-          const optionValue = (option.value || '').trim().toUpperCase();
-          return optionText === normalizedText || optionValue === normalizedText;
-        });
-
-        if (match && categorySelect) {
-          categorySelect.value = match.value;
-          renderLibrary();
-          const previewTarget = document.getElementById('library-preview-block');
-          if (previewTarget) {
-            previewTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-          return true;
+      function focusLibrarySection() {
+        const target = document.getElementById('library-topic-block') || document.getElementById('research-library');
+        if (target) {
+          setTimeout(() => {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 50);
         }
+      }
 
-        return false;
+      function updateUrl(category, selectedTopic) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('topic', category);
+        if (selectedTopic) {
+          url.searchParams.set('selected_topic', selectedTopic);
+        } else {
+          url.searchParams.delete('selected_topic');
+        }
+        url.hash = 'research-library';
+        window.history.replaceState({}, '', url);
+      }
+
+      function slugifyTopic(value) {
+        return (value || '')
+          .toLowerCase()
+          .trim()
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-');
+      }
+
+      function rewriteTopicLinks() {
+        const links = document.querySelectorAll('.dropdown-menu a');
+        links.forEach((link) => {
+          const label = (link.textContent || '').trim();
+          if (!label) return;
+          link.href = `/research-institute?topic=${encodeURIComponent(label)}#library-topic-block`;
+        });
       }
 
       function getSelectedCategory() {
-        const raw = categorySelect ? categorySelect.value : 'ECONOMICS PROJECT TOPICS AND MATERIALS';
+        const params = new URLSearchParams(window.location.search);
+        const selected = params.get('topic');
+        if (selected && selected.trim()) {
+          return selected.trim();
+        }
+
+        const raw = categorySelect ? categorySelect.value : 'ACCOUNTING PROJECT TOPICS AND MATERIALS';
         return raw === 'NOT_AVAILABLE' ? 'NOT_AVAILABLE' : raw;
       }
 
-      function formatCategoryTitle(categoryName) {
-        if (!categoryName || categoryName === 'NOT_AVAILABLE') {
-          return 'No topic available';
-        }
-
-        return categoryName
-          .replace(/\s*[-/]+\s*/g, ' ')
-          .replace(/\s+/g, ' ')
-          .trim()
-          .toLowerCase()
-          .replace(/\b\w/g, (letter) => letter.toUpperCase())
-          .replace(/Project Topics And Materials/gi, 'Project Topics and Materials')
-          .replace(/Project Topics\/Materials/gi, 'Project Topics and Materials')
-          .replace(/Project Materials/gi, 'Project Materials')
-          .replace(/Topics And Materials/gi, 'Topics and Materials')
-          .replace(/Topics\/Materials/gi, 'Topics and Materials');
+      function getSelectedTopic() {
+        const params = new URLSearchParams(window.location.search);
+        const selected = params.get('selected_topic');
+        if (!selected) return '';
+        return selected.trim();
       }
 
-      function renderTopicList(items) {
+      function renderTopicList(items, activeTopic) {
         const listNode = document.getElementById('libraryTopicList');
         if (!listNode) return;
 
@@ -2150,198 +2185,85 @@
           return;
         }
 
-        listNode.innerHTML = items.map((item) => `<a href="javascript:void(0)" data-topic="${item.title}">${item.title}</a>`).join('');
-
-        listNode.querySelectorAll('a').forEach((link) => {
-          link.addEventListener('click', function (event) {
-            event.preventDefault();
-            const selectedTopic = this.dataset.topic;
-            openProjectDetail(selectedTopic);
-          });
-        });
+        listNode.innerHTML = items.map((item, index) => {
+          const isActive = item === activeTopic;
+          const href = `/research-topic/${encodeURIComponent(slugifyTopic(item))}`;
+          return `<a href="${href}" data-topic="${item}" class="${isActive ? 'active-topic-link' : ''}">${index + 1}. ${item}</a>`;
+        }).join('');
       }
 
-      function normalizeTitle(value) {
-        return String(value || '').toLowerCase().replace(/\s+/g, ' ').trim();
-      }
-
-      function findTopicByTitle(topicText) {
-        const target = normalizeTitle(topicText);
-        const categoryName = getSelectedCategory();
-        const category = topicLibrary[categoryName] || { topics: [] };
-
-        return category.topics.find((item) => normalizeTitle(item.title) === target)
-          || Object.values(topicLibrary).flatMap((entry) => entry.topics || []).find((item) => normalizeTitle(item.title) === target)
-          || null;
+      function getLibraryEntry(categoryName) {
+        if (topicLibrary[categoryName]) {
+          return topicLibrary[categoryName];
+        }
+        return {
+          topics: [
+            `${categoryName} - project materials available on request`,
+            `Request a tailored guide and support for ${categoryName.toLowerCase()}.`
+          ]
+        };
       }
 
       function renderLibrary() {
         const categoryName = getSelectedCategory();
-        const category = topicLibrary[categoryName] || { topics: [] };
+        const category = getLibraryEntry(categoryName);
         const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
-        const libraryTitleNode = document.getElementById('researchLibraryTitle');
-        if (libraryTitleNode) {
-          libraryTitleNode.textContent = categoryName === 'NOT_AVAILABLE' ? 'No Topic Available' : formatCategoryTitle(categoryName);
+        const selectedTopic = getSelectedTopic();
+
+        if (categorySelect) {
+          if (Array.from(categorySelect.options).some((option) => option.value === categoryName)) {
+            categorySelect.value = categoryName;
+          } else {
+            categorySelect.selectedIndex = 0;
+          }
+        }
+
+        if (titleNode) {
+          titleNode.textContent = categoryName;
+        }
+
+        if (selectedTopicLabel) {
+          const label = selectedTopic || categoryName;
+          selectedTopicLabel.textContent = selectedTopic ? `Selected topic: ${selectedTopic}` : `Selected topic: ${categoryName}`;
+          selectedTopicLabel.setAttribute('aria-live', 'polite');
+          selectedTopicLabel.style.display = 'block';
         }
 
         const filteredItems = category.topics.filter((item) => {
           if (!query) return true;
-          const haystack = [item.title, item.abstract, ...(item.keywords || [])].join(' ').toLowerCase();
-          return haystack.includes(query);
+          return item.toLowerCase().includes(query);
         });
 
-        const titleNode = document.getElementById('libraryResultTitle');
-        const abstractNode = document.getElementById('libraryResultAbstract');
-        const contentsNode = document.getElementById('libraryResultContents');
-        const keywordsNode = document.getElementById('libraryResultKeywords');
-        const supportNode = document.getElementById('libraryResultSupport');
-        const tagsNode = document.getElementById('libraryResultTags');
-        const detailNode = document.getElementById('projectDetailTitle');
-        const detailBadge = document.getElementById('projectDetailBadge');
-        const detailAbstract = document.getElementById('projectDetailAbstract');
-        const detailContents = document.getElementById('projectDetailContents');
-        const detailCard = document.getElementById('projectDetailCard');
-        if (detailCard) detailCard.classList.remove('visible');
-
-        if (!filteredItems.length) {
-          if (titleNode) titleNode.textContent = formatCategoryTitle(categoryName);
-          if (abstractNode) abstractNode.textContent = 'There are no topics available for this selection yet.';
-          if (contentsNode) contentsNode.textContent = 'No content available yet';
-          if (keywordsNode) keywordsNode.textContent = 'Please check back later or contact the research team.';
-          if (supportNode) supportNode.textContent = 'Support not yet assigned';
-          if (tagsNode) tagsNode.innerHTML = '<span class="pill">No topic available</span>';
-          if (detailNode) detailNode.textContent = 'No topic available';
-          if (detailBadge) detailBadge.textContent = 'Unavailable';
-          if (detailAbstract) detailAbstract.textContent = 'There are no topics available for this selection yet.';
-          if (detailContents) detailContents.innerHTML = '<li>No content available yet</li>';
-          renderTopicList([]);
-          return;
-        }
-
-        const titleText = formatCategoryTitle(categoryName);
-        const firstItem = filteredItems[0];
-
-        if (titleNode) titleNode.textContent = titleText;
-        if (abstractNode) abstractNode.textContent = `Browse the available research topics under ${titleText.toLowerCase()}.`;
-        if (contentsNode) contentsNode.textContent = `${filteredItems.length} topic(s) available`;
-        if (keywordsNode) keywordsNode.textContent = firstItem.keywords.join(', ');
-        if (supportNode) supportNode.textContent = firstItem.support.join(' / ');
-        if (tagsNode) tagsNode.innerHTML = (firstItem.support || []).map((item) => `<span class="pill">${item}</span>`).join('');
-
-        if (detailNode) detailNode.textContent = firstItem.title;
-        if (detailBadge) detailBadge.textContent = formatCategoryTitle(categoryName) || 'Project';
-        if (detailAbstract) detailAbstract.textContent = firstItem.abstract;
-        if (detailContents) detailContents.innerHTML = firstItem.contents.split('|').map((item) => `<li>${item.trim()}</li>`).join('');
-
-        renderTopicList(filteredItems);
+        renderTopicList(filteredItems, selectedTopic);
       }
 
-      function openProjectDetail(topicText) {
-        const titleNode = document.getElementById('libraryResultTitle');
-        const abstractNode = document.getElementById('libraryResultAbstract');
-        const contentsNode = document.getElementById('libraryResultContents');
-        const keywordsNode = document.getElementById('libraryResultKeywords');
-        const supportNode = document.getElementById('libraryResultSupport');
-        const tagsNode = document.getElementById('libraryResultTags');
-        const detailNode = document.getElementById('projectDetailTitle');
-        const detailBadge = document.getElementById('projectDetailBadge');
-        const detailAbstract = document.getElementById('projectDetailAbstract');
-        const detailContents = document.getElementById('projectDetailContents');
-        const detailCard = document.getElementById('projectDetailCard');
-
-        if (detailCard && detailCard.dataset.activeTopic && normalizeTitle(detailCard.dataset.activeTopic) === normalizeTitle(topicText)) {
-          detailCard.classList.remove('visible');
-          detailCard.dataset.activeTopic = '';
-          return;
-        }
-
-        const categoryName = getSelectedCategory();
-        const category = topicLibrary[categoryName] || { topics: [] };
-        const found = findTopicByTitle(topicText) || category.topics.find((item) => item.title === topicText) || null;
-
-        if (!found) {
-          if (titleNode) titleNode.textContent = topicText;
-          if (abstractNode) abstractNode.textContent = 'This topic is currently selected for review. Additional details will appear as material is uploaded.';
-          if (contentsNode) contentsNode.textContent = 'Preview available after upload';
-          if (keywordsNode) keywordsNode.textContent = 'Topic has been selected';
-          if (supportNode) supportNode.textContent = 'Support available on request';
-          if (tagsNode) tagsNode.innerHTML = '<span class="pill">Research Consultation</span>';
-          if (detailNode) detailNode.textContent = topicText;
-          if (detailBadge) detailBadge.textContent = formatCategoryTitle(categoryName) || 'Project';
-          if (detailAbstract) detailAbstract.textContent = 'This topic is currently selected for review. Additional details will appear as material is uploaded.';
-          if (detailContents) detailContents.innerHTML = '<li>Preview available after upload</li>';
-          if (detailCard) {
-            detailCard.classList.add('visible');
-            detailCard.dataset.activeTopic = topicText;
-          }
-          return;
-        }
-
-        if (titleNode) titleNode.textContent = found.title;
-        if (abstractNode) abstractNode.textContent = found.abstract;
-        if (contentsNode) contentsNode.textContent = found.contents;
-        if (keywordsNode) keywordsNode.textContent = found.keywords.join(', ');
-        if (supportNode) supportNode.textContent = found.support.join(' / ');
-        if (tagsNode) tagsNode.innerHTML = (found.support || []).map((item) => `<span class="pill">${item}</span>`).join('');
-
-        if (detailNode) detailNode.textContent = found.title;
-        if (detailBadge) detailBadge.textContent = formatCategoryTitle(categoryName) || 'Project';
-        if (detailAbstract) detailAbstract.textContent = found.abstract;
-        if (detailContents) detailContents.innerHTML = found.contents.split('|').map((item) => `<li>${item.trim()}</li>`).join('');
-
-        if (detailCard) {
-          detailCard.classList.add('visible');
-          detailCard.dataset.activeTopic = found.title;
-        }
-      }
-
-      document.querySelectorAll('.project-topic-list a').forEach((link) => {
-        link.addEventListener('click', function (event) {
-          event.preventDefault();
-          const selectedTopic = this.dataset.topic || this.textContent.trim();
-          openProjectDetail(selectedTopic);
+      if (categorySelect) {
+        categorySelect.addEventListener('change', () => {
+          const category = categorySelect.value;
+          updateUrl(category, '');
+          renderLibrary();
+          focusLibrarySection();
         });
-      });
-
-      if (searchButton) {
-        searchButton.addEventListener('click', renderLibrary);
       }
 
       if (searchInput) {
         searchInput.addEventListener('input', renderLibrary);
       }
 
-      if (categorySelect) {
-        categorySelect.addEventListener('change', renderLibrary);
+      if (searchButton) {
+        searchButton.addEventListener('click', renderLibrary);
       }
 
-      document.querySelectorAll('.dropdown-menu a').forEach((link) => {
-        link.addEventListener('click', function (event) {
-          event.preventDefault();
-          const didSelect = selectTopicCategoryFromLink(this);
-          if (!didSelect) {
-            const previewTarget = document.getElementById('library-preview-block');
-            if (previewTarget) {
-              previewTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-          }
-        });
-      });
+      rewriteTopicLinks();
 
+      const initialCategory = getSelectedCategory();
+      if (categorySelect) {
+        categorySelect.value = initialCategory;
+      }
       renderLibrary();
-
-      document.querySelectorAll('.publication-link').forEach((link) => {
-        link.addEventListener('click', function (event) {
-          event.preventDefault();
-          const extra = this.parentElement.querySelector('.publication-extra');
-          const isExpanded = this.dataset.expanded === 'true';
-          this.dataset.expanded = String(!isExpanded);
-          this.innerHTML = isExpanded ? 'Read More <span aria-hidden="true">›</span>' : 'Read Less <span aria-hidden="true">‹</span>';
-          if (extra) {
-            extra.classList.toggle('visible', !isExpanded);
-          }
-        });
-      });
+      if (window.location.search.includes('topic=')) {
+        focusLibrarySection();
+      }
     </script>
   </body>
 </html>

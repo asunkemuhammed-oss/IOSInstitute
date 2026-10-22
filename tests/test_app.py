@@ -112,6 +112,86 @@ def test_educational_consultancy_page_has_services_and_booking_button(client):
     assert b"SIWES support" in response.data
     assert b"Student development" in response.data
     assert b"Book a Consultation" in response.data
+    assert b"Get Exam Support" in response.data
+    assert b"Check Results" in response.data
+
+
+def test_educational_consultancy_nav_closes_other_dropdowns(client):
+    response = client.get("/educational-consultancy")
+
+    assert response.status_code == 200
+    assert b"const dropdowns = document.querySelectorAll(\".mainnav-item details\");" in response.data
+    assert b"other.removeAttribute(\"open\");" in response.data
+    assert b"Recent Updates" in response.data
+    assert b"Opportunities" in response.data
+    assert b"Past Questions" in response.data
+
+
+def test_educational_consultancy_products_and_about_pages_are_available(client):
+    products_response = client.get("/products")
+    about_response = client.get("/about")
+
+    assert products_response.status_code == 200
+    assert b"Student Admission Support" in products_response.data
+    assert b"Exam Success Pack" in products_response.data
+    assert b"Career &amp; Scholarship Guidance" in products_response.data
+
+    assert about_response.status_code == 200
+    assert b"About IOS Educational Consultancy" in about_response.data
+    assert b"Our Mission" in about_response.data
+    assert b"How We Help Students" in about_response.data
+
+
+def test_research_institute_topic_links_open_selected_category(client):
+    response = client.get("/research-institute?topic=ECONOMICS%20PROJECT%20TOPICS%20AND%20MATERIALS")
+
+    assert response.status_code == 200
+    assert b"/research-institute?topic=ECONOMICS%20PROJECT%20TOPICS%20AND%20MATERIALS" in response.data
+    assert b"selectedTopic =" in response.data
+    assert b"topicLibrary" in response.data
+    assert b"ECONOMICS PROJECT TOPICS AND MATERIALS" in response.data
+
+
+def test_research_institute_keeps_clicked_topic_when_not_predefined(client):
+    response = client.get("/research-institute?topic=ACCOUNTING%20EDUCATION%20PROJECT%20TOPICS%20AND%20MATERIALS")
+
+    assert response.status_code == 200
+    assert b"ACCOUNTING EDUCATION PROJECT TOPICS AND MATERIALS" in response.data
+    assert b"selectedTopicLabel" in response.data
+    assert b"selected_topic" in response.data
+    assert b"/research-institute?topic=ACCOUNTING%20EDUCATION%20PROJECT%20TOPICS%20AND%20MATERIALS" in response.data
+
+
+def test_research_institute_project_list_opens_topic_detail_page(client):
+    response = client.get("/research-institute?topic=ECONOMICS%20PROJECT%20TOPICS%20AND%20MATERIALS")
+
+    assert response.status_code == 200
+    assert b"/research-institute?topic=ECONOMICS%20PROJECT%20TOPICS%20AND%20MATERIALS" in response.data
+    assert b"/research-topic/" in response.data
+    assert b"slugifyTopic(item)" in response.data
+    assert b"#library-topic-block" in response.data
+
+
+def test_research_institute_internal_anchors_and_project_links_are_connected(client):
+    response = client.get("/research-institute")
+
+    assert response.status_code == 200
+    assert b'id="research-library"' in response.data
+    assert b'id="publications"' in response.data
+    assert b'href="#publications"' in response.data
+    assert b'href="#research-library"' in response.data
+    assert b'/research-topic/' in response.data
+
+
+def test_research_topic_detail_page_shows_abstract_and_unlock_offer(client):
+    response = client.get("/research-topic/effect-of-public-health-expenditure-on-economic-growth-in-nigeria")
+
+    assert response.status_code == 200
+    assert b"Effect of Public Health Expenditure on Economic Growth in Nigeria" in response.data
+    assert b"Abstract" in response.data
+    assert b"What We Did" in response.data
+    assert b"Unlock Full Project" in response.data
+    assert b"$30" in response.data
 
 
 def test_research_registration_page_uses_research_branding(client):

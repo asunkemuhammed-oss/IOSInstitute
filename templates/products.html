@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IOS Products</title>
+    <style>
+      :root {
+        --primary: #123f4c;
+        --secondary: #25a5db;
+        --dark: #07131b;
+        --muted: #627787;
+        --line: rgba(17, 31, 43, 0.12);
+        --bg: #edf1f3;
+        --card: #ffffff;
+        --soft: #eaf6fb;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: var(--bg);
+        color: var(--dark);
+      }
+      a { text-decoration: none; }
+      img { display: block; max-width: 100%; }
+      .container { width: min(1180px, calc(100% - 26px)); margin: 0 auto; }
+      .page-hero { padding: 48px 0 18px; }
+      .page-hero-inner {
+        background: linear-gradient(135deg, #dfeff4, #edf7fb);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 42px 28px;
+      }
+      .eyebrow {
+        display: inline-flex;
+        padding: 7px 12px;
+        background: rgba(37,165,219,0.08);
+        border: 1px solid rgba(37,165,219,0.12);
+        border-radius: 999px;
+        color: var(--primary);
+        font-weight: 800;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      h1 { margin: 18px 0 10px; font-size: clamp(2.5rem, 5vw, 4.2rem); letter-spacing: -0.06em; }
+      .page-hero p { margin: 0; max-width: 780px; font-size: 1.08rem; line-height: 1.9; color: var(--muted); }
+      .stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 28px;
+      }
+      .stat-box {
+        background: rgba(255,255,255,0.72);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px 16px;
+      }
+      .stat-box strong {
+        display: block;
+        font-size: 1.8rem;
+        color: var(--primary);
+        margin-bottom: 4px;
+      }
+      .stat-box span {
+        color: var(--muted);
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+        margin-top: 28px;
+      }
+      .product-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 12px 28px rgba(15, 29, 39, 0.05);
+      }
+      .product-card img { width: 100%; height: 220px; object-fit: cover; }
+      .product-card .body { padding: 20px; }
+      .tag {
+        display: inline-flex;
+        padding: 7px 10px;
+        border-radius: 999px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        background: var(--soft);
+        color: var(--primary);
+      }
+      .product-card h3 { margin: 14px 0 8px; font-size: 1.5rem; }
+      .product-card p { margin: 0; color: var(--muted); line-height: 1.8; }
+      .section-wrap {
+        margin-top: 36px;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 26px 20px;
+      }
+      .section-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+      .section-head h2 { margin: 0; font-size: clamp(1.9rem, 3vw, 2.7rem); letter-spacing: -0.04em; }
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+      }
+      .feature-card {
+        background: #f8fafb;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px 16px;
+      }
+      .feature-card h3 { margin: 0 0 8px; font-size: 1.15rem; }
+      .feature-card p { margin: 0; color: var(--muted); line-height: 1.8; }
+      .benefits-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 24px;
+        margin-top: 24px;
+      }
+      .check-list {
+        background: #f6fbfd;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 20px;
+      }
+      .check-list ul {
+        margin: 0;
+        padding-left: 22px;
+        color: var(--muted);
+        line-height: 2;
+      }
+      .mini-panel {
+        background: linear-gradient(135deg, #0d638a, #0d8fc9);
+        border-radius: 20px;
+        padding: 24px 20px;
+        color: white;
+      }
+      .mini-panel h3 { margin: 0 0 10px; font-size: 1.5rem; }
+      .mini-panel p { margin: 0 0 18px; line-height: 1.8; color: rgba(255,255,255,0.9); }
+      .mini-panel a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        color: var(--primary);
+        padding: 12px 16px;
+        border-radius: 10px;
+        font-weight: 800;
+      }
+      .cta-strip {
+        margin: 40px 0 60px;
+        background: linear-gradient(135deg, #0d638a, #0d8fc9);
+        border-radius: 18px;
+        padding: 26px 24px;
+        color: white;
+      }
+      .cta-strip-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .cta-strip h2 { margin: 0; font-size: clamp(1.8rem, 3vw, 2.7rem); letter-spacing: -0.04em; }
+      .cta-strip a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        color: var(--primary);
+        padding: 12px 18px;
+        border-radius: 10px;
+        font-weight: 800;
+      }
+      footer {
+        background: #0d1d2c;
+        color: rgba(255,255,255,0.82);
+        padding: 48px 0 26px;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr 1fr 1.3fr;
+        gap: 24px;
+      }
+      .footer-brand h3 { margin: 0 0 12px; font-size: 2rem; color: white; }
+      .footer-brand p { margin: 0; line-height: 1.8; color: rgba(255,255,255,0.7); }
+      .footer-col h4 { margin: 0 0 12px; color: white; font-size: 1rem; }
+      .footer-col a {
+        display: block;
+        margin-bottom: 10px;
+        color: rgba(255,255,255,0.75);
+      }
+      .footer-bottom {
+        margin-top: 26px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(255,255,255,0.12);
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      @media (max-width: 860px) {
+        .stats-row, .products-grid, .feature-grid, .footer-grid, .benefits-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="page-hero">
+        <div class="container page-hero-inner">
+          <span class="eyebrow">IOS Products</span>
+          <h1>Everything students need to move forward with confidence.</h1>
+          <p>From admissions and exam prep to scholarships and student development, IOS brings together the most important support services in one place so learners can act with clarity and purpose.</p>
+
+          <div class="stats-row">
+            <div class="stat-box">
+              <strong>6</strong>
+              <span>Student support products</span>
+            </div>
+            <div class="stat-box">
+              <strong>24/7</strong>
+              <span>Learning guidance access</span>
+            </div>
+            <div class="stat-box">
+              <strong>1</strong>
+              <span>Clear academic pathway</span>
+            </div>
+            <div class="stat-box">
+              <strong>100%</strong>
+              <span>Student-focused support</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="container">
+        <div class="products-grid">
+          {% for product in products %}
+          <article class="product-card" id="{{ product.title.lower().replace(' & ', '-').replace(' ', '-') }}">
+            <img src="{{ product.image }}" alt="{{ product.title }}" />
+            <div class="body">
+              <span class="tag">{{ product.tag }}</span>
+              <h3>{{ product.title }}</h3>
+              <p>{{ product.description }}</p>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+
+        <div class="section-wrap">
+          <div class="section-head">
+            <h2>Why students use IOS products</h2>
+          </div>
+
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h3>Clear guidance</h3>
+              <p>Every service is designed to help students understand their next academic step without confusion.</p>
+            </div>
+            <div class="feature-card">
+              <h3>Smart preparation</h3>
+              <p>From revision planning to school applications, each product keeps preparation realistic and focused.</p>
+            </div>
+            <div class="feature-card">
+              <h3>Career clarity</h3>
+              <p>Students can match their goals to scholarships, career paths, and the right institution choices.</p>
+            </div>
+            <div class="feature-card">
+              <h3>Confidence building</h3>
+              <p>We help learners move with more self-belief, discipline, and structure throughout the process.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="benefits-grid">
+          <div class="check-list">
+            <div class="section-head" style="margin-bottom: 0;">
+              <h2>What is included</h2>
+            </div>
+            <ul>
+              <li>Application and school placement guidance</li>
+              <li>Exam preparation and revision planning</li>
+              <li>Scholarship and career matching support</li>
+              <li>Student mentorship and growth planning</li>
+              <li>Academic support for major decision points</li>
+              <li>Actionable next steps for families and learners</li>
+            </ul>
+          </div>
+
+          <div class="mini-panel">
+            <h3>Need personal help?</h3>
+            <p>Speak with our education advisers and get a plan that matches your current academic stage and goals.</p>
+            <a href="https://wa.me/2347086476413" target="_blank" rel="noopener noreferrer">Book a session</a>
+          </div>
+        </div>
+
+        <div class="cta-strip">
+          <div class="cta-strip-inner">
+            <h2>Get the right support for your academic journey.</h2>
+            <a href="https://wa.me/2347086476413" target="_blank" rel="noopener noreferrer">Speak to an adviser</a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <h3>IOS</h3>
+            <p>Educational support for students, families, and future-focused learners ready to make better academic decisions.</p>
+          </div>
+
+          <div class="footer-col">
+            <h4>Products</h4>
+            <a href="#">Admission Support</a>
+            <a href="#">Exam Success</a>
+            <a href="#">Scholarship Help</a>
+            <a href="#">Student Development</a>
+          </div>
+
+          <div class="footer-col">
+            <h4>Useful links</h4>
+            <a href="/educational-consultancy">Home</a>
+            <a href="/about">About</a>
+            <a href="#">Past Questions</a>
+            <a href="#">Opportunities</a>
+          </div>
+
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <a href="https://wa.me/2347086476413" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <a href="#">Phone: 07086476413</a>
+            <a href="#">Email: hello@iosconsult.com</a>
+            <a href="#">Support centre</a>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div>© 2026 IOS Educational Consultancy</div>
+          <div>Student-first support</div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

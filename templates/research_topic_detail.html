@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ project.title }} | IOS Research Institute</title>
+    <style>
+      :root {
+        --primary: #0f2e4d;
+        --primary-soft: #eff6ff;
+        --accent: #f59e0b;
+        --accent-soft: #fff7ed;
+        --text: #1f2937;
+        --muted: #5b6473;
+        --card: #ffffff;
+        --border: #dfe7f1;
+        --success: #0f766e;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(180deg, #f5f9ff 0%, #eef4ff 100%);
+        color: var(--text);
+      }
+
+      .container {
+        width: min(1100px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .topbar {
+        background: var(--primary);
+        color: white;
+        padding: 18px 0;
+      }
+
+      .topbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .brand {
+        color: white;
+        text-decoration: none;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+
+      .back-link {
+        color: white;
+        text-decoration: none;
+        font-size: 0.95rem;
+        opacity: 0.9;
+      }
+
+      .page {
+        padding: 36px 0 60px;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #123b4b, #1d5a63);
+        border: 1px solid var(--border);
+        border-radius: 18px 18px 0 0;
+        box-shadow: 0 20px 38px rgba(15, 46, 77, 0.08);
+        padding: 26px 28px 22px;
+        color: white;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        background: rgba(255,255,255,0.12);
+        color: #dff8ff;
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 8px 12px;
+        border-radius: 999px;
+        margin-bottom: 18px;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+        color: white;
+      }
+
+      .lead {
+        margin: 0;
+        line-height: 1.8;
+        color: rgba(255,255,255,0.95);
+        max-width: 850px;
+      }
+
+      .meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin-top: 22px;
+      }
+
+      .badge {
+        background: rgba(255,255,255,0.12);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-weight: 700;
+        font-size: 0.85rem;
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: 1.7fr 0.9fr;
+        gap: 0;
+        margin-top: 0;
+        background: #f5f5f3;
+        border: 1px solid var(--border);
+        border-top: none;
+        border-radius: 0 0 18px 18px;
+        overflow: hidden;
+      }
+
+      .panel {
+        background: #f7f4ee;
+        border-right: 1px solid var(--border);
+        padding: 24px 22px 30px;
+      }
+
+      .panel h2 {
+        margin: 0 0 12px;
+        color: #1a3c3d;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .panel p {
+        line-height: 1.8;
+        color: var(--text);
+        margin: 0 0 20px;
+      }
+
+      .panel ul {
+        margin: 0;
+        padding-left: 20px;
+        line-height: 1.9;
+      }
+
+      .buy-box {
+        background: #f0efe9;
+        padding: 20px 18px 18px;
+        color: var(--text);
+      }
+
+      .buy-box h3 {
+        margin: 0 0 12px;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #59626d;
+      }
+
+      .option-card {
+        background: #f5f4f0;
+        border: 1px solid #d9d4cd;
+        border-radius: 10px;
+        padding: 14px 12px;
+        margin-bottom: 12px;
+      }
+
+      .option-label {
+        display: block;
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #6b7280;
+        margin-bottom: 8px;
+      }
+
+      .option-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        color: #1e2a39;
+      }
+
+      .price {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #173c52;
+      }
+
+      .buy-button {
+        display: inline-block;
+        width: 100%;
+        background: linear-gradient(180deg, #1c6e5c, #155448);
+        color: white;
+        text-decoration: none;
+        font-weight: 700;
+        text-align: center;
+        padding: 12px 14px;
+        border-radius: 8px;
+        margin-top: 12px;
+        box-shadow: 0 6px 14px rgba(21, 84, 72, 0.18);
+      }
+
+      .buy-button.secondary {
+        background: linear-gradient(180deg, #3d4b57, #2a3945);
+      }
+
+      .note {
+        margin-top: 18px;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #586576;
+      }
+
+      @media (max-width: 820px) {
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+        .topbar-inner {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a href="/research-institute" class="brand">IOS RESEARCH INSTITUTE</a>
+        <a href="/research-institute" class="back-link">← Back to topics</a>
+      </div>
+    </header>
+
+    <main class="container page">
+      <section class="hero">
+        <span class="eyebrow">Project topic</span>
+        <h1>{{ project.title }}</h1>
+        <p class="lead">A focused academic research area designed to support students, researchers, and professionals with a structured, evidence-based project approach.</p>
+
+        <div class="meta-row">
+          <span class="badge">Abstract</span>
+          <span class="badge">Research support</span>
+          <span class="badge">Ready-to-use project</span>
+        </div>
+      </section>
+
+      <div class="content-grid">
+        <section class="panel">
+          <h2>Abstract</h2>
+          <p>{{ project.abstract }}</p>
+
+          <h2>What We Did</h2>
+          <ul>
+            {% for point in project.what_we_did %}
+              <li>{{ point }}</li>
+            {% endfor %}
+          </ul>
+        </section>
+
+        <aside class="buy-box">
+          <h3>Unlock Full Project</h3>
+
+          <div class="option-card">
+            <span class="option-label">Option 1</span>
+            <div class="option-info">
+              <span>Complete project</span>
+              <span class="price">₦3,000 / $30</span>
+            </div>
+            <a class="buy-button" href="{{ url_for('project_purchase', package='complete', topic=project.slug) }}">Get complete project</a>
+          </div>
+
+          <div class="option-card">
+            <span class="option-label">Option 2</span>
+            <div class="option-info">
+              <span>Complete project with editing</span>
+              <span class="price">₦15,000 / $90</span>
+            </div>
+            <a class="buy-button secondary" href="{{ url_for('project_purchase', package='edited', topic=project.slug) }}">Get edited project</a>
+          </div>
+
+          <div class="note">This includes the complete project document and professional support for academic submission or research use.</div>
+        </aside>
+      </div>
+    </main>
+  </body>
+</html>
