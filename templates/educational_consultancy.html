@@ -350,6 +350,7 @@
         gap: 16px;
       }
       .support-card {
+        display: block;
         position: relative;
         background-size: cover;
         background-position: center;
@@ -360,6 +361,8 @@
         box-shadow: 0 12px 26px rgba(15, 29, 39, 0.08);
         transition: transform 0.25s ease, box-shadow 0.25s ease;
         animation: drift 7s ease-in-out infinite;
+        text-decoration: none;
+        color: #fff;
       }
       .support-card:nth-child(2n) { animation-delay: 0.8s; }
       .support-card:nth-child(3n) { animation-delay: 1.5s; }
@@ -373,10 +376,10 @@
         inset: 0;
         background: linear-gradient(180deg, rgba(7,19,27,0.2), rgba(7,19,27,0.72));
       }
-      .support-card:nth-child(1) { background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80'); }
-      .support-card:nth-child(2) { background-image: url('https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80'); }
-      .support-card:nth-child(3) { background-image: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80'); }
-      .support-card:nth-child(4) { background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80'); }
+      .support-card:nth-child(1) { background-image: url('/static/images/team/JAMB.jpeg'); }
+      .support-card:nth-child(2) { background-image: url('/static/images/team/WEAC.jpeg'); }
+      .support-card:nth-child(3) { background-image: url('/static/images/team/NECO.jpeg'); }
+      .support-card:nth-child(4) { background-image: url('/static/images/team/NYSC.png'); }
       .support-card .card-content {
         position: relative;
         z-index: 1;
@@ -386,6 +389,7 @@
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
+        background: linear-gradient(180deg, rgba(7,19,27,0.12), rgba(7,19,27,0.74));
       }
       .support-card h3 {
         margin: 0 0 6px;
@@ -442,6 +446,93 @@
         margin: 0;
         line-height: 1.75;
         color: var(--muted);
+      }
+
+      .request-grid {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .request-card {
+        background: rgba(255,255,255,0.9);
+        border: 1px solid rgba(17, 31, 43, 0.1);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 12px 24px rgba(15, 29, 39, 0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .request-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 18px 30px rgba(15, 29, 39, 0.08);
+      }
+
+      .request-image {
+        width: 100%;
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+      }
+
+      .request-card:nth-child(1) .request-image { background-image: url('/static/images/team/BECE.jpg'); }
+      .request-card:nth-child(2) .request-image { background-image: url('/static/images/team/NAMTAB.jpeg'); }
+      .request-card:nth-child(3) .request-image { background-image: url('/static/images/team/POSTUTME.jpg'); }
+      .request-card:nth-child(4) .request-image { background-image: url('/static/images/team/WEAC&NECO.jpeg'); }
+      .request-card:nth-child(5) .request-image { background-image: url('/static/images/team/CBT.jpeg'); }
+      .request-card:nth-child(6) .request-image { background-image: url('/static/images/team/SCHOOL.jpeg'); }
+
+      .request-body {
+        padding: 18px 16px 16px;
+      }
+
+      .request-card h3 {
+        margin: 0 0 10px;
+        font-size: 1.2rem;
+        line-height: 1.35;
+        letter-spacing: -0.03em;
+        color: var(--dark);
+      }
+
+      .request-price {
+        margin: 0;
+        font-size: 1.8rem;
+        line-height: 1.1;
+        font-weight: 900;
+        color: var(--dark);
+      }
+
+      .request-status {
+        margin: 10px 0 14px;
+        color: #0d7a4f;
+        font-weight: 700;
+      }
+
+      .request-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .request-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 42px;
+        border-radius: 10px;
+        border: 0;
+        background: linear-gradient(135deg, #0f79bf, #2db6f1);
+        color: #fff;
+        font-weight: 800;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .request-button:hover {
+        filter: brightness(1.04);
       }
 
       .service-columns {
@@ -1115,51 +1206,110 @@
         </section>
 
         <div class="support-grid" aria-label="Support categories">
-          <article class="support-card">
+          <a class="support-card" href="/service/jamb-services" aria-label="Get JAMB services support">
             <div class="card-content">
-              <h3>Get JAMB services support</h3>
               <span>Academic support</span>
+              <h3>Get JAMB services support</h3>
             </div>
-          </article>
-          <article class="support-card">
+          </a>
+          <a class="support-card" href="/service/waec-services" aria-label="Get WAEC services support">
             <div class="card-content">
-              <h3>Get WAEC services support</h3>
               <span>Exam help</span>
+              <h3>Get WAEC services support</h3>
             </div>
-          </article>
-          <article class="support-card">
+          </a>
+          <a class="support-card" href="/service/neco-services" aria-label="Get NECO services support">
             <div class="card-content">
-              <h3>Get NECO services support</h3>
               <span>Result check</span>
+              <h3>Get NECO services support</h3>
             </div>
-          </article>
-          <article class="support-card">
+          </a>
+          <a class="support-card" href="/service/nysc-support" aria-label="Complete NYSC support">
             <div class="card-content">
-              <h3>Complete NYSC support</h3>
               <span>National service</span>
+              <h3>Complete NYSC support</h3>
             </div>
-          </article>
+          </a>
         </div>
 
-        <section class="promo-section" aria-label="Feature highlights">
+        <section class="promo-section" aria-label="Exam and support request cards">
           <div class="promo-head">
             <h2>Get Your Examination Scratch Card Token Pin In One Click</h2>
-            <a class="btn btn-secondary" href="https://wa.me/2347086476413" target="_blank" rel="noopener noreferrer">Get More</a>
+            <a class="btn btn-secondary" href="https://wa.me/2347086476413?text=Hello%20IOS%20Educational%20Consultancy%2C%20I%20want%20to%20request%20more%20exam%20support%20details." target="_blank" rel="noopener noreferrer">Get More</a>
           </div>
 
-          <div class="promo-grid">
-            <div class="promo-item">
-              <h3>Admissions</h3>
-              <p>We guide students on school choices, course options, and application steps that match their future goals.</p>
-            </div>
-            <div class="promo-item">
-              <h3>Career Guidance</h3>
-              <p>Our advisors help learners align interests, skills, and academic paths with the right opportunities.</p>
-            </div>
-            <div class="promo-item">
-              <h3>Student Development</h3>
-              <p>From mentoring to planning support, we build the confidence students need to move forward successfully.</p>
-            </div>
+          <div class="request-grid">
+            <article class="request-card">
+              <div class="request-image" aria-label="BECE exam support"></div>
+              <div class="request-body">
+                <h3>BECE (Junior WAEC) Exam Registration</h3>
+                <p class="request-price">₦21,000</p>
+                <div class="request-status">Available</div>
+                <div class="request-actions">
+                  <a class="request-button" href="https://wa.me/2347086476413?text=Hello%20IOS%2C%20I%20want%20to%20request%20BECE%20Junior%20WAEC%20exam%20registration%20for%20%E2%82%A621%2C000." target="_blank" rel="noopener noreferrer">Request &amp; Get Now</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="request-card">
+              <div class="request-image" aria-label="NABTEB exam support"></div>
+              <div class="request-body">
+                <h3>NABTEB Result Checker PIN</h3>
+                <p class="request-price">₦1,300</p>
+                <div class="request-status">Available</div>
+                <div class="request-actions">
+                  <a class="request-button" href="https://wa.me/2347086476413?text=Hello%20IOS%2C%20I%20want%20to%20request%20a%20NABTEB%20result%20checker%20PIN%20for%20%E2%82%A61%2C300." target="_blank" rel="noopener noreferrer">Request &amp; Get Now</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="request-card">
+              <div class="request-image" aria-label="JAMB registration support"></div>
+              <div class="request-body">
+                <h3>POST JAMB Registration / Screening</h3>
+                <p class="request-price">₦1,200</p>
+                <div class="request-status">Available</div>
+                <div class="request-actions">
+                  <a class="request-button" href="https://wa.me/2347086476413?text=Hello%20IOS%2C%20I%20want%20to%20request%20POST-JAMB%20registration%20support%20for%20%E2%82%A61%2C200." target="_blank" rel="noopener noreferrer">Request &amp; Get Now</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="request-card">
+              <div class="request-image" aria-label="WAEC registration support"></div>
+              <div class="request-body">
+                <h3>WAEC GCE Registration PIN</h3>
+                <p class="request-price">₦28,500</p>
+                <div class="request-status">Available</div>
+                <div class="request-actions">
+                  <a class="request-button" href="https://wa.me/2347086476413?text=Hello%20IOS%2C%20I%20want%20to%20request%20WAEC%20GCE%20registration%20PIN%20for%20%E2%82%A628%2C500." target="_blank" rel="noopener noreferrer">Request &amp; Get Now</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="request-card">
+              <div class="request-image" aria-label="CBT practice exam support"></div>
+              <div class="request-body">
+                <h3>CBT Practice – Common Entrance Exam 2026</h3>
+                <p class="request-price">₦5,000</p>
+                <div class="request-status">Pay for access</div>
+                <div class="request-actions">
+                  <a class="request-button" href="https://wa.me/2347086476413?text=Hello%20IOS%2C%20I%20want%20to%20pay%20for%20the%20CBT%20Practice%20for%20Common%20Entrance%20Exam%202026%20at%20%E2%82%A65%2C000." target="_blank" rel="noopener noreferrer">Request &amp; Get Now</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="request-card">
+              <div class="request-image" aria-label="School assignment support"></div>
+              <div class="request-body">
+                <h3>School Assignment &amp; Homework Assistance</h3>
+                <p class="request-price">₦1,500</p>
+                <div class="request-status">Available</div>
+                <div class="request-actions">
+                  <a class="request-button" href="https://wa.me/2347086476413?text=Hello%20IOS%2C%20I%20want%20to%20request%20school%20assignment%20and%20homework%20support%20for%20%E2%82%A61%2C500." target="_blank" rel="noopener noreferrer">Request &amp; Get Now</a>
+                </div>
+              </div>
+            </article>
           </div>
         </section>
 

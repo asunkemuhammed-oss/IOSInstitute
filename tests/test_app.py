@@ -142,6 +142,32 @@ def test_educational_consultancy_products_and_about_pages_are_available(client):
     assert b"How We Help Students" in about_response.data
 
 
+def test_educational_consultancy_support_pages_are_available(client):
+    response = client.get("/service/jamb-services")
+
+    assert response.status_code == 200
+    assert b"JAMB Services" in response.data
+    assert b"Need help with JAMB registration or admission support" in response.data
+    assert b"Book a Consultation" in response.data
+    assert b"Get Exam Support" in response.data
+
+
+def test_educational_consultancy_support_cards_use_school_brand_images_and_rich_service_details(client):
+    response = client.get("/service/waec-services")
+
+    assert response.status_code == 200
+    assert b'/static/images/team/WEAC.jpeg' in response.data
+    assert b"WAEC Services" in response.data
+    assert b"How it works" in response.data
+    assert b"What is included" in response.data
+
+    home_response = client.get("/educational-consultancy")
+    assert b'/static/images/team/JAMB.jpeg' in home_response.data
+    assert b'/static/images/team/WEAC.jpeg' in home_response.data
+    assert b'/static/images/team/NECO.jpeg' in home_response.data
+    assert b'/static/images/team/NYSC.png' in home_response.data
+
+
 def test_research_institute_topic_links_open_selected_category(client):
     response = client.get("/research-institute?topic=ECONOMICS%20PROJECT%20TOPICS%20AND%20MATERIALS")
 
@@ -219,8 +245,8 @@ def test_student_login_on_research_portal_redirects_to_research_institute_not_te
 
         db = get_db()
         db.execute(
-            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
-            ("Student User", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student"),
+            "INSERT INTO users (name, email, password, role, portal) VALUES (?, ?, ?, ?, ?)",
+            ("Student User", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student", "research"),
         )
         db.commit()
 
@@ -232,6 +258,29 @@ def test_student_login_on_research_portal_redirects_to_research_institute_not_te
 
     assert response.status_code == 302
     assert response.headers["Location"] == "/research-student-dashboard"
+
+
+def test_research_account_cannot_login_on_tech_portal(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role, portal) VALUES (?, ?, ?, ?, ?)",
+            ("Research Student", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student", "research"),
+        )
+        db.commit()
+
+    response = client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123", "portal": "tech"},
+        follow_redirects=False,
+    )
+
+    assert response.status_code == 200
+    assert b"User not found or not allowed." in response.data
 
 
 def test_student_research_dashboard_is_accessible_for_research_portal_student(client):
@@ -259,6 +308,73 @@ def test_student_research_dashboard_is_accessible_for_research_portal_student(cl
     assert b"Student Research Dashboard" in response.data
     assert b"Research Library" in response.data
     assert b"Project Queue" in response.data
+
+
+def test_student_research_dashboard_has_project_workspace_and_profile_sections(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+            ("Student Research User", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student"),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123", "portal": "research"},
+        follow_redirects=False,
+    )
+
+    response = client.get("/research-student-dashboard")
+
+    assert response.status_code == 200
+    assert b"My Projects" in response.data
+    assert b"Download submitted chapters" in response.data
+    assert b"Upload corrections" in response.data
+    assert b"Notification preferences" in response.data
+    assert b"3. My Projects" in response.data
+
+
+def test_student_profile_update_supports_personal_and_notification_fields(client):
+    email = f"student{uuid.uuid4().hex[:8]}@example.com"
+
+    with app.app_context():
+        from app import get_db
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+            ("Student User", email, generate_password_hash("SecurePass123", method="pbkdf2:sha256"), "student"),
+        )
+        db.commit()
+
+    client.post(
+        "/login",
+        data={"email": email, "password": "SecurePass123", "portal": "research"},
+        follow_redirects=False,
+    )
+
+    response = client.post(
+        "/profile",
+        data={
+            "name": "Updated Student",
+            "email": email,
+            "phone_number": "08030000000",
+            "institution": "University of Lagos",
+            "department": "Business Administration",
+            "qualification": "B.Sc.",
+            "notification_email": "on",
+            "notification_sms": "on",
+        },
+        follow_redirects=False,
+    )
+
+    assert response.status_code == 302
+    assert response.headers["Location"] == "/profile"
 
 
 def test_researcher_logout_redirects_to_research_login(client):

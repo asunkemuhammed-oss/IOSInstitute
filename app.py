@@ -7,7 +7,7 @@ from smtplib import SMTP
 
 from urllib.parse import unquote
 
-from flask import Flask, flash, g, redirect, render_template, request, session, url_for
+from flask import Flask, abort, flash, g, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 
@@ -92,11 +92,15 @@ def ensure_user_profile_columns():
     db = get_db()
     columns = [row[1] for row in db.execute("PRAGMA table_info(users)").fetchall()]
     for field_name, field_sql in {
+        "portal": "ALTER TABLE users ADD COLUMN portal TEXT",
         "phone_number": "ALTER TABLE users ADD COLUMN phone_number TEXT",
         "gender": "ALTER TABLE users ADD COLUMN gender TEXT",
+        "qualification": "ALTER TABLE users ADD COLUMN qualification TEXT",
         "course": "ALTER TABLE users ADD COLUMN course TEXT",
         "learning_mode": "ALTER TABLE users ADD COLUMN learning_mode TEXT",
         "payment_mode": "ALTER TABLE users ADD COLUMN payment_mode TEXT",
+        "notification_email": "ALTER TABLE users ADD COLUMN notification_email TEXT DEFAULT 'on'",
+        "notification_sms": "ALTER TABLE users ADD COLUMN notification_sms TEXT DEFAULT 'on'",
         "portfolio_status": "ALTER TABLE users ADD COLUMN portfolio_status TEXT DEFAULT 'not_started'",
         "researcher_assessment_title": "ALTER TABLE users ADD COLUMN researcher_assessment_title TEXT",
         "researcher_assessment_area": "ALTER TABLE users ADD COLUMN researcher_assessment_area TEXT",
@@ -122,13 +126,17 @@ def init_db():
             email TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
             role TEXT NOT NULL DEFAULT 'student',
+            portal TEXT,
             institution TEXT,
             department TEXT,
+            qualification TEXT,
             phone_number TEXT,
             gender TEXT,
             course TEXT,
             learning_mode TEXT,
             payment_mode TEXT,
+            notification_email TEXT DEFAULT 'on',
+            notification_sms TEXT DEFAULT 'on',
             portfolio_status TEXT DEFAULT 'not_started',
             researcher_assessment_title TEXT,
             researcher_assessment_area TEXT,
@@ -677,9 +685,6 @@ def index():
 
 @app.route("/research-institute")
 def research_institute():
-    user = current_user()
-    if user and user["role"] in {"student", "client"}:
-        return redirect(url_for("research_student_dashboard"))
     return render_template("research_institute.html")
 
 
@@ -703,6 +708,48 @@ def research_topic(slug):
     return render_template("research_topic_detail.html", project=project)
 
 
+def build_research_student_workspace(user):
+    return {
+        "header_title": "IOS Research Institute — Student/Client Dashboard",
+        "welcome": f"Welcome, {user['name']}.",
+        "overview_cards": [
+            {"label": "Assigned", "value": "12"},
+            {"label": "In Review", "value": "7"},
+            {"label": "Completed", "value": "28"},
+            {"label": "Open Messages", "value": "5"},
+        ],
+        "quick_links": [
+            {"title": "Research Library", "description": "Browse project topics, research materials and approved resources.", "icon": "▣"},
+            {"title": "Submit Research Request", "description": "Request research assistance and provide project details.", "icon": "✎"},
+            {"title": "My Projects", "description": "Track chapters, drafts, revisions and project progress.", "icon": "▤"},
+            {"title": "Messages", "description": "Contact the research team and receive updates.", "icon": "✉"},
+            {"title": "Payments", "description": "View invoices, payment plans, receipts and outstanding balances.", "icon": "◫"},
+            {"title": "My Profile", "description": "Manage personal details, institution and login security.", "icon": "◔"},
+        ],
+        "project": {
+            "title": "Impact of Digital Marketing on Consumer Behaviour",
+            "status": "In Progress",
+            "progress_percent": 40,
+            "milestone": "Chapter Two — Literature Review",
+            "deadline": "Next milestone due: 15 Nov 2026",
+            "chapters": [
+                {"title": "Research proposal / Topic approval", "status": "Completed", "date": "12 Sep 2026"},
+                {"title": "Chapter One — Introduction", "status": "Completed", "date": "18 Sep 2026"},
+                {"title": "Chapter Two — Literature Review", "status": "In progress", "date": "Expected: 15 Nov 2026"},
+                {"title": "Chapter Three — Methodology", "status": "Not started", "date": "Pending"},
+                {"title": "Chapter Four — Results and Analysis", "status": "Not started", "date": "Pending"},
+                {"title": "Chapter Five — Summary and Conclusion", "status": "Not started", "date": "Pending"},
+            ],
+            "notifications": [
+                "New document available: Chapter One approved and downloaded by your supervisor.",
+                "Supervisor comment received: tighten the literature review synthesis and align hypotheses.",
+                "Notification preferences: email and SMS updates enabled.",
+            ],
+            "admin_upload_message": "Researchers and administrators upload each chapter from their workspace, and the client sees the latest version here automatically.",
+        },
+    }
+
+
 @app.route("/research-student-dashboard")
 def research_student_dashboard():
     user = current_user()
@@ -719,6 +766,7 @@ def research_student_dashboard():
         "research_student_dashboard.html",
         user=user,
         queue=queue,
+        workspace=build_research_student_workspace(user),
         title="Student Research Dashboard",
     )
 
@@ -1121,6 +1169,134 @@ def tech_payment():
     )
 
 
+SUPPORT_SERVICE_PAGES = {
+    "jamb-services": {
+        "title": "JAMB Services",
+        "heading": "Need help with JAMB registration or admission support?",
+        "intro": "We help students complete JAMB steps with confidence, from registration guidance and application support to result checks and post-UTME preparation.",
+        "badge": "Admission support",
+        "image": "/static/images/team/JAMB.jpeg",
+        "highlights": [
+            "JAMB registration guidance and form support",
+            "Profile code and status follow-up assistance",
+            "Admission guidance for your preferred course and school",
+            "Post-UTME preparation and school selection support",
+        ],
+        "services": [
+            "Registration & profile help",
+            "Course and school guidance",
+            "Admission follow-up",
+            "Post-UTME preparation",
+        ],
+        "benefits": [
+            "Qualified support for first-time candidates and repeaters",
+            "Guidance on course selection and school fit",
+            "Clear answers about registration steps and requirements",
+            "Support before and after UTME results are released",
+        ],
+        "steps": [
+            "Confirm your preferred course, institution, and eligibility profile.",
+            "We guide you through JAMB registration details, document requirements, and profile steps.",
+            "Receive help with school choice, admission planning, and post-UTME preparation.",
+        ],
+        "cta": "Talk to an IOS adviser about your JAMB journey",
+    },
+    "waec-services": {
+        "title": "WAEC Services",
+        "heading": "Get trusted WAEC support for registrations, checks, and results.",
+        "intro": "We assist with WAEC registration guidance, resource support, exam preparation planning, and result-related enquiries for students and families.",
+        "badge": "Exam support",
+        "image": "/static/images/team/WEAC.jpeg",
+        "highlights": [
+            "WAEC registration guidance",
+            "PIN purchase and result-check information",
+            "Exam preparation planning and study support",
+            "School candidate support and exam updates",
+        ],
+        "services": [
+            "WAEC registration support",
+            "Result-check help",
+            "Exam preparation guidance",
+            "Certificate and verification assistance",
+        ],
+        "benefits": [
+            "Practical guidance for WAEC candidates and guardians",
+            "Support for exam preparation and timeline planning",
+            "Straightforward information on result processing and checks",
+            "Faster answers to common WAEC registration and documentation issues",
+        ],
+        "steps": [
+            "Tell us the exam type, year, and support you need.",
+            "We help simplify registration requirements, fees, and documentation.",
+            "Receive proper guidance for preparation, result checking, and follow-up queries.",
+        ],
+        "cta": "Need WAEC guidance? Speak with our support team today",
+    },
+    "neco-services": {
+        "title": "NECO Services",
+        "heading": "NECO support that keeps your exam process simple and stress-free.",
+        "intro": "From result checking to exam updates and preparation support, we help students stay organised and informed before and after NECO examinations.",
+        "badge": "Result support",
+        "image": "/static/images/team/NECO.jpeg",
+        "highlights": [
+            "NECO registration and result-check guidance",
+            "Exam preparation and past question recommendations",
+            "Certificate and verification help",
+            "Updated support for school and private candidates",
+        ],
+        "services": [
+            "NECO registration help",
+            "Exam updates and guidance",
+            "Result support",
+            "Certificate assistance",
+        ],
+        "benefits": [
+            "Clear support for NECO candidates before, during, and after exams",
+            "Guidance on school or private candidate processes",
+            "Useful study strategy and result-check orientation",
+            "Support for documentation and verification requests",
+        ],
+        "steps": [
+            "Share your exam plan, candidate type, and support requirement.",
+            "We explain registration, result-check, and document processes simply.",
+            "You receive follow-up guidance for a smoother and more confident exam experience.",
+        ],
+        "cta": "Book a consultation for NECO support and guidance",
+    },
+    "nysc-support": {
+        "title": "NYSC Support",
+        "heading": "Complete NYSC support for mobilisation, clearance and official updates.",
+        "intro": "We help graduates navigate the NYSC process with clarity, from registration preparation to mobilisation, relocation, and service-related documentation support.",
+        "badge": "National service",
+        "image": "/static/images/team/NYSC.png",
+        "highlights": [
+            "NYSC registration guidance and mobilisation support",
+            "Call-up and documentation assistance",
+            "Relocation and correction guidance",
+            "Clear information on official NYSC processes",
+        ],
+        "services": [
+            "Registration support",
+            "Documentation guidance",
+            "Relocation assistance",
+            "Official process updates",
+        ],
+        "benefits": [
+            "Guidance through mobilisation and clearing processes",
+            "Helpful checklists for required documents and steps",
+            "Advice on relocation, correction, and schedule-related issues",
+            "A clearer understanding of official NYSC procedures and deadlines",
+        ],
+        "steps": [
+            "We review your NYSC status and the support you need.",
+            "Our team explains the registration, mobilisation, and documentation steps.",
+            "You get practical assistance for a smoother NYSC journey and official compliance.",
+        ],
+        "cta": "Speak with IOS for full NYSC guidance and support",
+    },
+}
+
+
 @app.route("/educational-consultancy")
 def educational_consultancy():
     services = [
@@ -1134,6 +1310,14 @@ def educational_consultancy():
         "Institutional services",
     ]
     return render_template("educational_consultancy.html", services=services)
+
+
+@app.route("/service/<slug>")
+def service_detail(slug):
+    page = SUPPORT_SERVICE_PAGES.get(slug)
+    if page is None:
+        abort(404)
+    return render_template("support_service_page.html", page=page, slug=slug)
 
 
 @app.route("/products")
@@ -1216,9 +1400,45 @@ def login():
             flash("Invalid email or password")
             return render_template("login.html", prefill_email=email, admin_mode=admin_mode, portal=portal_name)
 
+        stored_portal = (user["portal"] if user["portal"] is not None else "").strip().lower()
+        user_role = user["role"]
+
+        if admin_mode:
+            if user_role != "admin":
+                flash("User not found or not allowed.")
+                return render_template("login.html", prefill_email=email, admin_mode=admin_mode, portal=portal_name)
+        elif portal_name == "research":
+            if user_role not in {"student", "client", "researcher"}:
+                flash("User not found or not allowed.")
+                return render_template("login.html", prefill_email=email, admin_mode=admin_mode, portal=portal_name)
+            if stored_portal and stored_portal != "research":
+                flash("User not found or not allowed.")
+                return render_template("login.html", prefill_email=email, admin_mode=admin_mode, portal=portal_name)
+        elif portal_name == "tech":
+            if user_role not in {"student", "client"}:
+                flash("User not found or not allowed.")
+                return render_template("login.html", prefill_email=email, admin_mode=admin_mode, portal=portal_name)
+            if stored_portal and stored_portal != "tech":
+                flash("User not found or not allowed.")
+                return render_template("login.html", prefill_email=email, admin_mode=admin_mode, portal=portal_name)
+        elif portal_name == "institute":
+            if stored_portal and stored_portal != "institute":
+                flash("User not found or not allowed.")
+                return render_template("login.html", prefill_email=email, admin_mode=admin_mode, portal=portal_name)
+
         session["user_id"] = user["id"]
         session["role"] = user["role"]
+
+        if not stored_portal and portal_name in {"research", "tech", "institute"}:
+            get_db().execute(
+                "UPDATE users SET portal = ? WHERE id = ?",
+                (portal_name, user["id"]),
+            )
+            get_db().commit()
+
         session["portal"] = "research" if portal_name == "research" else "tech" if portal_name == "tech" else "institute"
+        if user["role"] in {"student", "client"}:
+            session["portal"] = portal_name if portal_name in {"research", "tech", "institute"} else "institute"
 
         if user["role"] == "admin":
             return redirect(url_for("admin_dashboard"))
@@ -1288,7 +1508,7 @@ def logout():
     return redirect(url_for("login"))
 
 
-@app.route("/profile")
+@app.route("/profile", methods=["GET", "POST"])
 def profile():
     user = current_user()
     if not user:
@@ -1300,6 +1520,55 @@ def profile():
             "SELECT * FROM research_requests WHERE user_id = ? ORDER BY id DESC",
             (user["id"],),
         ).fetchall()
+
+    if request.method == "POST":
+        new_name = request.form.get("name", "").strip() or user["name"]
+        new_email = request.form.get("email", "").strip().lower()
+        if not new_email:
+            flash("Please provide an email address.")
+            return render_template("profile.html", user=user, requests=requests)
+
+        if new_email != user["email"]:
+            duplicate = get_db().execute(
+                "SELECT id FROM users WHERE email = ? AND id != ?",
+                (new_email, user["id"]),
+            ).fetchone()
+            if duplicate:
+                flash("An account with that email already exists.")
+                return render_template("profile.html", user=user, requests=requests)
+
+        phone_number = request.form.get("phone_number", "").strip()
+        institution = request.form.get("institution", "").strip()
+        department = request.form.get("department", "").strip()
+        qualification = request.form.get("qualification", "").strip()
+        notification_email = "on" if request.form.get("notification_email") else "off"
+        notification_sms = "on" if request.form.get("notification_sms") else "off"
+
+        new_password = request.form.get("new_password", "").strip()
+        update_values = [
+            new_name,
+            new_email,
+            phone_number,
+            institution,
+            department,
+            qualification,
+            notification_email,
+            notification_sms,
+            user["id"],
+        ]
+        if new_password:
+            get_db().execute(
+                "UPDATE users SET name = ?, email = ?, phone_number = ?, institution = ?, department = ?, qualification = ?, notification_email = ?, notification_sms = ?, password = ? WHERE id = ?",
+                (*update_values[:-1], generate_password_hash(new_password, method="pbkdf2:sha256"), user["id"]),
+            )
+        else:
+            get_db().execute(
+                "UPDATE users SET name = ?, email = ?, phone_number = ?, institution = ?, department = ?, qualification = ?, notification_email = ?, notification_sms = ? WHERE id = ?",
+                (*update_values,),
+            )
+        get_db().commit()
+        flash("Your profile has been updated successfully.")
+        return redirect(url_for("profile"))
 
     return render_template("profile.html", user=user, requests=requests)
 
@@ -1381,32 +1650,112 @@ def researcher_assessment():
     return render_template("researcher_assessment.html", user=user, form={})
 
 
-@app.route("/researcher-dashboard")
-def researcher_dashboard():
-    user = current_user()
-    if not user or user["role"] != "researcher":
-        return redirect(url_for("login"))
-
-    assessment_status = row_value(user, "researcher_assessment_status", "not_started") or "not_started"
+def researcher_dashboard_data(user):
     assigned_queue = [
         {"id": 1, "topic": "Impact of renewable energy financing on industrial growth", "status": "In review", "student": "Ada Okafor"},
         {"id": 2, "topic": "Public health expenditure and economic growth in Nigeria", "status": "Ready for review", "student": "Tunde Lawal"},
         {"id": 3, "topic": "Digital inclusion and education outcomes in urban schools", "status": "Awaiting data", "student": "Kemi Adebayo"},
     ]
 
+    library_items = [
+        {"title": "Economics Research Topics", "count": "18 topics", "description": "Project themes on growth, inflation, trade and public finance."},
+        {"title": "Education & Social Sciences", "count": "12 topics", "description": "Academic studies on learning outcomes, policy and behaviour."},
+        {"title": "Business & Management", "count": "15 topics", "description": "Marketing, HR, leadership and entrepreneurship research areas."},
+        {"title": "Data Analysis Guides", "count": "8 guides", "description": "SPSS, Excel, regression, interpretation and reporting templates."},
+    ]
+
+    project_cards = [
+        {"name": "Impact of renewable energy financing on industrial growth", "status": "In review", "progress": "72%", "deadline": "Due: 12 Nov 2026"},
+        {"name": "Public health expenditure and economic growth in Nigeria", "status": "Ready for review", "progress": "90%", "deadline": "Due: 18 Nov 2026"},
+        {"name": "Digital inclusion and education outcomes in urban schools", "status": "Awaiting data", "progress": "35%", "deadline": "Due: 21 Nov 2026"},
+    ]
+
+    messages = [
+        {"sender": "Ada Okafor", "snippet": "Updated chapter two is ready for supervision review.", "time": "10 min ago"},
+        {"sender": "Admin Team", "snippet": "Your new topic approval has been recorded.", "time": "2 hours ago"},
+        {"sender": "Tunde Lawal", "snippet": "Please confirm the revised methodology notes.", "time": "Yesterday"},
+    ]
+
+    profile = {
+        "name": user["name"],
+        "email": user["email"],
+        "phone": row_value(user, "phone_number") or "Not provided",
+        "institution": row_value(user, "institution") or "Not provided",
+        "department": row_value(user, "department") or "Not provided",
+        "qualification": row_value(user, "qualification") or "Not provided",
+        "notification_email": row_value(user, "notification_email") or "on",
+        "notification_sms": row_value(user, "notification_sms") or "on",
+    }
+
+    assessment_status = row_value(user, "researcher_assessment_status", "not_started") or "not_started"
     cv_file = row_value(user, "cv_file")
     portfolio_file = row_value(user, "portfolio_file")
     cv_url = "/static/uploads/researchers/" + (cv_file or "") if cv_file else None
     portfolio_url = "/static/uploads/researchers/" + (portfolio_file or "") if portfolio_file else None
 
+    return {
+        "stats": {
+            "assigned": 12,
+            "in_review": 7,
+            "completed": 28,
+            "messages": 5,
+        },
+        "queue": assigned_queue,
+        "library": library_items,
+        "projects": project_cards,
+        "messages": messages,
+        "profile": profile,
+        "assessment_status": assessment_status,
+        "cv_url": cv_url,
+        "portfolio_url": portfolio_url,
+    }
+
+
+def render_researcher_module(active_page="dashboard"):
+    user = current_user()
+    if not user or user["role"] != "researcher":
+        return redirect(url_for("login"))
+
+    data = researcher_dashboard_data(user)
     return render_template(
         "researcher_dashboard.html",
         user=user,
-        queue=assigned_queue,
-        assessment_status=assessment_status,
-        cv_url=cv_url,
-        portfolio_url=portfolio_url,
+        active_page=active_page,
+        queue=data["queue"],
+        library=data["library"],
+        projects=data["projects"],
+        messages=data["messages"],
+        profile=data["profile"],
+        stats=data["stats"],
+        assessment_status=data["assessment_status"],
+        cv_url=data["cv_url"],
+        portfolio_url=data["portfolio_url"],
     )
+
+
+@app.route("/researcher-dashboard")
+def researcher_dashboard():
+    return render_researcher_module("dashboard")
+
+
+@app.route("/researcher-library")
+def researcher_library():
+    return render_researcher_module("library")
+
+
+@app.route("/researcher-projects")
+def researcher_projects():
+    return render_researcher_module("projects")
+
+
+@app.route("/researcher-messages")
+def researcher_messages():
+    return render_researcher_module("messages")
+
+
+@app.route("/researcher-profile")
+def researcher_profile():
+    return render_researcher_module("profile")
 
 
 @app.route("/researcher-upload-documents", methods=["POST"])
@@ -1710,7 +2059,7 @@ def tech_register():
 
         try:
             db.execute(
-                "INSERT INTO users (name, email, password, phone_number, gender, course, learning_mode, role, payment_mode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO users (name, email, password, phone_number, gender, course, learning_mode, role, payment_mode, portal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 (
                     full_name,
                     email,
@@ -1721,6 +2070,7 @@ def tech_register():
                     learning_mode,
                     "student",
                     "pending",
+                    "tech",
                 ),
             )
             db.commit()
@@ -1775,8 +2125,8 @@ def register():
 
         try:
             db.execute(
-                "INSERT INTO users (name, email, password, role, researcher_assessment_status) VALUES (?, ?, ?, ?, ?)",
-                (full_name, email, generate_password_hash(password, method="pbkdf2:sha256"), role, "not_started" if role == "researcher" else None),
+                "INSERT INTO users (name, email, password, role, portal, researcher_assessment_status) VALUES (?, ?, ?, ?, ?, ?)",
+                (full_name, email, generate_password_hash(password, method="pbkdf2:sha256"), role, portal or "institute", "not_started" if role == "researcher" else None),
             )
             db.commit()
         except sqlite3.IntegrityError:

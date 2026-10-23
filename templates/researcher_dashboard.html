@@ -3,233 +3,623 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IOSInstitute | Researcher Dashboard</title>
+    <title>IOS Researcher Dashboard</title>
     <style>
       :root {
-        --bg: #f5f7ff;
-        --page: linear-gradient(180deg, #eefaf6 0%, #f9fbff 100%);
-        --panel: rgba(255,255,255,0.42);
-        --card: rgba(255,255,255,0.56);
-        --line: rgba(18,63,55,0.12);
+        --bg: #f3f3f1;
+        --sidebar: #f7f7f5;
+        --surface: #f9f9f8;
+        --panel: #ffffff;
+        --line: rgba(14, 17, 18, 0.09);
+        --line-strong: rgba(14, 17, 18, 0.14);
+        --text: #1a1d1f;
+        --muted: #626b71;
+        --soft: #edf3f1;
+        --soft-strong: #dfe9e3;
+        --shadow: 0 14px 28px rgba(15, 23, 42, 0.04);
         --primary: #123f37;
-        --text: #1a2430;
-        --muted: #53606f;
-        --accent: #d9a53d;
-        --accent-soft: rgba(217, 165, 61, 0.1);
+        --success: #1f7a63;
       }
+
       * { box-sizing: border-box; }
+
       body {
         margin: 0;
+        min-height: 100vh;
         font-family: Arial, Helvetica, sans-serif;
-        background: var(--page);
+        background: var(--bg);
         color: var(--text);
       }
-      .container { width: min(1200px, calc(100% - 32px)); margin: 0 auto; }
-      .topbar { padding: 18px 0; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, rgba(18,63,55,0.96) 0%, rgba(29,114,95,0.92) 100%); }
-      .header-inner { display: flex; justify-content: space-between; align-items: center; gap: 18px; }
-      .brand { display: flex; align-items: center; gap: 12px; }
-      .brand-mark {
-        width: 42px; height: 42px; border-radius: 12px; overflow: hidden; display:flex; align-items:center; justify-content:center; background: rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.18); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+
+      a { text-decoration: none; }
+
+      .app-shell {
+        display: flex;
+        min-height: 100vh;
       }
-      .brand-mark img { width:100%; height:100%; object-fit: cover; display:block; }
-      .brand-name { font-size: 1.4rem; letter-spacing: -0.05em; color: #fff; font-weight:700; }
-      .nav { display: flex; gap: 18px; flex-wrap: wrap; }
-      .nav a { color: #fff; font-weight: 600; }
-      .page { padding: 32px 0 80px; }
-      .panel { background: rgba(255,255,255,0.38); border: 1px solid var(--line); border-radius: 24px; padding: 28px; }
-      h1 { margin: 0 0 10px; font-size: clamp(2.2rem, 3vw, 3.5rem); letter-spacing: -0.06em; color: var(--primary); }
-      .welcome { margin: 0 0 26px; color: var(--muted); font-size: 1.05rem; }
-      .stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-bottom: 28px; }
-      .stat-card {
-        background: rgba(255,255,255,0.42);
+
+      .sidebar {
+        width: 230px;
+        background: var(--sidebar);
+        border-right: 1px solid var(--line);
+        padding: 18px 14px 18px 18px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 4px 18px;
+        margin-bottom: 18px;
+      }
+
+      .brand-mark {
+        width: 28px;
+        height: 28px;
+        border-radius: 9px;
+        background: linear-gradient(135deg, #123f37, #2d5d57);
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.72);
+        position: relative;
+      }
+
+      .brand-mark::after {
+        content: "";
+        position: absolute;
+        inset: 7px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.9);
+      }
+
+      .brand-name {
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        color: var(--text);
+      }
+
+      .nav {
+        display: grid;
+        gap: 8px;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: var(--muted);
+        font-size: 0.96rem;
+        font-weight: 600;
+      }
+
+      .nav-item.active {
+        background: rgba(18, 63, 55, 0.06);
+        color: var(--primary);
+        border: 1px solid rgba(18, 63, 55, 0.08);
+      }
+
+      .nav-icon {
+        width: 14px;
+        height: 14px;
+        border-radius: 4px;
+        background: rgba(31, 41, 55, 0.12);
+        display: inline-block;
+      }
+
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        height: 72px;
+        background: rgba(255,255,255,0.18);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 0 22px;
+      }
+
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .top-pill {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: rgba(17, 24, 39, 0.12);
+        display: inline-block;
+      }
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f4f4f4, #d7dce0);
+        border: 1px solid var(--line-strong);
+      }
+
+      .content {
+        flex: 1;
+        padding: 18px 22px 32px;
+      }
+
+      .workspace {
+        background: rgba(255,255,255,0.28);
         border: 1px solid var(--line);
-        border-radius: 18px;
+        border-radius: 12px;
+        min-height: 520px;
+        overflow: hidden;
+      }
+
+      .workspace-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 18px 24px 12px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .workspace-header h1 {
+        margin: 0;
+        font-size: clamp(1.8rem, 2.2vw, 2.7rem);
+        letter-spacing: -0.06em;
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .welcome-label {
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+
+      .workspace-body {
+        padding: 20px 24px 28px;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .stat-card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px 16px;
+      }
+
+      .stat-label {
+        display: block;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.68rem;
+        margin-bottom: 8px;
+      }
+
+      .stat-value {
+        font-size: clamp(1.8rem, 2vw, 2.3rem);
+        letter-spacing: -0.06em;
+        color: var(--primary);
+        font-weight: 700;
+      }
+
+      .queue-card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
         padding: 18px 16px;
       }
-      .stat-label { display: block; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.72rem; margin-bottom: 10px; }
-      .stat-value { font-size: clamp(1.5rem, 2vw, 2rem); font-weight: 700; color: var(--primary); letter-spacing: -0.05em; }
-      .content-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 22px; }
-      .card {
-        background: rgba(255,255,255,0.42);
-        border: 1px solid var(--line);
-        border-radius: 18px;
-        padding: 20px 18px;
+
+      .queue-title {
+        margin: 0 0 14px;
+        font-size: 1.2rem;
+        color: var(--primary);
       }
-      .card h2 { margin: 0 0 14px; color: var(--primary); }
-      .queue-list { display: flex; flex-direction: column; gap: 12px; }
+
       .queue-item {
         display: flex;
         justify-content: space-between;
-        gap: 12px;
-        padding: 12px 14px;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
         border: 1px solid var(--line);
-        border-radius: 12px;
-        background: rgba(17,24,39,0.02);
-      }
-      .upload-box {
-        display: grid;
-        gap: 16px;
-      }
-      .upload-card {
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        background: rgba(18,63,55,0.03);
-        padding: 16px;
-      }
-      .upload-label {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        color: var(--primary);
-        font-weight: 700;
-        margin-bottom: 10px;
-      }
-      .upload-icon {
-        width: 38px;
-        height: 38px;
-        border-radius: 12px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(217, 165, 61, 0.14);
-        font-size: 1.3rem;
-      }
-      .upload-card input[type="file"] {
-        width: 100%;
-        background: rgba(255,255,255,0.7);
-        border: 1px dashed var(--line);
-        border-radius: 12px;
-        padding: 12px;
-      }
-      .action-row {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        margin-top: 12px;
-      }
-      .mini-btn {
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 10px 12px;
         border-radius: 10px;
-        border: 1px solid var(--line);
-        background: white;
-        color: var(--primary);
-        font-weight: 700;
+        background: rgba(18,63,55,0.01);
+        margin-bottom: 12px;
       }
-      .primary-btn {
-        border: none;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: white;
-        font-weight: 700;
-        padding: 10px 14px;
-        border-radius: 10px;
-        cursor: pointer;
+
+      .queue-item:last-child {
+        margin-bottom: 0;
       }
-      .queue-item strong { color: var(--primary); }
+
+      .queue-item strong {
+        display: block;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+
+      .queue-item small {
+        color: var(--muted);
+      }
+
       .status {
         display: inline-flex;
         align-items: center;
-        padding: 6px 10px;
+        justify-content: center;
+        min-width: 90px;
+        padding: 7px 10px;
         border-radius: 999px;
-        background: rgba(214,122,87,0.1);
-        color: var(--accent);
-        font-size: 0.72rem;
+        background: rgba(18, 63, 55, 0.06);
+        color: var(--success);
+        font-size: 0.7rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.08em;
       }
-      .flash {
-        margin: 0 0 16px;
-        padding: 12px 14px;
-        border-radius: 12px;
-        background: rgba(217,165,61,0.12);
-        border: 1px solid rgba(217,165,61,0.35);
-        color: #6d4b17;
-        font-weight: 600;
+
+      .module-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
       }
-      .pill-list { display: flex; flex-wrap: wrap; gap: 8px; }
-      .pill { display: inline-block; padding: 8px 10px; border-radius: 999px; background: rgba(29, 91, 232, 0.08); color: var(--primary); font-weight: 700; font-size: 0.75rem; }
-      .logout { background: rgba(255,255,255,0.5); border: 1px solid var(--line); color: var(--primary); padding: 10px 16px; border-radius: 999px; }
+
+      .module-card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 18px 16px;
+      }
+
+      .module-card h3 {
+        margin: 0 0 8px;
+        color: var(--primary);
+        font-size: 1.15rem;
+      }
+
+      .module-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .message-list, .project-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .message-item, .project-item {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px 16px;
+      }
+
+      .message-item strong, .project-item strong {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--text);
+      }
+
+      .message-item small, .project-item small {
+        color: var(--muted);
+      }
+
+      .profile-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .profile-box {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+      }
+
+      .profile-box label {
+        display: block;
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+
+      .profile-box p {
+        margin: 0;
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .empty-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        min-height: 420px;
+      }
+
+      .empty-icon {
+        width: 130px;
+        height: 130px;
+        margin: 14px 0 12px;
+        position: relative;
+      }
+
+      .parachute {
+        position: absolute;
+        left: 50%;
+        top: 12px;
+        width: 96px;
+        height: 72px;
+        transform: translateX(-50%);
+        border-radius: 50% 50% 54% 54% / 78% 78% 22% 22%;
+        background: linear-gradient(180deg, #d6dbe0, #c7d0d8);
+        border: 1px solid rgba(17, 24, 39, 0.08);
+      }
+
+      .parachute::before,
+      .parachute::after {
+        content: "";
+        position: absolute;
+        width: 1px;
+        height: 55px;
+        background: rgba(17, 24, 39, 0.18);
+        top: 62px;
+      }
+
+      .parachute::before { left: 26px; }
+      .parachute::after { right: 26px; }
+
+      .parachute-shell {
+        position: absolute;
+        inset: 16px 18px 8px;
+        border-radius: 50% 50% 56% 56%;
+        background: linear-gradient(180deg, rgba(148, 137, 185, 0.35), rgba(100, 131, 185, 0.35));
+        border: 1px solid rgba(112, 109, 137, 0.25);
+      }
+
+      .payload {
+        position: absolute;
+        left: 50%;
+        bottom: 16px;
+        transform: translateX(-50%);
+        width: 54px;
+        height: 54px;
+        border-radius: 12px;
+        background: linear-gradient(180deg, #dfe3e8, #c8cdd2);
+        border: 1px solid rgba(17, 24, 39, 0.07);
+      }
+
+      .payload::before {
+        content: "";
+        position: absolute;
+        inset: 12px 12px auto 12px;
+        height: 18px;
+        border-radius: 8px;
+        background: rgba(255,255,255,0.35);
+      }
+
+      .empty-title {
+        margin: 0;
+        font-size: clamp(1.7rem, 2vw, 2.4rem);
+        letter-spacing: -0.05em;
+        color: var(--text);
+      }
+
+      .empty-copy {
+        max-width: 480px;
+        margin: 12px auto 0;
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 0.98rem;
+      }
+
+      .flash {
+        margin: 0 0 14px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: rgba(217,165,61,0.08);
+        border: 1px solid rgba(217,165,61,0.18);
+        color: #7a5a1e;
+        font-weight: 700;
+      }
+
       @media (max-width: 760px) {
-        .stats-grid, .content-grid { grid-template-columns: 1fr; }
-        .header-inner { flex-direction: column; align-items: flex-start; }
+        .app-shell { flex-direction: column; }
+        .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--line); }
+        .stats-grid { grid-template-columns: 1fr 1fr; }
+        .nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .workspace-header { flex-direction: column; align-items: flex-start; }
       }
     </style>
   </head>
   <body>
-    <header class="topbar">
-      <div class="container header-inner">
+    <div class="app-shell">
+      <aside class="sidebar">
         <div class="brand">
-          <div class="brand-mark">
-            <img src="/static/images/team/REALLOGO.jpg" alt="IOS logo">
-          </div>
+          <div class="brand-mark" aria-hidden="true"></div>
           <div class="brand-name">IOS Research Institute</div>
         </div>
-        <nav class="nav">
-          <a href="#">Dashboard</a>
-          <a href="#">Projects</a>
-          <a href="#">Research Library</a>
-          <a href="#">Messages</a>
-          <a href="#">Profile</a>
-          <a class="logout" href="/logout">Logout</a>
+
+        <nav class="nav" aria-label="Sidebar navigation">
+          <a href="/researcher-dashboard" class="nav-item {% if active_page == 'dashboard' %}active{% endif %}"><span class="nav-icon"></span>Dashboard</a>
+          <a href="/researcher-library" class="nav-item {% if active_page == 'library' %}active{% endif %}"><span class="nav-icon"></span>Research Library</a>
+          <a href="/researcher-projects" class="nav-item {% if active_page == 'projects' %}active{% endif %}"><span class="nav-icon"></span>Projects</a>
+          <a href="/researcher-messages" class="nav-item {% if active_page == 'messages' %}active{% endif %}"><span class="nav-icon"></span>Messages</a>
+          <a href="/researcher-profile" class="nav-item {% if active_page == 'profile' %}active{% endif %}"><span class="nav-icon"></span>Profile</a>
+          <a href="/logout" class="nav-item"><span class="nav-icon"></span>Logout</a>
         </nav>
-      </div>
-    </header>
+      </aside>
 
-    <main class="page">
-      <div class="container panel">
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <div class="flash">{{ messages[0] }}</div>
-          {% endif %}
-        {% endwith %}
-        <h1>Researcher Dashboard</h1>
-        <p class="welcome">Welcome, {{ user["name"] }}. Manage your assigned research projects and support requests in one place.</p>
+      <main class="main">
+        <header class="topbar">
+          <div class="top-actions" aria-label="User actions">
+            <span class="top-pill" aria-hidden="true"></span>
+            <span class="avatar" aria-label="User profile"></span>
+          </div>
+        </header>
 
-        <div class="flash" style="margin-bottom: 20px;">
-          Assessment status: <strong>{{ (assessment_status or 'not_started')|replace('_', ' ')|title }}</strong>
-        </div>
-
-        <div class="stats-grid">
-          <div class="stat-card">
-            <span class="stat-label">Assigned</span>
-            <div class="stat-value">12</div>
-          </div>
-          <div class="stat-card">
-            <span class="stat-label">In Review</span>
-            <div class="stat-value">7</div>
-          </div>
-          <div class="stat-card">
-            <span class="stat-label">Completed</span>
-            <div class="stat-value">28</div>
-          </div>
-          <div class="stat-card">
-            <span class="stat-label">Open Messages</span>
-            <div class="stat-value">5</div>
-          </div>
-        </div>
-
-        <div class="content-grid">
-          <div class="card">
-            <h2>Project Queue</h2>
-            <div class="queue-list">
-              {% for item in queue %}
-                <div class="queue-item">
-                  <div>
-                    <strong>{{ item["topic"] }}</strong><br>
-                    <span style="color: var(--muted);">Student: {{ item["student"] }}</span>
-                  </div>
-                  <span class="status">{{ item["status"] }}</span>
+        <section class="content">
+          <div class="workspace">
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="workspace-body" style="padding-top: 0; padding-bottom: 16px;">
+                  <div class="flash">{{ messages[0] }}</div>
                 </div>
-              {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <div class="workspace-header">
+              <div>
+                <div class="welcome-label">Welcome,</div>
+                <h1>{{ user["name"] }}</h1>
+              </div>
+              <div class="welcome-label">Researcher Dashboard</div>
+            </div>
+
+            <div class="workspace-body">
+              {% if active_page == 'dashboard' %}
+                <div class="stats-grid">
+                  <div class="stat-card">
+                    <span class="stat-label">Assigned</span>
+                    <div class="stat-value">{{ stats.assigned }}</div>
+                  </div>
+                  <div class="stat-card">
+                    <span class="stat-label">In Review</span>
+                    <div class="stat-value">{{ stats.in_review }}</div>
+                  </div>
+                  <div class="stat-card">
+                    <span class="stat-label">Completed</span>
+                    <div class="stat-value">{{ stats.completed }}</div>
+                  </div>
+                  <div class="stat-card">
+                    <span class="stat-label">Open Messages</span>
+                    <div class="stat-value">{{ stats.messages }}</div>
+                  </div>
+                </div>
+
+                {% if queue and queue|length > 0 %}
+                  <div class="queue-card">
+                    <h2 class="queue-title">Project Queue</h2>
+                    {% for item in queue %}
+                      <div class="queue-item">
+                        <div>
+                          <strong>{{ item["topic"] }}</strong>
+                          <small>Student: {{ item["student"] }}</small>
+                        </div>
+                        <span class="status">{{ item["status"] }}</span>
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  <div class="empty-card">
+                    <div class="empty-icon" aria-hidden="true">
+                      <div class="parachute">
+                        <div class="parachute-shell"></div>
+                      </div>
+                      <div class="payload"></div>
+                    </div>
+
+                    <h2 class="empty-title">Your task queue is currently empty</h2>
+                    <p class="empty-copy">
+                      Hey there! We currently have no available projects in your area of expertise.
+                      We will email you as soon as new opportunities become available. Thank you for your patience.
+                      You're enrolled to receive text notifications when new work is available.
+                    </p>
+                  </div>
+                {% endif %}
+              {% elif active_page == 'library' %}
+                <div class="module-grid">
+                  {% for item in library %}
+                    <div class="module-card">
+                      <h3>{{ item.title }}</h3>
+                      <p><strong>{{ item.count }}</strong></p>
+                      <p>{{ item.description }}</p>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% elif active_page == 'projects' %}
+                <div class="project-list">
+                  {% for project in projects %}
+                    <div class="project-item">
+                      <strong>{{ project.name }}</strong>
+                      <small>Status: {{ project.status }} · Progress: {{ project.progress }} · {{ project.deadline }}</small>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% elif active_page == 'messages' %}
+                <div class="message-list">
+                  {% for message in messages %}
+                    <div class="message-item">
+                      <strong>{{ message.sender }}</strong>
+                      <small>{{ message.time }}</small>
+                      <p style="margin: 8px 0 0; color: var(--text); line-height: 1.5;">{{ message.snippet }}</p>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% elif active_page == 'profile' %}
+                <div class="profile-grid">
+                  <div class="profile-box">
+                    <label>Full name</label>
+                    <p>{{ profile.name }}</p>
+                  </div>
+                  <div class="profile-box">
+                    <label>Email</label>
+                    <p>{{ profile.email }}</p>
+                  </div>
+                  <div class="profile-box">
+                    <label>Phone</label>
+                    <p>{{ profile.phone }}</p>
+                  </div>
+                  <div class="profile-box">
+                    <label>Institution</label>
+                    <p>{{ profile.institution }}</p>
+                  </div>
+                  <div class="profile-box">
+                    <label>Department</label>
+                    <p>{{ profile.department }}</p>
+                  </div>
+                  <div class="profile-box">
+                    <label>Qualification</label>
+                    <p>{{ profile.qualification }}</p>
+                  </div>
+                </div>
+
+                <div class="module-card" style="margin-top: 14px;">
+                  <h3>Notification settings</h3>
+                  <p>Email alerts: {{ profile.notification_email }} | SMS alerts: {{ profile.notification_sms }}</p>
+                </div>
+
+                {% if cv_url or portfolio_url %}
+                  <div class="module-card" style="margin-top: 14px;">
+                    <h3>Uploaded documents</h3>
+                    {% if cv_url %}
+                      <p><a href="{{ cv_url }}" target="_blank" rel="noopener noreferrer">View CV</a></p>
+                    {% endif %}
+                    {% if portfolio_url %}
+                      <p><a href="{{ portfolio_url }}" target="_blank" rel="noopener noreferrer">View portfolio</a></p>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endif %}
             </div>
           </div>
-        </div>
-      </div>
-    </main>
+        </section>
+      </main>
+    </div>
   </body>
 </html>

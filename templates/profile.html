@@ -3,15 +3,15 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IOSInstitute | Profile</title>
+    <title>IOS Research Institute | My Profile</title>
     <style>
       :root {
-        --bg: #efefe9;
-        --panel: rgba(255,255,255,0.42);
+        --bg: #f4f1ed;
+        --panel: rgba(255,255,255,0.7);
         --line: rgba(17,24,39,0.12);
-        --primary: #1d2e41;
-        --text: #1a2430;
-        --muted: #53606f;
+        --primary: #123f37;
+        --text: #1d2a36;
+        --muted: #586872;
       }
       * { box-sizing: border-box; }
       body {
@@ -21,34 +21,36 @@
         color: var(--text);
       }
       .container { width: min(1100px, calc(100% - 32px)); margin: 0 auto; }
-      .topbar { padding: 18px 0; border-bottom: 1px solid var(--line); }
-      .header-inner { display: flex; justify-content: space-between; align-items: center; gap: 18px; }
+      .topbar { padding: 16px 0; border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.2); }
+      .header-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
       .brand { display: flex; align-items: center; gap: 12px; }
       .brand-mark {
-        width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center;
-        background: var(--primary); color: white; font-weight: 700; font-size: 0.92rem;
+        width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+        background: var(--primary); color: white; font-weight: 700; font-size: 1rem;
       }
-      .brand-name { font-weight: 700; color: var(--primary); font-size: 1.4rem; letter-spacing: -0.05em; }
-      .nav { display: flex; gap: 18px; flex-wrap: wrap; }
-      .nav a { color: var(--primary); font-weight: 600; }
-      .page { padding: 40px 0 80px; }
+      .brand-name { font-weight: 800; color: var(--primary); font-size: 1.8rem; letter-spacing: -0.05em; }
+      .nav { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+      .nav a { color: var(--primary); text-decoration: none; font-weight: 700; }
+      .page { padding: 32px 0 60px; }
       .panel {
-        background: rgba(255,255,255,0.4); border: 1px solid var(--line); border-radius: 22px; padding: 28px;
+        background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 26px;
       }
-      h1 { margin: 0 0 8px; font-size: clamp(2.2rem, 3vw, 3rem); letter-spacing: -0.06em; color: var(--primary); }
-      .meta { color: var(--muted); margin-bottom: 20px; }
-      .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 24px; }
-      .box { background: rgba(255,255,255,0.35); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
-      .box h3 { margin: 0 0 10px; color: var(--primary); }
-      .box p { margin: 0; color: var(--muted); }
-      table { width: 100%; border-collapse: collapse; margin-top: 18px; }
-      th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line); color: var(--text); }
-      th { color: var(--primary); }
-      .buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
-      .btn { display: inline-block; padding: 12px 16px; border-radius: 999px; font-weight: 700; }
-      .btn.primary { background: var(--primary); color: white; }
-      .btn.secondary { background: rgba(255,255,255,0.5); border: 1px solid var(--line); color: var(--primary); }
-      @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } .header-inner { flex-direction: column; align-items: flex-start; } }
+      h1 { margin: 0 0 8px; font-size: clamp(2.1rem, 3vw, 3.2rem); letter-spacing: -0.05em; color: var(--primary); }
+      .meta { color: var(--muted); margin-bottom: 22px; }
+      .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+      .field { display: grid; gap: 8px; }
+      label { font-weight: 700; color: var(--primary); }
+      input, select { width: 100%; height: 52px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,0.7); padding: 0 12px; font-size: 1rem; color: var(--text); }
+      .field.full { grid-column: 1 / -1; }
+      .checkbox-row { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 8px; }
+      .checkbox { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--primary); }
+      .checkbox input { width: 16px; height: 16px; }
+      .button-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+      .btn { display: inline-block; text-decoration: none; padding: 12px 18px; border-radius: 999px; font-weight: 800; border: none; cursor: pointer; }
+      .btn.primary { background: var(--primary); color: #fff; }
+      .btn.secondary { background: rgba(255,255,255,0.6); border: 1px solid var(--line); color: var(--primary); }
+      .flash { margin: 0 0 18px; padding: 10px 12px; border-radius: 10px; background: rgba(62,166,110,0.12); border: 1px solid rgba(62,166,110,0.25); color: #1c573d; font-weight: 700; }
+      @media (max-width: 700px) { .form-grid { grid-template-columns: 1fr; } .header-inner { flex-direction: column; align-items: flex-start; } }
     </style>
   </head>
   <body>
@@ -71,50 +73,65 @@
     <main class="page">
       <div class="container panel">
         <h1>Student profile</h1>
-        <div class="meta">Welcome, {{ user["name"] }} · {{ user["role"]|title }}</div>
+        <div class="meta">Manage your account details, academic information and notification preferences.</div>
 
-        <div class="grid">
-          <div class="box">
-            <h3>Personal details</h3>
-            <p><strong>Name:</strong> {{ user["name"] }}</p>
-            <p><strong>Email:</strong> {{ user["email"] }}</p>
-            <p><strong>Role:</strong> {{ user["role"]|title }}</p>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="flash">{{ messages[0] }}</div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="post">
+          <div class="form-grid">
+            <div class="field">
+              <label for="name">Full name</label>
+              <input id="name" name="name" type="text" value="{{ user['name'] }}" required>
+            </div>
+
+            <div class="field">
+              <label for="email">Email address</label>
+              <input id="email" name="email" type="email" value="{{ user['email'] }}" required>
+            </div>
+
+            <div class="field">
+              <label for="phone_number">Phone number</label>
+              <input id="phone_number" name="phone_number" type="tel" value="{{ user['phone_number'] or '' }}">
+            </div>
+
+            <div class="field">
+              <label for="qualification">Qualification</label>
+              <input id="qualification" name="qualification" type="text" value="{{ user['qualification'] or '' }}" placeholder="B.Sc., M.Sc., etc.">
+            </div>
+
+            <div class="field full">
+              <label for="institution">Institution</label>
+              <input id="institution" name="institution" type="text" value="{{ user['institution'] or '' }}" placeholder="University or institution name">
+            </div>
+
+            <div class="field full">
+              <label for="department">Department / Faculty</label>
+              <input id="department" name="department" type="text" value="{{ user['department'] or '' }}" placeholder="Department or faculty">
+            </div>
+
+            <div class="field full">
+              <label for="new_password">New password</label>
+              <input id="new_password" name="new_password" type="password" placeholder="Leave blank to keep current password">
+            </div>
+
+            <div class="field full">
+              <label>Notification preferences</label>
+              <div class="checkbox-row">
+                <label class="checkbox"><input type="checkbox" name="notification_email" {% if user['notification_email'] != 'off' %}checked{% endif %}> Email notifications</label>
+                <label class="checkbox"><input type="checkbox" name="notification_sms" {% if user['notification_sms'] != 'off' %}checked{% endif %}> SMS notifications</label>
+              </div>
+            </div>
           </div>
-          <div class="box">
-            <h3>Academic details</h3>
-            <p><strong>Institution:</strong> {{ user["institution"] or 'Not provided' }}</p>
-            <p><strong>Department:</strong> {{ user["department"] or 'Not provided' }}</p>
+
+          <div class="button-row">
+            <button class="btn primary" type="submit">Save profile</button>
+            <a class="btn secondary" href="{{ dashboard_url }}">Back to dashboard</a>
           </div>
-        </div>
-
-        <div class="buttons">
-          <a class="btn primary" href="{{ dashboard_url }}">Go to dashboard</a>
-          <a class="btn secondary" href="/logout">Logout</a>
-        </div>
-
-        {% if requests %}
-        <div style="margin-top: 30px;">
-          <h3 style="margin: 0 0 12px; color: var(--primary);">Recent research requests</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Topic</th>
-                <th>Type</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for request in requests %}
-              <tr>
-                <td>{{ request["topic"] }}</td>
-                <td>{{ request["research_type"] }}</td>
-                <td>{{ request["status"] }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-        {% endif %}
+        </form>
       </div>
     </main>
   </body>

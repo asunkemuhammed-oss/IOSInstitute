@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ page.title }} | IOS Educational Consultancy</title>
+    <style>
+      :root {
+        --bg: #edf4f7;
+        --panel: #ffffff;
+        --panel-soft: #f4fafc;
+        --line: rgba(12, 35, 47, 0.1);
+        --dark: #0f2434;
+        --muted: #5d6d7c;
+        --primary: #0b6aa8;
+        --primary-2: #33b7d7;
+        --success: #1e8f5e;
+        --shadow: 0 12px 32px rgba(12, 32, 45, 0.12);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: var(--bg);
+        color: var(--dark);
+      }
+      a { text-decoration: none; }
+      img { max-width: 100%; display: block; }
+
+      .container {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .topstrip {
+        background: #061d2b;
+        color: #fff;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+      }
+      .topstrip-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 44px;
+        gap: 16px;
+      }
+      .toplinks {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+      .toplinks a,
+      .navcta {
+        color: rgba(255,255,255,0.9);
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+      .navcta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 999px;
+        padding: 8px 14px;
+      }
+
+      .mainbar {
+        background: rgba(13, 31, 43, 0.96);
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+      }
+      .mainbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        min-height: 90px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .logo {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        overflow: hidden;
+        background: #fff;
+        border: 2px solid rgba(255,255,255,0.14);
+      }
+      .logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .brand-name {
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 900;
+        letter-spacing: -0.04em;
+      }
+      .brand-name span { color: #77d8ff; }
+
+      .mainnav {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+      .mainnav > a,
+      .mainnav-item summary {
+        color: rgba(255,255,255,0.9);
+        font-size: 0.82rem;
+        font-weight: 700;
+      }
+      .mainnav-item details {
+        position: relative;
+      }
+      .mainnav-item summary {
+        list-style: none;
+        cursor: pointer;
+      }
+      .mainnav-item summary::-webkit-details-marker { display: none; }
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 12px);
+        left: 0;
+        min-width: 220px;
+        background: #fff;
+        color: var(--dark);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+        border-radius: 12px;
+        padding: 10px;
+        display: grid;
+        gap: 8px;
+        z-index: 5;
+      }
+      .dropdown-menu a {
+        color: var(--dark);
+        font-size: 0.8rem;
+        padding: 8px 10px;
+        border-radius: 8px;
+      }
+      .dropdown-menu a:hover { background: #edf5fb; }
+      .header-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #0a7ec9, #2ec0f5);
+        color: #fff;
+        border-radius: 12px;
+        padding: 12px 18px;
+        font-weight: 800;
+        box-shadow: 0 10px 22px rgba(24, 118, 176, 0.22);
+      }
+
+      .service-shell {
+        padding: 30px 0 40px;
+      }
+      .service-hero {
+        display: grid;
+        grid-template-columns: 1.6fr 0.9fr;
+        gap: 24px;
+        background: linear-gradient(135deg, #0f2734, #1c75a2 52%, #50c6e8);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+      .service-hero__content {
+        padding: 32px 32px 26px;
+        color: #fff;
+      }
+      .service-hero__visual {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: rgba(255,255,255,0.06);
+      }
+      .service-hero__visual img {
+        width: min(100%, 320px);
+        border-radius: 18px;
+        box-shadow: 0 18px 30px rgba(5, 18, 26, 0.28);
+        border: 2px solid rgba(255,255,255,0.18);
+      }
+      .visual-badge {
+        position: absolute;
+        left: 22px;
+        bottom: 22px;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 999px;
+        color: #fff;
+        padding: 8px 12px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .eyebrow {
+        display: inline-block;
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-weight: 800;
+      }
+      .service-hero h1 {
+        margin: 18px 0 12px;
+        font-size: clamp(2.2rem, 4vw, 4rem);
+        line-height: 1.04;
+        letter-spacing: -0.06em;
+      }
+      .service-hero p {
+        margin: 0;
+        color: rgba(255,255,255,0.82);
+        line-height: 1.7;
+        max-width: 630px;
+      }
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 24px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 0 18px;
+        border-radius: 12px;
+        font-weight: 800;
+        border: 1px solid transparent;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #0d2d42, #1da4d4);
+        color: #fff;
+      }
+      .btn-secondary {
+        background: rgba(255,255,255,0.12);
+        color: #fff;
+        border-color: rgba(255,255,255,0.16);
+      }
+      .service-hero__panel {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(0,0,0,0.08);
+      }
+      .mini-card {
+        width: min(100%, 300px);
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.16);
+        border-radius: 20px;
+        padding: 22px 18px;
+        color: #fff;
+      }
+      .mini-card strong {
+        display: block;
+        font-size: 1.55rem;
+        letter-spacing: -0.05em;
+        margin-bottom: 8px;
+      }
+      .mini-card span {
+        color: rgba(255,255,255,0.8);
+        line-height: 1.6;
+      }
+
+      .info-grid {
+        margin-top: 26px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+      .info-block {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 22px 20px;
+        box-shadow: 0 8px 20px rgba(11, 32, 42, 0.04);
+      }
+      .info-block h2,
+      .info-block h3 {
+        margin-top: 0;
+        font-size: 1.5rem;
+        letter-spacing: -0.04em;
+      }
+      .info-block p,
+      .info-block li {
+        color: var(--muted);
+        line-height: 1.7;
+      }
+      .info-block ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+      .info-block li + li { margin-top: 8px; }
+
+      .detail-layout {
+        margin-top: 26px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+      .detail-panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 22px 20px;
+        box-shadow: 0 8px 18px rgba(11, 32, 42, 0.04);
+      }
+      .detail-panel h3 {
+        margin-top: 0;
+        margin-bottom: 14px;
+        font-size: 1.4rem;
+        letter-spacing: -0.04em;
+      }
+      .detail-panel ol {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+      .detail-panel ul {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .cta-panel {
+        margin-top: 28px;
+        background: linear-gradient(135deg, rgba(20, 60, 82, 0.08), rgba(35, 142, 175, 0.08));
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 26px 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+      .cta-panel h3 {
+        margin: 0;
+        font-size: clamp(1.3rem, 2vw, 2.2rem);
+        letter-spacing: -0.04em;
+      }
+
+      .site-footer {
+        background: #081d2d;
+        color: #eef5f8;
+        margin-top: 48px;
+      }
+      .mega-footer-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr 2.8fr;
+        gap: 30px;
+        padding: 44px 0 28px;
+      }
+      .footer-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      .footer-logo {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        overflow: hidden;
+        background: #fff;
+      }
+      .footer-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .footer-brand-name {
+        font-size: 1.1rem;
+        font-weight: 900;
+      }
+      .footer-brand-name span { color: #79dbff; }
+      .footer-copy {
+        color: rgba(255,255,255,0.72);
+        line-height: 1.7;
+        margin-bottom: 18px;
+      }
+      .footer-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 18px;
+        background: linear-gradient(135deg, #0b7ec7, #2ec6f0);
+        color: #fff;
+        border-radius: 12px;
+        font-weight: 800;
+      }
+      .footer-panel {
+        display: flex;
+      }
+      .footer-col {
+        display: grid;
+        gap: 8px;
+      }
+      .footer-col h4 {
+        margin: 0 0 8px;
+        font-size: 0.85rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #8cd5f3;
+      }
+      .footer-col a {
+        color: rgba(255,255,255,0.75);
+        font-size: 0.9rem;
+      }
+      .footer-links-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+      .footer-bottom {
+        border-top: 1px solid rgba(255,255,255,0.08);
+        padding: 16px 0 30px;
+        display: flex;
+        justify-content: center;
+        gap: 32px;
+        color: rgba(255,255,255,0.72);
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 980px) {
+        .service-hero,
+        .info-grid,
+        .mega-footer-grid,
+        .footer-links-grid {
+          grid-template-columns: 1fr;
+        }
+        .mainbar-inner { flex-wrap: wrap; padding: 18px 0; }
+        .mainnav { justify-content: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topstrip">
+      <div class="container topstrip-inner">
+        <div class="toplinks">
+          <a href="/">Home</a>
+          <a href="/research-institute">Research</a>
+          <a href="/tech-skillup">Tech SkillUp</a>
+          <a href="/educational-consultancy">Educational Consultancy</a>
+        </div>
+        <a class="navcta" href="https://wa.me/2347086476413" target="_blank" rel="noopener noreferrer">Book a Consultation</a>
+      </div>
+    </header>
+
+    <div class="mainbar">
+      <div class="container mainbar-inner">
+        <div class="brand">
+          <div class="logo">
+            <img src="/static/images/team/REALLOGO.jpg" alt="IOS logo" />
+          </div>
+          <div class="brand-name">IOS <span>Consult</span></div>
+        </div>
+
+        <nav class="mainnav" aria-label="Main navigation">
+          <div class="mainnav-item">
+            <details>
+              <summary>Recent Updates ▾</summary>
+              <div class="dropdown-menu">
+                <a href="#">School News</a>
+                <a href="#">Admission Alerts</a>
+                <a href="#">Scholarship Updates</a>
+                <a href="#">Exam Timetables</a>
+              </div>
+            </details>
+          </div>
+          <div class="mainnav-item">
+            <details>
+              <summary>Opportunities ▾</summary>
+              <div class="dropdown-menu">
+                <a href="#">Scholarships</a>
+                <a href="#">Internships</a>
+                <a href="#">Job Opportunities</a>
+              </div>
+            </details>
+          </div>
+          <div class="mainnav-item">
+            <details>
+              <summary>Past Questions ▾</summary>
+              <div class="dropdown-menu">
+                <a href="#">JAMB</a>
+                <a href="#">WAEC</a>
+                <a href="#">NECO</a>
+              </div>
+            </details>
+          </div>
+          <a href="/products">Products</a>
+          <a href="/about">About</a>
+          <a href="#">Contact</a>
+        </nav>
+
+        <a class="header-btn" href="https://wa.me/2347086476413" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      </div>
+    </div>
+
+    <main class="container service-shell">
+      <section class="service-hero">
+        <div class="service-hero__content">
+          <span class="eyebrow">{{ page.badge }}</span>
+          <h1>{{ page.heading }}</h1>
+          <p>{{ page.intro }}</p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://wa.me/2347086476413" target="_blank" rel="noopener noreferrer">Get Exam Support</a>
+            <a class="btn btn-secondary" href="/educational-consultancy">Back to Consultancy</a>
+          </div>
+        </div>
+
+        <div class="service-hero__visual">
+          <img src="{{ page.image }}" alt="{{ page.title }}" />
+          <div class="visual-badge">{{ page.badge }}</div>
+        </div>
+      </section>
+
+      <section class="info-grid" aria-label="Service details">
+        <article class="info-block">
+          <h2>{{ page.title }}</h2>
+          <p>{{ page.intro }}</p>
+        </article>
+
+        <article class="info-block">
+          <h3>What we help with</h3>
+          <ul>
+            {% for item in page.highlights %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        </article>
+
+        <article class="info-block">
+          <h3>Popular support areas</h3>
+          <ul>
+            {% for item in page.services %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        </article>
+      </section>
+
+      <section class="detail-layout" aria-label="Service breakdown">
+        <article class="detail-panel">
+          <h3>What is included</h3>
+          <ul>
+            {% for item in page.benefits %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        </article>
+
+        <article class="detail-panel">
+          <h3>How it works</h3>
+          <ol>
+            {% for step in page.steps %}
+            <li>{{ step }}</li>
+            {% endfor %}
+          </ol>
+        </article>
+      </section>
+
+      <section class="cta-panel">
+        <h3>{{ page.cta }}</h3>
+        <a class="btn btn-primary" href="https://wa.me/2347086476413" target="_blank" rel="noopener noreferrer">Book a Consultation</a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container mega-footer-grid">
+        <div>
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <img src="/static/images/team/REALLOGO.jpg" alt="IOS logo" />
+            </div>
+            <div class="footer-brand-name">IOS <span>Educational Consultancy</span></div>
+          </div>
+          <p class="footer-copy">Trusted platform for admissions guidance, exam services, scholarships, and verified educational opportunities in Nigeria and beyond.</p>
+          <a class="footer-cta" href="https://wa.me/2347086476413" target="_blank" rel="noopener noreferrer">Join WhatsApp Group</a>
+        </div>
+
+        <div class="footer-panel">
+          <div class="footer-col">
+            <h4>Explore</h4>
+            <a href="#">Recent Updates</a>
+            <a href="#">Admissions</a>
+            <a href="#">Scholarships</a>
+            <a href="#">Exam Support</a>
+          </div>
+        </div>
+
+        <div class="footer-links-grid">
+          <div class="footer-col">
+            <h4>Exam &amp; Academic</h4>
+            <a href="#">JAMB</a>
+            <a href="#">WAEC</a>
+            <a href="#">NECO</a>
+            <a href="#">NABTEB</a>
+          </div>
+          <div class="footer-col">
+            <h4>Support</h4>
+            <a href="#">School Fees Help</a>
+            <a href="#">Admission Guidance</a>
+            <a href="#">Profile Assistance</a>
+            <a href="#">Result Support</a>
+          </div>
+          <div class="footer-col">
+            <h4>NYSC</h4>
+            <a href="#">Registration</a>
+            <a href="#">Mobilisation</a>
+            <a href="#">Relocation Support</a>
+            <a href="#">Docs Assistance</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="container footer-bottom">
+        <div>Contact Support</div>
+        <div>About Us</div>
+        <div>Privacy Policy</div>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const dropdowns = document.querySelectorAll(".mainnav-item details");
+        dropdowns.forEach((dropdown) => {
+          dropdown.addEventListener("toggle", function () {
+            if (!dropdown.open) return;
+            dropdowns.forEach((other) => {
+              if (other !== dropdown) {
+                other.removeAttribute("open");
+              }
+            });
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
