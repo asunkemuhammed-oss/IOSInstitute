@@ -1110,6 +1110,11 @@
       }
 
       @media (max-width: 900px) {
+        .page-shell {
+          width: min(100%, calc(100% - 12px));
+          margin: 10px auto;
+        }
+
         .topbar-inner,
         .hero-box,
         .about-grid,
@@ -1122,8 +1127,9 @@
         }
 
         .topbar-inner {
-          display: grid;
-          grid-template-columns: 1fr;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
           padding: 14px 0;
         }
 
@@ -1136,9 +1142,17 @@
         .hero-stat-strip {
           grid-template-columns: 1fr 1fr;
         }
+
+        .nav-links {
+          justify-content: center;
+        }
       }
 
       @media (max-width: 760px) {
+        .page-shell {
+          width: min(100%, calc(100% - 8px));
+        }
+
         .nav {
           flex-direction: column;
           align-items: flex-start;
@@ -1146,6 +1160,7 @@
         }
         .nav-links {
           gap: 12px 18px;
+          justify-content: flex-start;
         }
         .hero-content,
         .about-grid,
@@ -1155,17 +1170,19 @@
         .resources-grid,
         .portal-grid,
         .contact-box,
-        .hero-stat-strip {
+        .hero-stat-strip,
+        .team-grid {
           grid-template-columns: 1fr;
           display: grid;
         }
 
         .hero-box {
           padding: 20px 18px 0;
+          min-height: auto;
         }
 
         .hero-copy h1 {
-          font-size: 2.8rem;
+          font-size: 2.5rem;
         }
 
         .service-dropdown {
@@ -1174,6 +1191,22 @@
 
         .service-trigger {
           min-height: 52px;
+        }
+
+        .hero-actions {
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .quick-badges {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .quick-badge {
+          width: auto;
         }
       }
     </style>

@@ -530,11 +530,15 @@
       @media (max-width: 900px) {
         .program-grid { grid-template-columns: 1fr 1fr; }
         .nav-links { display:none; }
+        .hero { grid-template-columns: 1fr; padding: 28px 20px; }
+        .topbar-inner { flex-wrap: wrap; justify-content: center; }
       }
       @media (max-width: 640px) {
         .program-grid { grid-template-columns: 1fr; }
         .meta { grid-template-columns: 1fr; }
         .hero { padding: 28px 20px; }
+        .hero-actions { flex-direction: column; }
+        .primary-btn, .secondary-btn, .ghost-btn { width: 100%; }
       }
     </style>
   </head>
